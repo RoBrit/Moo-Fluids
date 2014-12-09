@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "MooFluids",
+    "name": "Moo Fluids",
+    "version": "@VERSION@",
+    "mcversion": "1.6.4",
+    "description": "Adds dynamically generated cows to the world, that give different fluids when right clicked with a bucket (or fluid container)",
+    "credits": "",
+    "url": "www.robrit.com",
+    "updateUrl": "",
+    "authorList": ["TheRoBrit"],
+    "logoFile": "",
+    "screenshots": [],
+    "parent":"",
+    "dependencies": ["mod_MinecraftForge"]
+  }
+]
