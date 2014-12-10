@@ -24,4 +24,6 @@ public interface IProxy {
   public void initContainableFluids();
 
   public void registerEventHandlers();
+
+  public void registerEntities();
 }

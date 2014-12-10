@@ -19,15 +19,30 @@
 
 package com.robrit.moofluids.client.proxy;
 
+import com.robrit.moofluids.client.render.RenderFluidCow;
+import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.event.TextureRegisterEvent;
 import com.robrit.moofluids.common.proxy.CommonProxy;
 
+import net.minecraft.client.model.ModelCow;
 import net.minecraftforge.common.MinecraftForge;
+
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 
   @Override
   public void registerEventHandlers() {
+    super.registerEventHandlers();
     MinecraftForge.EVENT_BUS.register(new TextureRegisterEvent());
+  }
+
+  @Override
+  public void registerEntities() {
+    super.registerEntities();
+    RenderingRegistry
+        .registerEntityRenderingHandler(
+            EntityFluidCow.class,
+            new RenderFluidCow(new ModelCow(), 0.8F));
   }
 }

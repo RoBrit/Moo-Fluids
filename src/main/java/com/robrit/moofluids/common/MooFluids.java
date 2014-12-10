@@ -67,6 +67,7 @@ public class MooFluids {
     proxy.initContainableFluids();
     ConfigurationHandler.updateConfiguration();
     proxy.registerEventHandlers();
+    proxy.registerEntities();
 
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished initialisation stage for %s", ModInformation.MOD_ID));
