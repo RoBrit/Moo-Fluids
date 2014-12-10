@@ -23,4 +23,8 @@ import com.robrit.moofluids.common.proxy.CommonProxy;
 
 public class ServerProxy extends CommonProxy {
 
+  @Override
+  public void registerEventHandlers() {
+
+  }
 }

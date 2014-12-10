@@ -57,8 +57,8 @@ public class MooFluids {
     ConfigurationHandler.init();
 
     if (ModInformation.DEBUG_MODE) {
-      LogHelper
-          .info(String.format("Finished pre-initialisation stage for %s", ModInformation.MOD_ID));
+      LogHelper.info(String.format("Finished pre-initialisation stage for %s",
+                                   ModInformation.MOD_ID));
     }
   }
 
@@ -66,6 +66,7 @@ public class MooFluids {
   public static void init(FMLInitializationEvent event) {
     proxy.initContainableFluids();
     ConfigurationHandler.updateConfiguration();
+    proxy.registerEventHandlers();
 
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished initialisation stage for %s", ModInformation.MOD_ID));
@@ -75,8 +76,8 @@ public class MooFluids {
   @Mod.EventHandler
   public static void postInit(FMLPostInitializationEvent event) {
     if (ModInformation.DEBUG_MODE) {
-      LogHelper
-          .info(String.format("Finished post-initialisation stage for %s", ModInformation.MOD_ID));
+      LogHelper.info(String.format("Finished post-initialisation stage for %s",
+                                   ModInformation.MOD_ID));
     }
   }
 

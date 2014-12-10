@@ -19,8 +19,15 @@
 
 package com.robrit.moofluids.client.proxy;
 
+import com.robrit.moofluids.common.event.TextureRegisterEvent;
 import com.robrit.moofluids.common.proxy.CommonProxy;
+
+import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy extends CommonProxy {
 
+  @Override
+  public void registerEventHandlers() {
+    MinecraftForge.EVENT_BUS.register(new TextureRegisterEvent());
+  }
 }
