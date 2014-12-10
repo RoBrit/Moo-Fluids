@@ -21,4 +21,5 @@ package com.robrit.moofluids.common.proxy;
 
 public interface IProxy {
 
+  public void initContainableFluids();
 }

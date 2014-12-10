@@ -64,6 +64,7 @@ public class MooFluids {
 
   @Mod.EventHandler
   public static void init(FMLInitializationEvent event) {
+    proxy.initContainableFluids();
     ConfigurationHandler.updateConfiguration();
 
     if (ModInformation.DEBUG_MODE) {

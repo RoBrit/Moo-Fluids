@@ -19,6 +19,30 @@
 
 package com.robrit.moofluids.common.proxy;
 
+import com.robrit.moofluids.common.util.EntityHelper;
+import com.robrit.moofluids.common.util.LogHelper;
+import com.robrit.moofluids.common.util.ModInformation;
+
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+
 public abstract class CommonProxy implements IProxy {
 
+  @Override
+  public void initContainableFluids() {
+    for (final FluidContainerRegistry.FluidContainerData fluidContainerData : FluidContainerRegistry
+        .getRegisteredFluidContainerData()) {
+      if (fluidContainerData.filledContainer.getItem() != null) {
+        final String fluidName = fluidContainerData.fluid.getFluid().getName();
+        if (!EntityHelper.hasContainableFluid(fluidName)) {
+          final Fluid containableFluid = fluidContainerData.fluid.getFluid();
+          EntityHelper.setContainableFluid(fluidName, containableFluid);
+
+          if (ModInformation.DEBUG_MODE) {
+            LogHelper.info(fluidName + " has been added as an containable (i.e. bucketable) fluid");
+          }
+        }
+      }
+    }
+  }
 }
