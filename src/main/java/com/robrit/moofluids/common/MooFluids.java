@@ -19,6 +19,7 @@
 
 package com.robrit.moofluids.common;
 
+import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.proxy.IProxy;
 import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
@@ -52,6 +53,9 @@ public class MooFluids {
 
   @Mod.EventHandler
   public static void preInit(FMLPreInitializationEvent event) {
+    ConfigurationHandler.setConfigFile(event.getSuggestedConfigurationFile());
+    ConfigurationHandler.init();
+
     if (ModInformation.DEBUG_MODE) {
       LogHelper
           .info(String.format("Finished pre-initialisation stage for %s", ModInformation.MOD_ID));
@@ -60,6 +64,8 @@ public class MooFluids {
 
   @Mod.EventHandler
   public static void init(FMLInitializationEvent event) {
+    ConfigurationHandler.updateConfiguration();
+
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished initialisation stage for %s", ModInformation.MOD_ID));
     }
