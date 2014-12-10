@@ -126,7 +126,34 @@ public class EntityFluidCow extends EntityCow {
     return canGetFluid;
   }
 
-
+  /* Used to attempt to heal a MooFluids Cow with a filled container of the fluid that the Cow gives */
+  private boolean attemptToHealCowWithFluidContainer(ItemStack currentItemStack,
+                                                     EntityPlayer entityPlayer) {
+    boolean cowHealed = false;
+    if (currentItemStack != null && FluidContainerRegistry.isFilledContainer(currentItemStack)) {
+      ItemStack emptyItemStack;
+      if (entityFluid != null) {
+        for (final FluidContainerRegistry.FluidContainerData containerData : FluidContainerRegistry
+            .getRegisteredFluidContainerData()) {
+          if (containerData.fluid.getFluid().getName().equalsIgnoreCase(entityFluid.getName())) {
+            if (containerData.filledContainer.isItemEqual(currentItemStack)) {
+              emptyItemStack = containerData.emptyContainer;
+              if (currentItemStack.stackSize-- == 1) {
+                entityPlayer.inventory
+                    .setInventorySlotContents(entityPlayer.inventory.currentItem,
+                                              emptyItemStack.copy());
+              } else if (!entityPlayer.inventory.addItemStackToInventory(emptyItemStack.copy())) {
+                entityPlayer.dropPlayerItemWithRandomChoice(emptyItemStack.copy(), false);
+              }
+              heal(4F);
+              cowHealed = true;
+            }
+          }
+        }
+      }
+    }
+    return cowHealed;
+  }
 
   public Fluid getEntityFluid() {
     return entityFluid;
