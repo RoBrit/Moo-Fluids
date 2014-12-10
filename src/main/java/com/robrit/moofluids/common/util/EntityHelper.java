@@ -19,6 +19,8 @@
 
 package com.robrit.moofluids.common.util;
 
+import com.robrit.moofluids.common.entity.EntityTypeData;
+
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.TreeMap;
@@ -26,6 +28,12 @@ import java.util.TreeMap;
 public class EntityHelper {
 
   private static TreeMap<String, Fluid> containableFluids = new TreeMap<String, Fluid>();
+  private static TreeMap<String, EntityTypeData> entityDataMap = new TreeMap<String, EntityTypeData>();
+
+
+  public static TreeMap<String, Fluid> getContainableFluids() {
+    return containableFluids;
+  }
 
   public static Fluid getContainableFluid(final String fluidName) {
     if (containableFluids.containsKey(fluidName)) {
@@ -41,5 +49,25 @@ public class EntityHelper {
 
   public static boolean hasContainableFluid(final String fluidName) {
     return containableFluids.containsKey(fluidName);
+  }
+
+  public static TreeMap<String, EntityTypeData> getDataForEntities() {
+    return entityDataMap;
+  }
+
+  public static void setEntityData(final String fluidName, final EntityTypeData entityTypeData) {
+    entityDataMap.put(fluidName, entityTypeData);
+  }
+
+  public static boolean hasEntityData(final String fluidName) {
+    return entityDataMap.containsKey(fluidName);
+  }
+
+  public static EntityTypeData getEntityData(final String fluidName) {
+    if (entityDataMap.containsKey(fluidName)) {
+      return entityDataMap.get(fluidName);
+    }
+
+    return null;
   }
 }
