@@ -26,6 +26,7 @@ import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.io.File;
 
@@ -40,31 +41,16 @@ public class ConfigurationHandler {
   private static final String ENTITY_SPAWN_RATE_KEY = "Spawn Rate";
   private static final String ENTITY_NORMAL_DAMAGE_AMOUNT_KEY = "Normal Damage Amount";
   private static final String ENTITY_FIRE_DAMAGE_AMOUNT_KEY = "Fire Damage Amount";
-  //  private static final String ENTITY_POTION_EFFECTS_KEY = "Potion Effects"; //TODO: FIXME!
-//  private static final String ENTITY_BREEDING_ITEMS_KEY = "Breeding Items"; //TODO: FIXME!
-//  private static final String ENTITY_DROPPED_ITEMS_KEY = "Dropped Items"; //TODO: FIXME!
   private static final String ENTITY_GROW_UP_TIME_KEY = "Grow Up Time";
-  private static final String ENTITY_INTERACTION_COOLDOWN_TIME_KEY = "Interaction Cooldown Time";
+  private static final String ENTITY_MAX_USE_COOLDOWN_KEY = "Max Use Cooldown";
 
   /* Configuration default values */
   private static final boolean ENTITY_IS_SPAWNABLE_DEFAULT_VALUE = true;
   private static final int ENTITY_SPAWN_RATE_DEFAULT_VALUE = 8;
   private static final int ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE = 0;
   private static final int ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE = 2;
-  //  private static final String[] ENTITY_POTION_EFFECTS_DEFAULT_VALUE = new String[0]; //TODO: FIXME!
-//  private static final String[] ENTITY_BREEDING_ITEMS_DEFAULT_VALUE = new String[] //TODO: FIXME!
-//      {
-//          ConfigurationHelper.getStringFromItemStack(new ItemStack(Items.wheat, 0))
-//      };
-//  private static final String[] ENTITY_DROPPED_ITEMS_DEFAULT_VALUE = new String[] //TODO: FIXME!
-//      {
-//          ConfigurationHelper.getStringFromItemStack(new ItemStack(Items.leather, 0)),
-//          ConfigurationHelper.getStringFromItemStack(new ItemStack(Items.beef, 0))
-//      };
   private static final int ENTITY_GROW_UP_TIME_DEFAULT_VALUE = 8000; /* Quarter of a MC day */
-  private static final int
-      ENTITY_INTERACTION_COOLDOWN_TIME_DEFAULT_VALUE =
-      4000; /* Eighth of a MC day */
+  private static final int ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE = 4000; /* Eighth of a MC day */
 
   private static Configuration configuration;
   private static File configFile;
@@ -86,38 +72,48 @@ public class ConfigurationHandler {
 
         final EntityTypeData entityTypeData = new EntityTypeData();
 
-        entityTypeData.setEntityIsSpawnable(
+        /* Configurable entity data */
+
+        entityTypeData.setSpawnable(
             configuration.get(entityName,
                               ENTITY_IS_SPAWNABLE_KEY,
                               ENTITY_IS_SPAWNABLE_DEFAULT_VALUE)
                 .getBoolean());
-        entityTypeData.setEntitySpawnRate(
+        entityTypeData.setSpawnRate(
             configuration.get(entityName,
                               ENTITY_SPAWN_RATE_KEY,
                               ENTITY_SPAWN_RATE_DEFAULT_VALUE)
                 .getInt());
-        entityTypeData.setEntityNormalDamageAmount(
+        entityTypeData.setNormalDamageAmount(
             configuration.get(entityName,
                               ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
                               ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
                 .getInt());
-        entityTypeData.setEntityFireDamageAmount(
+        entityTypeData.setFireDamageAmount(
             configuration
                 .get(entityName,
                      ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
                      ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE)
                 .getInt());
 
-        entityTypeData.setEntityGrowUpTime(
+        entityTypeData.setGrowUpTime(
             configuration.get(entityName,
                               ENTITY_GROW_UP_TIME_KEY,
                               ENTITY_GROW_UP_TIME_DEFAULT_VALUE)
                 .getInt());
-        entityTypeData.setEntityMaxUseCooldown(
+        entityTypeData.setMaxUseCooldown(
             configuration.get(entityName,
-                              ENTITY_INTERACTION_COOLDOWN_TIME_KEY,
-                              ENTITY_INTERACTION_COOLDOWN_TIME_DEFAULT_VALUE)
+                              ENTITY_MAX_USE_COOLDOWN_KEY,
+                              ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE)
                 .getInt());
+
+        /* Non-configurable entity data */
+
+        entityTypeData.setCauseFireDamage(
+            containableFluid.getTemperature() >= FluidRegistry.LAVA.getTemperature());
+
+        entityTypeData.setHeavy(
+            containableFluid.getDensity() > FluidRegistry.WATER.getDensity() * 3);
 
         EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
       }

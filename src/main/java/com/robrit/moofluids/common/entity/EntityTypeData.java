@@ -28,102 +28,131 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityTypeData {
 
+  /* Non-configurable values */
   @SideOnly(Side.CLIENT)
-  public ResourceLocation entityTexture;
+  private ResourceLocation texture;
 
-  /* Configuration values */
-  private boolean entityIsSpawnable;
-  private int entitySpawnRate;
+  private boolean causeFireDamage = false;
+  private boolean causeNormalDamage = false;
+  private boolean isHeavy = false;
 
-  private int entityNormalDamageAmount;
-  private int entityFireDamageAmount;
-  private PotionEffect[] entityPotionEffects;
+  /* Configurable values */
+  private boolean isSpawnable;
+  private int spawnRate;
 
-  private ItemStack[] entityBreedingItems;
-  private ItemStack[] entityDroppedItems;
+  private int fireDamageAmount;
+  private int normalDamageAmount;
+  private PotionEffect[] potionEffects;
 
-  private int entityGrowUpTime;
-  private int entityMaxUseCooldown;
+  private ItemStack[] breedingItems;
+  private ItemStack[] droppedItems;
+
+  private int growUpTime;
+  private int maxUseCooldown;
 
   @SideOnly(Side.CLIENT)
-  public ResourceLocation getEntityTexture() {
-    return entityTexture;
+  public ResourceLocation getTexture() {
+    return texture;
   }
 
   @SideOnly(Side.CLIENT)
-  public void setEntityTexture(final ResourceLocation entityTexture) {
-    this.entityTexture = entityTexture;
+  public void setTexture(final ResourceLocation texture) {
+    this.texture = texture;
   }
 
-  public boolean isEntityIsSpawnable() {
-    return entityIsSpawnable;
+  public boolean canCauseFireDamage() {
+    return causeFireDamage;
   }
 
-  public void setEntityIsSpawnable(final boolean entityIsSpawnable) {
-    this.entityIsSpawnable = entityIsSpawnable;
+  public void setCauseFireDamage(final boolean causeFireDamage) {
+    this.causeFireDamage = causeFireDamage;
   }
 
-  public int getEntitySpawnRate() {
-    return entitySpawnRate;
+  public boolean canCauseNormalDamage() {
+    return causeNormalDamage;
   }
 
-  public void setEntitySpawnRate(final int entitySpawnRate) {
-    this.entitySpawnRate = entitySpawnRate;
+  public void setCauseNormalDamage(final boolean causeNormalDamage) {
+    this.causeNormalDamage = causeNormalDamage;
   }
 
-  public int getEntityNormalDamageAmount() {
-    return entityNormalDamageAmount;
+  public boolean isHeavy() {
+    return isHeavy;
   }
 
-  public void setEntityNormalDamageAmount(final int entityNormalDamageAmount) {
-    this.entityNormalDamageAmount = entityNormalDamageAmount;
+  public void setHeavy(boolean isHeavy) {
+    this.isHeavy = isHeavy;
   }
 
-  public int getEntityFireDamageAmount() {
-    return entityFireDamageAmount;
+  public boolean isSpawnable() {
+    return isSpawnable;
   }
 
-  public void setEntityFireDamageAmount(final int entityFireDamageAmount) {
-    this.entityFireDamageAmount = entityFireDamageAmount;
+  public void setSpawnable(final boolean spawnable) {
+    this.isSpawnable = spawnable;
   }
 
-  public PotionEffect[] getEntityPotionEffects() {
-    return entityPotionEffects;
+  public int getSpawnRate() {
+    return spawnRate;
   }
 
-  public void setEntityPotionEffects(final PotionEffect[] entityPotionEffects) {
-    this.entityPotionEffects = entityPotionEffects;
+  public void setSpawnRate(final int spawnRate) {
+    this.spawnRate = spawnRate;
   }
 
-  public ItemStack[] getEntityBreedingItems() {
-    return entityBreedingItems;
+  public int getNormalDamageAmount() {
+    return normalDamageAmount;
   }
 
-  public void setEntityBreedingItems(final ItemStack[] entityBreedingItems) {
-    this.entityBreedingItems = entityBreedingItems;
+  public void setNormalDamageAmount(final int normalDamageAmount) {
+    this.normalDamageAmount = normalDamageAmount;
   }
 
-  public ItemStack[] getEntityDroppedItems() {
-    return entityDroppedItems;
+  public int getFireDamageAmount() {
+    return fireDamageAmount;
   }
 
-  public void setEntityDroppedItems(final ItemStack[] entityDroppedItems) {
-    this.entityDroppedItems = entityDroppedItems;
+  public void setFireDamageAmount(final int fireDamageAmount) {
+    this.fireDamageAmount = fireDamageAmount;
   }
 
-  public int getEntityGrowUpTime() {
-    return entityGrowUpTime;
+  public PotionEffect[] getPotionEffects() {
+    return potionEffects;
   }
 
-  public void setEntityGrowUpTime(final int entityGrowUpTime) {
-    this.entityGrowUpTime = entityGrowUpTime;
+  public void setPotionEffects(final PotionEffect[] potionEffects) {
+    this.potionEffects = potionEffects;
   }
 
-  public int getEntityMaxUseCooldown() {
-    return entityMaxUseCooldown;
+  public ItemStack[] getBreedingItems() {
+    return breedingItems;
   }
 
-  public void setEntityMaxUseCooldown(final int entityMaxUseCooldown) {
-    this.entityMaxUseCooldown = entityMaxUseCooldown;
+  public void setBreedingItems(final ItemStack[] breedingItems) {
+    this.breedingItems = breedingItems;
+  }
+
+  public ItemStack[] getDroppedItems() {
+    return droppedItems;
+  }
+
+  public void setDroppedItems(final ItemStack[] droppedItems) {
+    this.droppedItems = droppedItems;
+  }
+
+  public int getGrowUpTime() {
+    return growUpTime;
+  }
+
+  public void setGrowUpTime(final int growUpTime) {
+    this.growUpTime = growUpTime;
+  }
+
+  public int getMaxUseCooldown() {
+    return maxUseCooldown;
+  }
+
+  public void setMaxUseCooldown(final int maxUseCooldown) {
+    this.maxUseCooldown = maxUseCooldown;
   }
 }

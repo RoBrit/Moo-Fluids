@@ -19,14 +19,17 @@
 
 package com.robrit.moofluids.common.proxy;
 
+import com.robrit.moofluids.common.MooFluids;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
+import com.robrit.moofluids.common.event.EntitySpawnHandler;
 import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -56,23 +59,15 @@ public abstract class CommonProxy implements IProxy {
   @Override
   public void registerEventHandlers() {
     FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
+    MinecraftForge.EVENT_BUS.register(new EntitySpawnHandler());
   }
 
   @Override
   public void registerEntities() {
-    EntityRegistry
-        .registerGlobalEntityID(EntityFluidCow.class,
-                                EntityFluidCow.class.getName(),
-                                EntityRegistry.findGlobalUniqueEntityId(),
-                                0xFFFFFF,
-                                0xFFFFFF);
+    final int ENTITY_FLUID_COW_ID = 1;
 
-    EntityRegistry
-        .addSpawn(EntityFluidCow.class,
-                  8,
-                  1,
-                  1,
-                  EnumCreatureType.creature,
-                  BiomeGenBase.plains);
+    EntityRegistry.registerGlobalEntityID(EntityFluidCow.class, "EntityFluidCow", EntityRegistry.findGlobalUniqueEntityId(), 0xFFFFFF, 0xFFFFFF);
+    EntityRegistry.registerModEntity(EntityFluidCow.class, "EntityFluidCow", ENTITY_FLUID_COW_ID, MooFluids.getInstance(), 64, 1, true);
+    EntityRegistry.addSpawn(EntityFluidCow.class, 8, 1, 1, EnumCreatureType.creature, BiomeGenBase.plains);
   }
 }

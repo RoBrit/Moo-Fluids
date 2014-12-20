@@ -25,38 +25,34 @@ import com.robrit.moofluids.common.util.ModInformation;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class EntityFluidCow extends EntityCow {
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 
-  private static final String NBT_TAG_FLUID_NAME = "FluidName";
-  private static final String NBT_TAG_CURRENT_USE_COOLDOWN = "CurrentUseCooldown";
+public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData {
 
   private static final int DATA_WATCHER_ID_CURRENT_USE_COOLDOWN = 23;
-
-  private Fluid entityFluid = EntityHelper.getContainableFluid(FluidRegistry.WATER.getName());
-  private int maxUseCooldown;
+  private static final String NBT_TAG_FLUID_NAME = "FluidName";
   private int currentUseCooldown;
+  private Fluid entityFluid;
+  private EntityTypeData entityTypeData;
 
   public EntityFluidCow(final World world) {
     super(world);
-  }
-
-  public EntityFluidCow(final World world, final Fluid entityFluid) {
-    this(world);
-    setEntityFluid(entityFluid);
-    setMaxUseCooldown(EntityHelper.getEntityData(entityFluid.getName()).getEntityMaxUseCooldown());
-    setCurrentUseCooldown(getMaxUseCooldown());
+    entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
   }
 
   @Override
   protected void entityInit() {
     super.entityInit();
-
     dataWatcher.addObject(DATA_WATCHER_ID_CURRENT_USE_COOLDOWN, 0);
   }
 
@@ -80,7 +76,7 @@ public class EntityFluidCow extends EntityCow {
 
       if ((getCurrentUseCooldown() == 0)) {
         if (!entityPlayer.capabilities.isCreativeMode) {
-          setCurrentUseCooldown(getMaxUseCooldown());
+          setCurrentUseCooldown(entityTypeData.getMaxUseCooldown());
         }
         if (attemptToGetFluidFromCow(currentItemStack, entityPlayer)) {
           return true;
@@ -90,6 +86,40 @@ public class EntityFluidCow extends EntityCow {
       }
     }
     return false;
+  }
+
+  /* Called whenever the entity collides with the player */
+  @Override
+  public void onCollideWithPlayer(final EntityPlayer entityPlayer) {
+    byte ticksOfDamage = 8;
+    for (int currentArmorSlot = 0; currentArmorSlot < entityPlayer.inventory.armorInventory.length;
+         currentArmorSlot++) {
+      if (entityPlayer.inventory.armorItemInSlot(currentArmorSlot) != null) {
+        ticksOfDamage -= 2;
+      }
+    }
+    if (entityTypeData.canCauseFireDamage()) {
+      entityPlayer.attackEntityFrom(new DamageSource("onFire"),
+                                    entityTypeData.getFireDamageAmount()); //TODO: CHANGE TO CUSTOM
+      entityPlayer.setFire(ticksOfDamage);
+    }
+    if (entityTypeData.canCauseNormalDamage()) {
+      entityPlayer.attackEntityFrom(new EntityDamageSource("mob", this),
+                                    entityTypeData
+                                        .getNormalDamageAmount()); //TODO: CHANGE TO CUSTOM
+    }
+  }
+
+  /* Called whenever the entity is attacked */
+  @Override
+  public boolean attackEntityFrom(final DamageSource damageSource, final float damageAmount) {
+    if (damageSource.getEntity() instanceof EntityPlayer) {
+      final EntityPlayer entityPlayer = (EntityPlayer) damageSource.getEntity();
+      if (entityPlayer.getCurrentEquippedItem() == null) {
+        onCollideWithPlayer(entityPlayer); /* Imitates as if the player had collided with the Cow */
+      }
+    }
+    return super.attackEntityFrom(damageSource, damageAmount);
   }
 
   /* Used to attempt to fill a fluid container with the fluid that the MooFluids Cow gives */
@@ -127,8 +157,8 @@ public class EntityFluidCow extends EntityCow {
   }
 
   /* Used to attempt to heal a MooFluids Cow with a filled container of the fluid that the Cow gives */
-  private boolean attemptToHealCowWithFluidContainer(ItemStack currentItemStack,
-                                                     EntityPlayer entityPlayer) {
+  private boolean attemptToHealCowWithFluidContainer(final ItemStack currentItemStack,
+                                                     final EntityPlayer entityPlayer) {
     boolean cowHealed = false;
     if (currentItemStack != null && FluidContainerRegistry.isFilledContainer(currentItemStack)) {
       ItemStack emptyItemStack;
@@ -155,6 +185,7 @@ public class EntityFluidCow extends EntityCow {
     return cowHealed;
   }
 
+
   public Fluid getEntityFluid() {
     return entityFluid;
   }
@@ -171,11 +202,25 @@ public class EntityFluidCow extends EntityCow {
     this.currentUseCooldown = currentUseCooldown;
   }
 
-  public int getMaxUseCooldown() {
-    return maxUseCooldown;
+  @Override
+  public void writeEntityToNBT(final NBTTagCompound nbtTagCompound) {
+    super.writeEntityToNBT(nbtTagCompound);
+    nbtTagCompound.setString(NBT_TAG_FLUID_NAME, getEntityFluid().getName());
   }
 
-  public void setMaxUseCooldown(final int maxUseCooldown) {
-    this.maxUseCooldown = maxUseCooldown;
+  @Override
+  public void readEntityFromNBT(final NBTTagCompound nbtTagCompound) {
+    super.readEntityFromNBT(nbtTagCompound);
+    setEntityFluid(EntityHelper.getContainableFluid(nbtTagCompound.getString(NBT_TAG_FLUID_NAME)));
+  }
+
+  @Override
+  public void writeSpawnData(final ByteBuf buffer) {
+    ByteBufUtils.writeUTF8String(buffer, entityFluid.getName());
+  }
+
+  @Override
+  public void readSpawnData(final ByteBuf additionalData) {
+    setEntityFluid(EntityHelper.getContainableFluid(ByteBufUtils.readUTF8String(additionalData)));
   }
 }
