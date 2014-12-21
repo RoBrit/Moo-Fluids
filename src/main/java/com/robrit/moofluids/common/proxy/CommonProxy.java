@@ -64,10 +64,19 @@ public abstract class CommonProxy implements IProxy {
 
   @Override
   public void registerEntities() {
-    final int ENTITY_FLUID_COW_ID = 1;
-
-    EntityRegistry.registerGlobalEntityID(EntityFluidCow.class, "EntityFluidCow", EntityRegistry.findGlobalUniqueEntityId(), 0xFFFFFF, 0xFFFFFF);
-    EntityRegistry.registerModEntity(EntityFluidCow.class, "EntityFluidCow", ENTITY_FLUID_COW_ID, MooFluids.getInstance(), 64, 1, true);
-    EntityRegistry.addSpawn(EntityFluidCow.class, 8, 1, 1, EnumCreatureType.creature, BiomeGenBase.plains);
+    EntityRegistry.registerGlobalEntityID(EntityFluidCow.class, "EntityFluidCow",
+                                          EntityRegistry.findGlobalUniqueEntityId(),
+                                          0xFFFFFF,
+                                          0xFFFFFF);
+    EntityRegistry.registerModEntity(EntityFluidCow.class, "EntityFluidCow",
+                                     EntityHelper.getRegisteredEntityId(), MooFluids.getInstance(),
+                                     64, 1, true);
+    EntityRegistry.addSpawn(EntityFluidCow.class, 8, 1, 1, EnumCreatureType.creature,
+                            BiomeGenBase.birchForest, BiomeGenBase.birchForestHills,
+                            BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
+                            BiomeGenBase.desert, BiomeGenBase.desertHills,
+                            BiomeGenBase.extremeHills, BiomeGenBase.forest, BiomeGenBase.jungle,
+                            BiomeGenBase.megaTaiga, BiomeGenBase.plains, BiomeGenBase.savanna,
+                            BiomeGenBase.swampland, BiomeGenBase.taiga);
   }
 }

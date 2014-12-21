@@ -29,7 +29,7 @@ public class EntityHelper {
 
   private static TreeMap<String, Fluid> containableFluids = new TreeMap<String, Fluid>();
   private static TreeMap<String, EntityTypeData> entityDataMap = new TreeMap<String, EntityTypeData>();
-
+  private static int registeredEntityId = 0;
 
   public static TreeMap<String, Fluid> getContainableFluids() {
     return containableFluids;
@@ -69,5 +69,9 @@ public class EntityHelper {
     }
 
     return null;
+  }
+
+  public static int getRegisteredEntityId() {
+    return registeredEntityId++;
   }
 }
