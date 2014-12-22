@@ -23,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 
+import java.awt.*;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,6 +33,8 @@ public class EntityTypeData {
   /* Non-configurable values */
   @SideOnly(Side.CLIENT)
   private ResourceLocation texture;
+  @SideOnly(Side.CLIENT)
+  private Color overlay;
 
   private boolean causeFireDamage = false;
   private boolean causeNormalDamage = false;
@@ -58,6 +62,16 @@ public class EntityTypeData {
   @SideOnly(Side.CLIENT)
   public void setTexture(final ResourceLocation texture) {
     this.texture = texture;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public Color getOverlay() {
+    return overlay;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public void setOverlay(final Color overlay) {
+    this.overlay = overlay;
   }
 
   public boolean canCauseFireDamage() {
