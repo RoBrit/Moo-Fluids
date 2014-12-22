@@ -21,13 +21,11 @@ package com.robrit.moofluids.common.event;
 
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
-import com.robrit.moofluids.common.entity.EntityTypeData;
 import com.robrit.moofluids.common.util.EntityHelper;
 
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fluids.Fluid;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -36,7 +34,8 @@ public class EntitySpawnHandler {
 
   private static final int SPAWN_LOWER_BOUNDARY = 3;
   private static final int SPAWN_UPPER_BOUNDARY = 5;
-  private static Fluid[] fluids = new Fluid[0];
+  private static final Fluid[] containableFluids = EntityHelper.getContainableFluidsArray();
+  private static final Random random = new Random();
 
   @SubscribeEvent
   public void onEntityConstruction(EntityEvent.EntityConstructing event) {
@@ -44,48 +43,53 @@ public class EntitySpawnHandler {
       final EntityFluidCow entityFluidCow = (EntityFluidCow) event.entity;
 
       if (entityFluidCow.getEntityFluid() == null) {
-        final Random random = new Random();
-        final Fluid entityFluid = getEntityFluid(getPossibleEntityFluids(random), random);
+        final Fluid entityFluid = getEntityFluid();
         entityFluidCow.setEntityFluid(entityFluid);
       }
     }
   }
 
-  private Fluid getEntityFluid(final ArrayList<Fluid> possibleEntityFluids, final Random random) {
-    int currentHighestSpawnChance = 0;
-    Fluid currentEntityFluid = null;
+  private Fluid getEntityFluid() {
+    if (containableFluids.length > 0) {
+      Fluid currentEntityFluid = containableFluids[0];
 
-    for (final Fluid possibleEntityFluid : possibleEntityFluids) {
-      final EntityTypeData
-          entityTypeData = EntityHelper.getEntityData(possibleEntityFluid.getName());
-      final int currentSpawnChance = random.nextInt(entityTypeData.getSpawnRate());
+      if (containableFluids.length > 1) {
+        final int
+            fluidsToCheck =
+            random.nextInt(SPAWN_UPPER_BOUNDARY - SPAWN_LOWER_BOUNDARY) + SPAWN_LOWER_BOUNDARY;
 
-      if (currentSpawnChance > currentHighestSpawnChance || currentEntityFluid == null) {
-        currentEntityFluid = possibleEntityFluid;
-        currentHighestSpawnChance = currentSpawnChance;
+        final Fluid[] possibleEntityFluids = new Fluid[fluidsToCheck];
+
+        for (int currentFluidIndex = 0; currentFluidIndex < fluidsToCheck; currentFluidIndex++) {
+          possibleEntityFluids[currentFluidIndex] =
+              containableFluids[random.nextInt(containableFluids.length - 1)];
+        }
+
+        int highestSpawnChance = 0;
+        for (final Fluid possibleEntityFluid : possibleEntityFluids) {
+          final int
+              spawnRate =
+              EntityHelper.getEntityData(possibleEntityFluid.getName()).getSpawnRate();
+          final boolean
+              isSpawnable =
+              EntityHelper.getEntityData(possibleEntityFluid.getName()).isSpawnable();
+
+          if (!isSpawnable || spawnRate <= 0) {
+            continue;
+          }
+
+          final int currentSpawnChance = random.nextInt(spawnRate);
+
+          if (currentSpawnChance > highestSpawnChance) {
+            currentEntityFluid = possibleEntityFluid;
+            highestSpawnChance = currentSpawnChance;
+          }
+        }
       }
+
+      return currentEntityFluid;
     }
 
-    return currentEntityFluid;
-  }
-
-  private ArrayList<Fluid> getPossibleEntityFluids(final Random random) {
-    if (fluids.length < 1) {
-      fluids = EntityHelper.getContainableFluids().values().toArray(fluids);
-    }
-
-    final int
-        entityListSize =
-        random.nextInt(SPAWN_UPPER_BOUNDARY - SPAWN_LOWER_BOUNDARY) + SPAWN_LOWER_BOUNDARY;
-    int currentEntityCount = 0;
-    ArrayList<Fluid> possibleEntityFluids = new ArrayList<Fluid>();
-
-    while (currentEntityCount < entityListSize) {
-      final int fluidIndex = random.nextInt(fluids.length - 1);
-      possibleEntityFluids.add(fluids[fluidIndex]);
-      currentEntityCount++;
-    }
-
-    return possibleEntityFluids;
+    return null;
   }
 }
