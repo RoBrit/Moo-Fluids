@@ -20,40 +20,32 @@
 package com.robrit.moofluids.client.render;
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
+import com.robrit.moofluids.common.entity.EntityTypeData;
+import com.robrit.moofluids.common.util.EntityHelper;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderCow;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.EntityLivingBase;
 
 public class RenderFluidCow extends RenderCow {
 
-  private static final ResourceLocation cowTextures = new ResourceLocation("textures/entity/cow/cow.png");
+  private int overlayColor;
+  private boolean hasOverlay = false;
 
   public RenderFluidCow(ModelBase modelBase, float par2) {
     super(modelBase, par2);
   }
 
-  /**
-   * Returns the location of an entity's texture. Doesn't seem to be called unless you call
-   * Render.bindEntityTexture.
-   *
-   * @param entityFluidCow instance of FluidCow to get texture for
-   */
-  protected ResourceLocation getEntityTexture(EntityFluidCow entityFluidCow) {
-    final String fluidName = entityFluidCow.getEntityFluid().getName();
+  @Override
+  protected int getColorMultiplier(EntityLivingBase entityLivingBase, float par2, float par3) {
 
-      return cowTextures; //TODO: FIXME!
-//    return EntityHelper.getEntityData(fluidName).getEntityTexture();
-  }
+    if (!hasOverlay) {
+      EntityTypeData entityTypeData = EntityHelper.getEntityData(
+          ((EntityFluidCow) entityLivingBase).getEntityFluid().getName());
+      overlayColor = entityTypeData.getOverlay().getRGB();
+      hasOverlay = true;
+    }
 
-  /**
-   * Returns the location of an entity's texture. Doesn't seem to be called unless you call
-   * Render.bindEntityTexture.
-   *
-   * @param entity instance of Entity to get texture for
-   */
-  protected ResourceLocation getEntityTexture(Entity entity) {
-    return this.getEntityTexture((EntityFluidCow) entity);
+    return overlayColor;
   }
 }
