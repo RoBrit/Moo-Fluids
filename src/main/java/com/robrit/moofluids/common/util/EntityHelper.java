@@ -28,11 +28,17 @@ import java.util.TreeMap;
 public class EntityHelper {
 
   private static TreeMap<String, Fluid> containableFluids = new TreeMap<String, Fluid>();
-  private static TreeMap<String, EntityTypeData> entityDataMap = new TreeMap<String, EntityTypeData>();
+  private static TreeMap<String, EntityTypeData>
+      entityDataMap =
+      new TreeMap<String, EntityTypeData>();
   private static int registeredEntityId = 0;
 
   public static TreeMap<String, Fluid> getContainableFluids() {
     return containableFluids;
+  }
+
+  public static Fluid[] getContainableFluidsArray() {
+    return containableFluids.values().toArray(new Fluid[containableFluids.values().size()]);
   }
 
   public static Fluid getContainableFluid(final String fluidName) {
