@@ -21,7 +21,7 @@ package com.robrit.moofluids.client.proxy;
 
 import com.robrit.moofluids.client.render.RenderFluidCow;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
-import com.robrit.moofluids.common.event.TextureRegisterEvent;
+import com.robrit.moofluids.client.event.TextureRegisterEvent;
 import com.robrit.moofluids.common.proxy.CommonProxy;
 
 import net.minecraft.client.model.ModelCow;
