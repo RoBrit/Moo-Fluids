@@ -20,6 +20,7 @@
 package com.robrit.moofluids.common.entity;
 
 import com.robrit.moofluids.common.util.EntityHelper;
+import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraft.entity.passive.EntityCow;
@@ -202,6 +203,10 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     this.currentUseCooldown = currentUseCooldown;
   }
 
+  public int getOverlay() {
+    return entityTypeData.getOverlay();
+  }
+
   @Override
   public void writeEntityToNBT(final NBTTagCompound nbtTagCompound) {
     super.writeEntityToNBT(nbtTagCompound);
@@ -222,5 +227,6 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   public void readSpawnData(final ByteBuf additionalData) {
     setEntityFluid(EntityHelper.getContainableFluid(ByteBufUtils.readUTF8String(additionalData)));
+    entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
   }
 }

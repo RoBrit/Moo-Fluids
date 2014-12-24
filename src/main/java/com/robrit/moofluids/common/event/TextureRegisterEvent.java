@@ -110,8 +110,17 @@ public class TextureRegisterEvent {
         final Color meanColour = ColorHelper.getMeanColour(textureData2d);
 
         final EntityTypeData entityTypeData = EntityHelper.getEntityData(fluidName);
-        entityTypeData.setOverlay(meanColour);
-        EntityHelper.setEntityData(fluidName, entityTypeData);
+        if (textureData2d.length > 0) {
+          entityTypeData.setOverlay(new Color(meanColour.getRed(),
+                                              meanColour.getGreen(),
+                                              meanColour.getBlue(),
+                                              128).getRGB());
+        }
+        else {
+          entityTypeData.setOverlay(new Color(255, 255, 255, 128).getRGB());
+        }
+          EntityHelper.setEntityData(fluidName, entityTypeData);
+
 
         if (ModInformation.DEBUG_MODE) {
           LogHelper.info("Successfully added colour overlay for " + fluid.getLocalizedName());

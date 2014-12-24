@@ -20,8 +20,6 @@
 package com.robrit.moofluids.client.render;
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
-import com.robrit.moofluids.common.entity.EntityTypeData;
-import com.robrit.moofluids.common.util.EntityHelper;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderCow;
@@ -29,23 +27,12 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class RenderFluidCow extends RenderCow {
 
-  private int overlayColor;
-  private boolean hasOverlay = false;
-
   public RenderFluidCow(ModelBase modelBase, float par2) {
     super(modelBase, par2);
   }
 
   @Override
   protected int getColorMultiplier(EntityLivingBase entityLivingBase, float par2, float par3) {
-
-    if (!hasOverlay) {
-      EntityTypeData entityTypeData = EntityHelper.getEntityData(
-          ((EntityFluidCow) entityLivingBase).getEntityFluid().getName());
-      overlayColor = entityTypeData.getOverlay().getRGB();
-      hasOverlay = true;
-    }
-
-    return overlayColor;
+    return ((EntityFluidCow) entityLivingBase).getOverlay();
   }
 }
