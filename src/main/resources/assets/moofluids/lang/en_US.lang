@@ -1,0 +1,12 @@
+#Forge Fluid Localizations
+fluid.tile.water=Water
+fluid.tile.lava=Lava
+
+#Damage Source Localizations
+death.attack.cowBurn.player = %1$s was made into toast by %2$s.
+
+#Entity Name Localizations
+entity.MooFluidsChristmasCow.name = Christmas Cow
+entity.MooFluidsNewYearsCow.name = New Years Cow
+entity.MooFluidsHalloweenCow.name = Halloween Cow
+entity.MooFluidsEasterCow.name = Easter Cow
