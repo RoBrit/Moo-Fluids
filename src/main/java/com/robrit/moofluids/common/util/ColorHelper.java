@@ -63,7 +63,7 @@ public class ColorHelper {
     final List<Integer> list = new ArrayList<Integer>();
 
     for (int dataIndexX = 0; dataIndexX < data2dArray.length; dataIndexX++) {
-      for (int dataIndexY = 0; dataIndexY < data2dArray[dataIndexY].length; dataIndexY++) {
+      for (int dataIndexY = 0; dataIndexY < data2dArray[dataIndexX].length; dataIndexY++) {
         list.add(data2dArray[dataIndexX][dataIndexY]);
       }
     }
