@@ -62,13 +62,11 @@ public class ConfigurationHandler {
         entityTypeData.setSpawnable(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_IS_SPAWNABLE_KEY,
-                              ConfigurationData.ENTITY_IS_SPAWNABLE_DEFAULT_VALUE)
-                .getBoolean());
+                              ConfigurationData.ENTITY_IS_SPAWNABLE_DEFAULT_VALUE).getBoolean());
         entityTypeData.setSpawnRate(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_SPAWN_RATE_KEY,
-                              ConfigurationData.ENTITY_SPAWN_RATE_DEFAULT_VALUE)
-                .getInt());
+                              ConfigurationData.ENTITY_SPAWN_RATE_DEFAULT_VALUE).getInt());
         entityTypeData.setNormalDamageAmount(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
@@ -77,18 +75,25 @@ public class ConfigurationHandler {
         entityTypeData.setFireDamageAmount(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
-                              ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE)
-                .getInt());
+                              ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
         entityTypeData.setGrowUpTime(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_GROW_UP_TIME_KEY,
-                              ConfigurationData.ENTITY_GROW_UP_TIME_DEFAULT_VALUE)
-                .getInt());
+                              ConfigurationData.ENTITY_GROW_UP_TIME_DEFAULT_VALUE).getInt());
         entityTypeData.setMaxUseCooldown(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_MAX_USE_COOLDOWN_KEY,
-                              ConfigurationData.ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE)
-                .getInt());
+                              ConfigurationData.ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE).getInt());
+        entityTypeData.setDamagePlayers(
+            configuration.get(entityName,
+                              ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_KEY,
+                              ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE)
+                .getBoolean());
+        entityTypeData.setDamageEntities(
+            configuration.get(entityName,
+                              ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_KEY,
+                              ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_DEFAULT_VALUE)
+                .getBoolean());
 
         /* Non-configurable entity data */
 

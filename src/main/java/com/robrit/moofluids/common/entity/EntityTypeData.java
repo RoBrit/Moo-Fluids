@@ -52,6 +52,9 @@ public class EntityTypeData {
   private int growUpTime;
   private int maxUseCooldown;
 
+  private boolean damageEntities;
+  private boolean damagePlayers;
+
   @SideOnly(Side.CLIENT)
   public ResourceLocation getTexture() {
     return texture;
@@ -166,5 +169,21 @@ public class EntityTypeData {
 
   public void setMaxUseCooldown(final int maxUseCooldown) {
     this.maxUseCooldown = maxUseCooldown;
+  }
+
+  public boolean canDamageEntities() {
+    return damageEntities;
+  }
+
+  public void setDamageEntities(final boolean damagesEntities) {
+    this.damageEntities = damagesEntities;
+  }
+
+  public boolean canDamagePlayers() {
+    return damagePlayers;
+  }
+
+  public void setDamagePlayers(final boolean damagesPlayers) {
+    this.damagePlayers = damagesPlayers;
   }
 }

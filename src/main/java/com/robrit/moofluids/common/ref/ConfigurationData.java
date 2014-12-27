@@ -28,6 +28,8 @@ public class ConfigurationData {
   public static final String ENTITY_FIRE_DAMAGE_AMOUNT_KEY = "Fire Damage Amount";
   public static final String ENTITY_GROW_UP_TIME_KEY = "Grow Up Time";
   public static final String ENTITY_MAX_USE_COOLDOWN_KEY = "Max Use Cooldown";
+  public static final String ENTITY_CAN_DAMAGE_PLAYER_KEY = "Can Damage Player";
+  public static final String ENTITY_CAN_DAMAGE_OTHER_ENTITIES_KEY = "Can Damage Other Entities";
   public static final String EVENT_ENTITIES_ENABLED_KEY = "Event Entities Enabled";
 
   /* Configuration default values */
@@ -37,6 +39,8 @@ public class ConfigurationData {
   public static final int ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE = 2;
   public static final int ENTITY_GROW_UP_TIME_DEFAULT_VALUE = 8000; /* Quarter of a MC day */
   public static final int ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE = 4000; /* Eighth of a MC day */
+  public static final boolean ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE = true;
+  public static final boolean ENTITY_CAN_DAMAGE_OTHER_ENTITIES_DEFAULT_VALUE = true;
   public static final boolean EVENT_ENTITIES_ENABLED_DEFAULT_VALUE = true;
 
   /* Configuration values */
