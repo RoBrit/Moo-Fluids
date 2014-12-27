@@ -1,0 +1,44 @@
+/*
+ * ConfigurationData.java
+ *
+ * Copyright (c) 2014 TheRoBrit
+ *
+ * Moo-Fluids is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Moo-Fluids is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.robrit.moofluids.common.ref;
+
+public class ConfigurationData {
+
+  /* Configuration keys */
+  public static final String ENTITY_IS_SPAWNABLE_KEY = "Is Spawnable?";
+  public static final String ENTITY_SPAWN_RATE_KEY = "Spawn Rate";
+  public static final String ENTITY_NORMAL_DAMAGE_AMOUNT_KEY = "Normal Damage Amount";
+  public static final String ENTITY_FIRE_DAMAGE_AMOUNT_KEY = "Fire Damage Amount";
+  public static final String ENTITY_GROW_UP_TIME_KEY = "Grow Up Time";
+  public static final String ENTITY_MAX_USE_COOLDOWN_KEY = "Max Use Cooldown";
+  public static final String EVENT_ENTITIES_ENABLED_KEY = "Event Entities Enabled";
+
+  /* Configuration default values */
+  public static final boolean ENTITY_IS_SPAWNABLE_DEFAULT_VALUE = true;
+  public static final int ENTITY_SPAWN_RATE_DEFAULT_VALUE = 8;
+  public static final int ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE = 0;
+  public static final int ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE = 2;
+  public static final int ENTITY_GROW_UP_TIME_DEFAULT_VALUE = 8000; /* Quarter of a MC day */
+  public static final int ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE = 4000; /* Eighth of a MC day */
+  public static final boolean EVENT_ENTITIES_ENABLED_DEFAULT_VALUE = true;
+
+  /* Configuration values */
+  public static boolean EVENT_ENTITIES_ENABLED_VALUE;
+}
