@@ -20,7 +20,6 @@
 package com.robrit.moofluids.common.entity;
 
 import com.robrit.moofluids.common.util.EntityHelper;
-import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraft.entity.passive.EntityCow;
