@@ -21,8 +21,10 @@ package com.robrit.moofluids.common.proxy;
 
 import com.robrit.moofluids.common.MooFluids;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
+import com.robrit.moofluids.common.entity.event.EntityChristmasCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
+import com.robrit.moofluids.common.util.DateHelper;
 import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
@@ -78,5 +80,21 @@ public abstract class CommonProxy implements IProxy {
                             BiomeGenBase.extremeHills, BiomeGenBase.forest, BiomeGenBase.jungle,
                             BiomeGenBase.megaTaiga, BiomeGenBase.plains, BiomeGenBase.savanna,
                             BiomeGenBase.swampland, BiomeGenBase.taiga);
+
+    /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
+    if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
+      EntityRegistry.registerGlobalEntityID(EntityChristmasCow.class, "EntityChristmasCow",
+                                            EntityRegistry.findGlobalUniqueEntityId(),
+                                            0x228B22,
+                                            0xAE0505);
+      EntityRegistry.registerModEntity(EntityChristmasCow.class,
+                                       "EntityChristmasCow",
+                                       EntityHelper.getRegisteredEntityId(),
+                                       MooFluids.getInstance(),
+                                       64, 1, true);
+      EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+                              BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
+                              BiomeGenBase.forest, BiomeGenBase.plains, BiomeGenBase.taiga);
+    }
   }
 }
