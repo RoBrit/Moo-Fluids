@@ -27,8 +27,8 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class RenderFluidCow extends RenderCow {
 
-  public RenderFluidCow(ModelBase modelBase, float par2) {
-    super(modelBase, par2);
+  public RenderFluidCow(ModelBase modelBase, float shadowSize) {
+    super(modelBase, shadowSize);
   }
 
   @Override
