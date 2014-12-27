@@ -43,7 +43,6 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
     return ENTITY_NAME;
   }
 
-  /* Interaction with player and other entities */
   @Override
   public void onLivingUpdate() {
     super.onLivingUpdate();
@@ -67,7 +66,6 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
     }
   }
 
-  /* Items dropped */
   @Override
   protected Item getDropItem() {
     return Items.cookie;
