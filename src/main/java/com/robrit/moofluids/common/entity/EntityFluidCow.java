@@ -25,9 +25,12 @@ import com.robrit.moofluids.common.util.damage.AttackDamageSource;
 import com.robrit.moofluids.common.util.damage.BurnDamageSource;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -89,6 +92,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
           return true;
         } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer)) {
           return true;
+        } else if (attemptToBreedCow(currentItemStack, entityPlayer)) {
+          return true;
         }
       }
     }
@@ -98,7 +103,9 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   public void collideWithEntity(final Entity entity) {
     if (entityTypeData.canDamageEntities()) {
-      applyDamagesToEntity(entity);
+      if (!(entity instanceof EntityFluidCow)) {
+        applyDamagesToEntity(entity);
+      }
     }
   }
 
@@ -118,6 +125,35 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
       }
     }
     return super.attackEntityFrom(damageSource, damageAmount);
+  }
+
+  @Override
+  public boolean isBreedingItem(final ItemStack currentItemStack) {
+    return currentItemStack != null && currentItemStack.getItem() == Items.wheat;
+  }
+
+  @Override
+  public boolean canMateWith(EntityAnimal entityAnimal) {
+    if (entityAnimal != this) {
+      if (isInLove() && entityAnimal.isInLove()) {
+        if (entityAnimal instanceof EntityFluidCow) {
+          final Fluid mateEntityFluid = ((EntityFluidCow) entityAnimal).getEntityFluid();
+          if (getEntityFluid().getName().equals(mateEntityFluid.getName())) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  @Override
+  public EntityFluidCow createChild(final EntityAgeable entityAgeable) {
+    final EntityFluidCow childEntity = new EntityFluidCow(worldObj);
+    childEntity.setEntityFluid(entityFluid);
+
+    return childEntity;
   }
 
   private void applyDamagesToEntity(final Entity entity) {
@@ -210,6 +246,27 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     return cowHealed;
   }
 
+  private boolean attemptToBreedCow(final ItemStack currentItemStack,
+                                    final EntityPlayer entityPlayer) {
+    if (currentItemStack != null &&
+        isBreedingItem(currentItemStack) &&
+        getGrowingAge() == 0) {
+      if (!entityPlayer.capabilities.isCreativeMode) {
+        currentItemStack.stackSize--;
+
+        if (currentItemStack.stackSize <= 0) {
+          entityPlayer.inventory
+              .setInventorySlotContents(entityPlayer.inventory.currentItem, (ItemStack) null);
+        }
+      }
+
+      func_146082_f(entityPlayer);
+
+      return true;
+    }
+
+    return false;
+  }
 
   public Fluid getEntityFluid() {
     return entityFluid;
