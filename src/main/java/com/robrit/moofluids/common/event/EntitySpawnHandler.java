@@ -62,7 +62,7 @@ public class EntitySpawnHandler {
 
         for (int currentFluidIndex = 0; currentFluidIndex < fluidsToCheck; currentFluidIndex++) {
           possibleEntityFluids[currentFluidIndex] =
-              containableFluids[random.nextInt(containableFluids.length - 1)];
+              containableFluids[random.nextInt(containableFluids.length)];
         }
 
         int highestSpawnChance = 0;
