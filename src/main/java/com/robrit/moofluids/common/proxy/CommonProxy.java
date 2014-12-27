@@ -30,7 +30,7 @@ import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -68,33 +68,33 @@ public abstract class CommonProxy implements IProxy {
   public void registerEntities() {
     EntityRegistry.registerGlobalEntityID(EntityFluidCow.class, "EntityFluidCow",
                                           EntityRegistry.findGlobalUniqueEntityId(),
-                                          0xFFFFFF,
-                                          0xFFFFFF);
+                                          0xFFFFFF, 0xFFFFFF);
     EntityRegistry.registerModEntity(EntityFluidCow.class, "EntityFluidCow",
-                                     EntityHelper.getRegisteredEntityId(), MooFluids.getInstance(),
-                                     64, 1, true);
-    EntityRegistry.addSpawn(EntityFluidCow.class, 8, 1, 1, EnumCreatureType.creature,
-                            BiomeGenBase.birchForest, BiomeGenBase.birchForestHills,
-                            BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
-                            BiomeGenBase.desert, BiomeGenBase.desertHills,
-                            BiomeGenBase.extremeHills, BiomeGenBase.forest, BiomeGenBase.jungle,
-                            BiomeGenBase.megaTaiga, BiomeGenBase.plains, BiomeGenBase.savanna,
-                            BiomeGenBase.swampland, BiomeGenBase.taiga);
+                                     EntityHelper.getRegisteredEntityId(),
+                                     MooFluids.getInstance(), 64, 1, true);
+
+    for (final BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
+      EntityRegistry.addSpawn(EntityFluidCow.class, 8, 1, 1, EnumCreatureType.creature,
+                              BiomeDictionary.getBiomesForType(biomeType));
+    }
 
     /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
     if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
       EntityRegistry.registerGlobalEntityID(EntityChristmasCow.class, "EntityChristmasCow",
                                             EntityRegistry.findGlobalUniqueEntityId(),
-                                            0x228B22,
-                                            0xAE0505);
-      EntityRegistry.registerModEntity(EntityChristmasCow.class,
-                                       "EntityChristmasCow",
+                                            0x228B22, 0xAE0505);
+      EntityRegistry.registerModEntity(EntityChristmasCow.class, "EntityChristmasCow",
                                        EntityHelper.getRegisteredEntityId(),
-                                       MooFluids.getInstance(),
-                                       64, 1, true);
+                                       MooFluids.getInstance(), 64, 1, true);
+
       EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
-                              BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
-                              BiomeGenBase.forest, BiomeGenBase.plains, BiomeGenBase.taiga);
+                              BiomeDictionary.getBiomesForType(BiomeDictionary.Type.COLD));
+
+      EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+                              BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST));
+
+      EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+                              BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
     }
   }
 }
