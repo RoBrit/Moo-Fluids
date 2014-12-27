@@ -81,8 +81,8 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
          currentSpawnedAmount++) {
       dropItem(getDropItem(), 4);
     }
-    if (rand.nextInt(numberToDropExtra - 1) + 1
-        == 1) /* 1 in numberToDropExtra chance of occurring (1/numberToDropExtra) */ {
+    /* 1 in numberToDropExtra chance of occurring (1/numberToDropExtra) */
+    if (rand.nextInt(numberToDropExtra - 1) + 1 == 1) {
       dropItem(Items.diamond, 1); /* Drops an EntityItem into the world with the given ID and the specified amount */
     }
   }
