@@ -48,6 +48,10 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public EntityFluidCow(final World world) {
     super(world);
     entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
+
+    if (entityTypeData.canCauseFireDamage()) {
+      isImmuneToFire = true;
+    }
   }
 
   @Override
