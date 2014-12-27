@@ -36,7 +36,7 @@ public class ConfigurationData {
   public static final boolean ENTITY_IS_SPAWNABLE_DEFAULT_VALUE = true;
   public static final int ENTITY_SPAWN_RATE_DEFAULT_VALUE = 8;
   public static final int ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE = 0;
-  public static final int ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE = 2;
+  public static final int ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE = 0;
   public static final int ENTITY_GROW_UP_TIME_DEFAULT_VALUE = 8000; /* Quarter of a MC day */
   public static final int ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE = 4000; /* Eighth of a MC day */
   public static final boolean ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE = true;
