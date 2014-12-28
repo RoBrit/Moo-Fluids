@@ -47,7 +47,7 @@ sourceSets {
             srcDir 'src/main/java'
         }
         resources {
-            srcDir 'resources'
+            srcDir 'src/main/resources'
         }
     }
 }
