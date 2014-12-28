@@ -26,6 +26,7 @@ public class BurnDamageSource extends EntityDamageSource {
 
   public BurnDamageSource(final String damageName, final Entity entity) {
     super(damageName, entity);
-    this.setFireDamage();
+    setFireDamage();
+    setDifficultyScaled();
   }
 }

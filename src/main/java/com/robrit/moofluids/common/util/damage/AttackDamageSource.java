@@ -26,5 +26,6 @@ public class AttackDamageSource extends EntityDamageSource {
 
   public AttackDamageSource(final String damageName, final Entity entity) {
     super(damageName, entity);
+    setDifficultyScaled();
   }
 }
