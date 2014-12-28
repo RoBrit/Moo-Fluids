@@ -24,7 +24,9 @@ import com.robrit.moofluids.client.render.RenderEventCow;
 import com.robrit.moofluids.client.render.RenderFluidCow;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.entity.event.EntityChristmasCow;
+import com.robrit.moofluids.common.entity.event.EntityNewYearsCow;
 import com.robrit.moofluids.common.proxy.CommonProxy;
+import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.util.DateHelper;
 
 import net.minecraft.client.model.ModelCow;
@@ -46,10 +48,17 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerEntityRenderingHandler(EntityFluidCow.class,
                                                      new RenderFluidCow(new ModelCow(), 0.8F));
 
-    /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
-    if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
-      RenderingRegistry.registerEntityRenderingHandler(EntityChristmasCow.class,
-                                                       new RenderEventCow(new ModelCow(), 0.8F));
+    if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
+      /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
+      if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityChristmasCow.class,
+                                                         new RenderEventCow(new ModelCow(), 0.8F));
+      }
+      /* Checks if the current date is between the dates (12/29/2014) and (01/02/2015) */
+      if (DateHelper.isDateBetweenEpochBoundaries(1419811200, 1420156800)) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityNewYearsCow.class,
+                                                         new RenderEventCow(new ModelCow(), 0.8F));
+      }
     }
   }
 }

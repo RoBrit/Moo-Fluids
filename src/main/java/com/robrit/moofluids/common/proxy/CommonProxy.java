@@ -22,8 +22,10 @@ package com.robrit.moofluids.common.proxy;
 import com.robrit.moofluids.common.MooFluids;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.entity.event.EntityChristmasCow;
+import com.robrit.moofluids.common.entity.event.EntityNewYearsCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
+import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.util.DateHelper;
 import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
@@ -78,23 +80,46 @@ public abstract class CommonProxy implements IProxy {
                               BiomeDictionary.getBiomesForType(biomeType));
     }
 
-    /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
-    if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
-      EntityRegistry.registerGlobalEntityID(EntityChristmasCow.class, "EntityChristmasCow",
-                                            EntityRegistry.findGlobalUniqueEntityId(),
-                                            0x228B22, 0xAE0505);
-      EntityRegistry.registerModEntity(EntityChristmasCow.class, "EntityChristmasCow",
-                                       EntityHelper.getRegisteredEntityId(),
-                                       MooFluids.getInstance(), 64, 1, true);
+    if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
+      /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
+      if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
+        EntityRegistry.registerGlobalEntityID(EntityChristmasCow.class, "EntityChristmasCow",
+                                              EntityRegistry.findGlobalUniqueEntityId(),
+                                              0x228B22, 0xAE0505);
+        EntityRegistry.registerModEntity(EntityChristmasCow.class, "EntityChristmasCow",
+                                         EntityHelper.getRegisteredEntityId(),
+                                         MooFluids.getInstance(), 64, 1, true);
 
-      EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
-                              BiomeDictionary.getBiomesForType(BiomeDictionary.Type.COLD));
+        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+                                BiomeDictionary.getBiomesForType(BiomeDictionary.Type.COLD));
 
-      EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
-                              BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST));
+        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+                                BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST));
 
-      EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
-                              BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
+        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+                                BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
+      }
+      /* Checks if the current date is between the dates (12/29/2014) and (01/02/2015) */
+      if (DateHelper.isDateBetweenEpochBoundaries(1419811200, 1420156800)) {
+        EntityRegistry.registerGlobalEntityID(EntityNewYearsCow.class, "EntityNewYearsCow",
+                                              EntityRegistry.findGlobalUniqueEntityId(),
+                                              0xC0C0C0, 0xFFD700);
+        EntityRegistry.registerModEntity(EntityNewYearsCow.class, "EntityNewYearsCow",
+                                         EntityHelper.getRegisteredEntityId(),
+                                         MooFluids.getInstance(), 64, 1, true);
+
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+                                BiomeDictionary.getBiomesForType(BiomeDictionary.Type.LUSH));
+
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+                                BiomeDictionary.getBiomesForType(BiomeDictionary.Type.MAGICAL));
+
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+                                BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST));
+
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+                                BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
+      }
     }
   }
 }
