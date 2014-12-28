@@ -61,7 +61,7 @@ processResources {
     inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
+        include '*.info'
 
         expand 'version': project.version, 'mcversion': project.minecraft.version
     }
