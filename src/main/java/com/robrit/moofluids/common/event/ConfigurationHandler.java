@@ -76,6 +76,11 @@ public class ConfigurationHandler {
             configuration.get(entityName,
                               ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
                               ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
+        entityTypeData.setNormalDamageAmount(
+            configuration.get(entityName,
+                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
+                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
+                .getInt());
         entityTypeData.setGrowUpTime(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_GROW_UP_TIME_KEY,
@@ -100,8 +105,10 @@ public class ConfigurationHandler {
         entityTypeData.setCauseFireDamage(
             containableFluid.getTemperature() >= FluidRegistry.LAVA.getTemperature());
 
-        entityTypeData.setHeavy(
-            containableFluid.getDensity() > FluidRegistry.WATER.getDensity() * 3);
+        entityTypeData.setCauseNormalDamage(entityTypeData.getNormalDamageAmount() > 0);
+
+        entityTypeData.setHeavy(containableFluid.getDensity() >
+                                FluidRegistry.WATER.getDensity() * 3);
 
         EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
       }
