@@ -16,37 +16,58 @@ buildscript {
 }
 
 apply plugin: 'forge'
-
-version = "1.4.12.09a" // Mod Version
-group = "com.robrit.moofluids" // Mod Package
+apply plugin: 'maven-publish'
 
 archivesBaseName = "MooFluids" // Mod ID
+group = "com.robrit.moofluids" // Mod Package
+version = "${minecraft_version}-${mod_version}" // Mod Version
 
 minecraft {
-    version = "1.7.2-10.12.2.1147"
+    version = "${minecraft_version}-${forge_version}"
     assetDir = "eclipse/assets"
+    runDir = 'run'
+
+    replace "@VERSION@", project.version
+    replaceIn "ModInformation.java"
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "http://mobiusstrip.eu/maven"
+    }
+    maven {
+        url = "http://chickenbones.net/maven/"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'resources'
+        }
+    }
 }
 
 dependencies {
-
+    compile "mcp.mobius.waila:Waila:${waila_version}"
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        include '**/*.info'
+
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '**/*.info'
     }
 }
