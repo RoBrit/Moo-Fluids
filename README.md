@@ -1,8 +1,7 @@
 ##Moo Fluids - Minecraft Mod
 
 [Minecraft Forums page](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1293081-moofluids-cows-for-any-fluid)
-
-[Compiling MooFluids](#compiling-moo-fluids) - For those that want the latest unreleased features.
+[Compiling Moo-Fluids](#compiling-moo-fluids) - For those that want the latest unreleased features.
 
 [Contributing](#contributing) - For those that want to help out.
 
@@ -47,7 +46,7 @@ The Java JDK is used to compile Moo Fluids.
 3. Open up your command line and run `javac`.  If it spews out a bunch of possible options and the usage, then you're good to go.  If not try the steps again or contact TheRoBrit on Twitter [TheRoBrit's Twitter](https://twitter.com/TheRoBrit).
 
 ####Setup Gradle
-Gradle is used to execute the various build tasks when compiling MooFluids.
+Gradle is used to execute the various build tasks when compiling Moo Fluids.
 
 1. Download and install Gradle.
 	* [Windows/Mac download link](http://www.gradle.org/downloads).  You only need the binaries, but choose whatever flavor you want.
@@ -62,35 +61,35 @@ Gradle is used to execute the various build tasks when compiling MooFluids.
 	* For `Variable Name`, input `GRADLE_HOME`.
 	* For `Variable Value`, input something similar to `C:\Gradle-1.11` exactly as shown (or wherever your Gradle installation is), and click `Ok`.
 	* Scroll down to `Path` again, and append `;%GRADLE_HOME%\bin` EXACTLY AS SHOWN and click `Ok`.  Once again, double-check the location.
-3. Open up your command line and run `gradle`.  If it says "Welcome to Gradle [version].", then you're good to go.  If not, either try the steps again or check the [FAQ](https://github.com/pahimar/Equivalent-Exchange-3/wiki/Frequently-Asked-Questions).
+3. Open up your command line and run `gradle`.  If it says "Welcome to Gradle [version].", then you're good to go.  If not, either try the steps again or check the [FAQ](https://github.com/TheRoBrit/Moo-Fluids/wiki/Frequently-Asked-Questions).
 
 ####Setup Git
-Git is used to clone MooFluids and update your local copy.
+Git is used to clone Moo Fluids and update your local copy.
 
 1. Download and install Git [here](http://git-scm.com/download/).
 	* *Optional*: Download and install a Git GUI client, such as Github for Windows/Mac, SmartGitHg, TortoiseGit, etc.  A nice list is available [here](http://git-scm.com/downloads/guis).
 
-####Setup MooFluids
+####Setup Moo Fluids
 This section assumes that you're using the command-line version of Git.
 
 1. Open up your command line.
-2. Navigate to a place where you want to download MooFluids's source (eg `C:\Github\Moo-Fluids\`) by executing `cd [folder location]`.  This location is known as `mcdev` from now on.
-3. Execute `git clone https://github.com/TheRoBrit/Moo-Fluids.git`.  This will download MooFluids's source into `mcdev`.
+2. Navigate to a place where you want to download Moo Fluids's source (eg `C:\Github\Moo-Fluids\`) by executing `cd [folder location]`.  This location is known as `mcdev` from now on.
+3. Execute `git clone https://github.com/TheRoBrit/Moo-Fluids.git`.  This will download Moo Fluids's source into `mcdev`.
 4. Right now, you should have a directory that looks something like:
 
 ***
 	mcdev
 	\-Moo-Fluids
-		\-MooFluids's files (should have `build.gradle`)
+		\-Moo Fluids's files (should have `build.gradle`)
 ***
 
-####Compile MooFluids
+####Compile Moo Fluids
 1. Execute `gradle setupCiWorkspace`. This sets up Forge and downloads the necessary libraries to build Moo-Fluids.  This might take some time, be patient.
 	* You will generally only have to do this once until the Forge version in `build.properties` changes.
 2. Execute `gradle build`. If you did everything right, `BUILD SUCCESSFUL` will be displayed after it finishes.  This should be relatively quick.
     * If you see `BUILD FAILED`, check the error output (it should be right around `BUILD FAILED`), fix everything (if possible), and try again.
 3. Navigate to `mcdev\Moo-Fluids\build\libs`.
-    *  You should see a `.jar` file similar to 'Moo-Fluids-1.4.12.09a.jar`.
+    *  You should see a `.jar` file similar to 'Moo-Fluids-1.7.10-1.4.12.09a.jar`.
 4. Copy the jar into your Minecraft mods folder, and you are done!
 
 ####Updating Your Repository
@@ -112,14 +111,14 @@ So you found a bug in TheRoBrit's code?  Think you can make it more efficient?  
 3. Make the changes that you want to and commit them.
 	* If you're making changes locally, you'll have to execute `git commit -a` and `git push` in your command line.
 4. Click `Pull Request` at the right-hand side of the gray bar directly below your fork's name.
-5. Click `Click to create a pull request for this comparison`, enter your PR's title, and create a detailed description telling pahimar what you changed.
+5. Click `Click to create a pull request for this comparison`, enter your PR's title, and create a detailed description telling TheRoBrit what you changed.
 6. Click `Send pull request`, and wait for feedback!
 
 ####Creating an Issue
 Moo-Fluids crashes on launch?  Have a suggestion?  Found a bug?  Create an issue now!
 
 1. Make sure your issue hasn't already been answered or fixed.  Also think about whether your issue is a valid one before submitting it.
-	* Please do not open an issue to ask a question-that is for [TheRoBrit's Twitter](https://twitter.com/TheRoBrit/).
+	* Please do not open an issue to ask a question that is for [TheRoBrit's Twitter](https://twitter.com/TheRoBrit/).
 2. Go to [the issues page](http://github.com/TheRoBrit/Moo-Fluids/issues).
 3. Click `New Issue` right below `Star` and `Fork`.
 4. Enter your Issue's title (something that summarizes your issue), and then create a detailed description, such as ("Hey TheRoBrit, I've had X issue when using X version of the mod in Minecraft X version.").
