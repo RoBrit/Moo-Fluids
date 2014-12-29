@@ -39,7 +39,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class TextureRegisterEvent {
 
   private static final byte TEXTURE_MAP_ID_BLOCK = 0;

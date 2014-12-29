@@ -41,6 +41,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData {
@@ -284,6 +286,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     this.currentUseCooldown = currentUseCooldown;
   }
 
+  @SideOnly(Side.CLIENT)
   public int getOverlay() {
     return entityTypeData.getOverlay();
   }

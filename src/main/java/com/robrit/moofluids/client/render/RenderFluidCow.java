@@ -25,6 +25,10 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderCow;
 import net.minecraft.entity.EntityLivingBase;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
 public class RenderFluidCow extends RenderCow {
 
   public RenderFluidCow(ModelBase modelBase, float shadowSize) {
