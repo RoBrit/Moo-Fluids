@@ -23,9 +23,9 @@ public class ModInformation {
 
   public static final String MOD_ID = "MooFluids";
   public static final String MOD_NAME = "Moo Fluids";
-  public static final String MOD_VERSION = "1.4.12.09a";
+  public static final String MOD_VERSION = "@VERSION@";
   public static final String MOD_DEPENDENCIES = "after:*";
-  public static final String MOD_FINGERPRINT = ""; //TODO: IMPLEMENT ME!
+  public static final String MOD_FINGERPRINT = "@FINGERPRINT@";
   public static final String MOD_PACKAGE = "com.robrit.moofluids";
 
   public static final String PROXY_CLIENT_LOCATION = MOD_PACKAGE + ".client.proxy.ClientProxy";
