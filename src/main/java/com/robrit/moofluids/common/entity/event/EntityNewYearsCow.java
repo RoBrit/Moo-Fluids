@@ -29,6 +29,9 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.init.Items;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class EntityNewYearsCow extends EntityCow implements INamedEntity {
 
   private static final String ENTITY_NAME = "New Years Cow";
@@ -61,15 +64,12 @@ public class EntityNewYearsCow extends EntityCow implements INamedEntity {
   /* The way an entity interacts when it dies */
   @Override
   protected void onDeathUpdate() {
-    final Minecraft minecraft = Minecraft.getMinecraft();
-    if (worldObj.isRemote && minecraft.gameSettings.particleSetting != 2) {
-      for (int particleCount = 0; particleCount < rand.nextInt(10) + 1; particleCount++) {
-        final EntityFX entityFX =
-            new EntityFireworkSparkFX(worldObj, posX, posY + 1D, posZ, rand.nextGaussian() * 0.15D,
-                                      -motionY * 0.5D, rand.nextGaussian() * 0.15D,
-                                      minecraft.effectRenderer);
-        entityFX.setRBGColorF(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-        minecraft.effectRenderer.addEffect(entityFX);
+    if (worldObj.isRemote) {
+      final byte maxParticles = (byte) ((byte) rand.nextInt(10) + 1);
+      byte currentParticles = 0;
+      while (currentParticles < maxParticles) {
+        spawnParticle();
+        currentParticles++;
       }
     }
     super.onDeathUpdate();
@@ -78,13 +78,20 @@ public class EntityNewYearsCow extends EntityCow implements INamedEntity {
   @Override
   public void onEntityUpdate() {
     super.onEntityUpdate();
-    Minecraft minecraft = Minecraft.getMinecraft();
-    if (worldObj.isRemote && minecraft.gameSettings.particleSetting != 2) {
-      EntityFX
-          entityFX =
-          new EntityFireworkSparkFX(worldObj, posX, posY + 1D, posZ, rand.nextGaussian() * 0.15D,
-                                    -motionY * 0.5D, rand.nextGaussian() * 0.15D,
-                                    minecraft.effectRenderer);
+    if (worldObj.isRemote) {
+      spawnParticle();
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void spawnParticle() {
+    final Minecraft minecraft = Minecraft.getMinecraft();
+    if (minecraft.gameSettings.particleSetting != 2) {
+      final EntityFX entityFX = new EntityFireworkSparkFX(worldObj, posX, posY + 1D, posZ,
+                                                          rand.nextGaussian() * 0.15D,
+                                                          -motionY * 0.5D,
+                                                          rand.nextGaussian() * 0.15D,
+                                                          minecraft.effectRenderer);
       entityFX.setRBGColorF(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
       minecraft.effectRenderer.addEffect(entityFX);
     }
