@@ -22,6 +22,8 @@ package com.robrit.moofluids.common.event;
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.util.EntityHelper;
+import com.robrit.moofluids.common.util.LogHelper;
+import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -63,6 +65,9 @@ public class EntitySpawnHandler {
         for (int currentFluidIndex = 0; currentFluidIndex < fluidsToCheck; currentFluidIndex++) {
           possibleEntityFluids[currentFluidIndex] =
               containableFluids[random.nextInt(containableFluids.length)];
+          if (ModInformation.DEBUG_MODE) {
+            LogHelper.info("POSSIBLE SPAWN FLUID: " + possibleEntityFluids[currentFluidIndex].getName());
+          }
         }
 
         int highestSpawnChance = 0;
