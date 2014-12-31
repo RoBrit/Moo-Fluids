@@ -76,7 +76,9 @@ public abstract class CommonProxy implements IProxy {
                                      MooFluids.getInstance(), 64, 1, true);
 
     for (final BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
-      EntityRegistry.addSpawn(EntityFluidCow.class, 8, 1, 1, EnumCreatureType.creature,
+      EntityRegistry.addSpawn(EntityFluidCow.class,
+                              ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE, 1, 1,
+                              EnumCreatureType.creature,
                               BiomeDictionary.getBiomesForType(biomeType));
     }
 

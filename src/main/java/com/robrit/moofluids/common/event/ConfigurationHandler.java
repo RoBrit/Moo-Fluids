@@ -54,11 +54,13 @@ public class ConfigurationHandler {
             localizationForCow =
             LanguageRegistry.instance().getStringLocalization("entity.Cow.name");
         final String entityName = containableFluidLocalizedName + " " + localizationForCow;
-
         final EntityTypeData entityTypeData = new EntityTypeData();
 
+        /* Category comments */
+        configuration.addCustomCategoryComment(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+                                               ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT);
+        
         /* Configurable entity data */
-
         entityTypeData.setSpawnable(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_IS_SPAWNABLE_KEY,
@@ -113,11 +115,15 @@ public class ConfigurationHandler {
         EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
       }
 
+      ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE =
+          configuration.get(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE).getInt();
+
       ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE =
           configuration.get(ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
                             ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
-                            ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE)
-              .getBoolean();
+                            ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
 
     } catch (Exception exception) {
       LogHelper.error("Unable to read configuration for " + ModInformation.MOD_NAME);

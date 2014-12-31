@@ -22,6 +22,7 @@ package com.robrit.moofluids.common.ref;
 public class ConfigurationData {
 
   /* Configuration keys */
+  public static final String GLOBAL_FLUID_COW_SPAWN_RATE_KEY = "Fluid Cow Global Spawn Rate";
   public static final String ENTITY_IS_SPAWNABLE_KEY = "Is Spawnable?";
   public static final String ENTITY_SPAWN_RATE_KEY = "Spawn Rate";
   public static final String ENTITY_NORMAL_DAMAGE_AMOUNT_KEY = "Normal Damage Amount";
@@ -33,8 +34,9 @@ public class ConfigurationData {
   public static final String EVENT_ENTITIES_ENABLED_KEY = "Event Entities Enabled";
 
   /* Configuration default values */
+  public static final int GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE = 8;
   public static final boolean ENTITY_IS_SPAWNABLE_DEFAULT_VALUE = true;
-  public static final int ENTITY_SPAWN_RATE_DEFAULT_VALUE = 8;
+  public static final int ENTITY_SPAWN_RATE_DEFAULT_VALUE = 100;
   public static final int ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE = 0;
   public static final int ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE = 0;
   public static final int ENTITY_GROW_UP_TIME_DEFAULT_VALUE = 8000; /* Quarter of a MC day */
@@ -44,5 +46,11 @@ public class ConfigurationData {
   public static final boolean EVENT_ENTITIES_ENABLED_DEFAULT_VALUE = true;
 
   /* Configuration values */
+  public static int GLOBAL_FLUID_COW_SPAWN_RATE_VALUE;
   public static boolean EVENT_ENTITIES_ENABLED_VALUE;
+
+  /* Configuration comments */
+  public static final String
+      GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT =
+      "The chance of Fluid Cows spawning versus other entities. (8 is the same chance as normal Cows)";
 }
