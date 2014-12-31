@@ -85,7 +85,7 @@ public class EntitySpawnHandler {
 
           final int currentSpawnChance = random.nextInt(spawnRate);
 
-          if (currentSpawnChance > highestSpawnChance) {
+          if (currentSpawnChance >= highestSpawnChance) {
             currentEntityFluid = possibleEntityFluid;
             highestSpawnChance = currentSpawnChance;
           }
