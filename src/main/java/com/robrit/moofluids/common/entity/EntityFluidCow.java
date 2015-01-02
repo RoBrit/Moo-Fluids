@@ -30,7 +30,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -55,7 +54,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   public EntityFluidCow(final World world) {
     super(world);
-    entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
+    setEntityTypeData(EntityHelper.getEntityData(getEntityFluid().getName()));
 
     if (entityTypeData.canCauseFireDamage()) {
       isImmuneToFire = true;
@@ -285,6 +284,14 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   public void setCurrentUseCooldown(final int currentUseCooldown) {
     this.currentUseCooldown = currentUseCooldown;
+  }
+
+  public EntityTypeData getEntityTypeData() {
+    return entityTypeData;
+  }
+
+  public void setEntityTypeData(final EntityTypeData entityTypeData) {
+    this.entityTypeData = entityTypeData;
   }
 
   @SideOnly(Side.CLIENT)
