@@ -1,7 +1,7 @@
 /*
- * IProxy.java
+ * UnlocalizedStrings.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2015 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,15 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.proxy;
+package com.robrit.moofluids.common.ref;
 
-public interface IProxy {
+public class UnlocalizedStrings {
 
-  public void initContainableFluids();
-
-  public void registerEventHandlers();
-
-  public void registerEntities();
-
-  public void registerPlugins();
+  /* WAILA Tooltips */
+  public static final String FLUID_TOOLTIP = "waila.tooltip.fluid-name";
+  public static final String CURRENT_COOLDOWN_TOOLTIP = "waila.tooltip.current-cooldown";
+  public static final String BREEDING_ITEM_TOOLTIP = "waila.tooltip.breeding-item";
 }

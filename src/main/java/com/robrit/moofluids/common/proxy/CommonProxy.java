@@ -25,6 +25,7 @@ import com.robrit.moofluids.common.entity.event.EntityChristmasCow;
 import com.robrit.moofluids.common.entity.event.EntityNewYearsCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
+import com.robrit.moofluids.common.plugins.waila.WailaPlugin;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.util.DateHelper;
 import com.robrit.moofluids.common.util.EntityHelper;
@@ -38,6 +39,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public abstract class CommonProxy implements IProxy {
@@ -122,6 +124,13 @@ public abstract class CommonProxy implements IProxy {
         EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
       }
+    }
+  }
+
+  @Override
+  public void registerPlugins() {
+    if (Loader.isModLoaded("Waila")) {
+      WailaPlugin.init();
     }
   }
 }

@@ -12,3 +12,8 @@ entity.EntityChristmasCow.name=Christmas Cow
 entity.EntityNewYearsCow.name=New Years Cow
 entity.EntityHalloweenCow.name=Halloween Cow
 entity.EntityEasterCow.name=Easter Cow
+
+#WAILA Tooltip Localizations
+moofluids.waila.tooltip.fluid-name=Fluid Name: %s
+moofluids.waila.tooltip.current-cooldown=Current Cooldown: %s ticks
+moofluids.waila.tooltip.breeding-item=Breeding Item: %s

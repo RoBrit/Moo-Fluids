@@ -1,5 +1,5 @@
 /*
- * IProxy.java
+ * WailaPlugin.java
  *
  * Copyright (c) 2014 TheRoBrit
  *
@@ -17,15 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.proxy;
+package com.robrit.moofluids.common.plugins.waila;
 
-public interface IProxy {
+import com.robrit.moofluids.common.util.LogHelper;
 
-  public void initContainableFluids();
+import cpw.mods.fml.common.event.FMLInterModComms;
 
-  public void registerEventHandlers();
+public class WailaPlugin {
 
-  public void registerEntities();
+  private static final String
+      WAILA_REGISTRAR_CLASSPATH =
+      "com.robrit.moofluids.common.plugins.waila.WailaRegistrar.wailaCallback";
 
-  public void registerPlugins();
+  public static void init() {
+    LogHelper.info("WAILA detected. Registering entities with WAILA registry.");
+    FMLInterModComms.sendMessage("Waila", "register", WAILA_REGISTRAR_CLASSPATH);
+  }
 }
