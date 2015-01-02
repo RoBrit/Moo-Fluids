@@ -19,6 +19,7 @@
 
 package com.robrit.moofluids.common.entity;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -46,7 +47,7 @@ public class EntityTypeData {
   private int normalDamageAmount;
   private PotionEffect[] potionEffects;
 
-  private ItemStack[] breedingItems;
+  private ItemStack breedingItem = new ItemStack(Items.wheat, 1);
   private ItemStack[] droppedItems;
 
   private int growUpTime;
@@ -139,12 +140,12 @@ public class EntityTypeData {
     this.potionEffects = potionEffects;
   }
 
-  public ItemStack[] getBreedingItems() {
-    return breedingItems;
+  public ItemStack getBreedingItem() {
+    return breedingItem;
   }
 
-  public void setBreedingItems(final ItemStack[] breedingItems) {
-    this.breedingItems = breedingItems;
+  public void setBreedingItems(final ItemStack breedingItem) {
+    this.breedingItem = breedingItem;
   }
 
   public ItemStack[] getDroppedItems() {

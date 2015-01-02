@@ -131,7 +131,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   @Override
   public boolean isBreedingItem(final ItemStack currentItemStack) {
-    return currentItemStack != null && currentItemStack.getItem() == Items.wheat;
+    return currentItemStack != null &&
+           currentItemStack.getItem() == entityTypeData.getBreedingItem().getItem();
   }
 
   @Override
