@@ -47,7 +47,7 @@ import io.netty.buffer.ByteBuf;
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData {
 
   private static final int DATA_WATCHER_ID_CURRENT_USE_COOLDOWN = 23;
-  private static final String NBT_TAG_FLUID_NAME = "FluidName";
+  public static final String NBT_TAG_FLUID_NAME = "FluidName";
   private int currentUseCooldown;
   private Fluid entityFluid;
   private EntityTypeData entityTypeData;

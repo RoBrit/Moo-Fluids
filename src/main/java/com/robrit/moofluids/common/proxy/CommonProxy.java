@@ -25,6 +25,7 @@ import com.robrit.moofluids.common.entity.event.EntityChristmasCow;
 import com.robrit.moofluids.common.entity.event.EntityNewYearsCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
+import com.robrit.moofluids.common.plugins.thaumcraft.ThaumcraftPlugin;
 import com.robrit.moofluids.common.plugins.waila.WailaPlugin;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.util.DateHelper;
@@ -131,6 +132,10 @@ public abstract class CommonProxy implements IProxy {
   public void registerPlugins() {
     if (Loader.isModLoaded("Waila")) {
       WailaPlugin.init();
+    }
+
+    if (Loader.isModLoaded("Thaumcraft")) {
+      ThaumcraftPlugin.init();
     }
   }
 }
