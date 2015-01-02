@@ -1,14 +1,14 @@
 #Forge Fluid Localizations
-fluid.tile.water = Water
-fluid.tile.lava = Lava
+fluid.tile.water=Water
+fluid.tile.lava=Lava
 
 #Death Message Localizations
-death.attack.burn = %1$s became a little too crispy
-death.attack.whacked = %1$s was tenderized to death
+death.attack.burn=%1$s became a little too crispy
+death.attack.whacked=%1$s was tenderized to death
 
 #Entity Name Localizations
-entity.EntityFluidCow.name = Fluid Cow
-entity.EntityChristmasCow.name = Christmas Cow
-entity.EntityNewYearsCow.name = New Years Cow
-entity.EntityHalloweenCow.name = Halloween Cow
-entity.EntityEasterCow.name = Easter Cow
+entity.EntityFluidCow.name=Fluid Cow
+entity.EntityChristmasCow.name=Christmas Cow
+entity.EntityNewYearsCow.name=New Years Cow
+entity.EntityHalloweenCow.name=Halloween Cow
+entity.EntityEasterCow.name=Easter Cow
