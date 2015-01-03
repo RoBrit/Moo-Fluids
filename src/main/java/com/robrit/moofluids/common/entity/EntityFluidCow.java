@@ -48,6 +48,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   private static final int DATA_WATCHER_ID_CURRENT_USE_COOLDOWN = 23;
   public static final String NBT_TAG_FLUID_NAME = "FluidName";
+  public static final String NBT_TAG_CURRENT_USE_COOLDOWN = "CurrentUseCooldown";
   private int currentUseCooldown;
   private Fluid entityFluid;
   private EntityTypeData entityTypeData;
@@ -55,6 +56,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public EntityFluidCow(final World world) {
     super(world);
     setEntityTypeData(EntityHelper.getEntityData(getEntityFluid().getName()));
+    setCurrentUseCooldown(entityTypeData.getMaxUseCooldown());
 
     if (entityTypeData.canCauseFireDamage()) {
       isImmuneToFire = true;
@@ -72,7 +74,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     super.onLivingUpdate();
 
     if (currentUseCooldown > 0) {
-      setCurrentUseCooldown(currentUseCooldown--);
+      setCurrentUseCooldown(currentUseCooldown - 1);
     }
   }
 
@@ -85,7 +87,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         setCurrentUseCooldown(0);
       }
 
-      if ((getCurrentUseCooldown() == 0)) {
+      if (getCurrentUseCooldown() == 0) {
         if (!entityPlayer.capabilities.isCreativeMode) {
           setCurrentUseCooldown(entityTypeData.getMaxUseCooldown());
         }
@@ -283,6 +285,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   public void setCurrentUseCooldown(final int currentUseCooldown) {
+    dataWatcher.updateObject(DATA_WATCHER_ID_CURRENT_USE_COOLDOWN, currentUseCooldown);
     this.currentUseCooldown = currentUseCooldown;
   }
 
@@ -303,22 +306,26 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public void writeEntityToNBT(final NBTTagCompound nbtTagCompound) {
     super.writeEntityToNBT(nbtTagCompound);
     nbtTagCompound.setString(NBT_TAG_FLUID_NAME, getEntityFluid().getName());
+    nbtTagCompound.setInteger(NBT_TAG_CURRENT_USE_COOLDOWN, getCurrentUseCooldown());
   }
 
   @Override
   public void readEntityFromNBT(final NBTTagCompound nbtTagCompound) {
     super.readEntityFromNBT(nbtTagCompound);
     setEntityFluid(EntityHelper.getContainableFluid(nbtTagCompound.getString(NBT_TAG_FLUID_NAME)));
+    setCurrentUseCooldown(nbtTagCompound.getInteger(NBT_TAG_CURRENT_USE_COOLDOWN));
   }
 
   @Override
   public void writeSpawnData(final ByteBuf buffer) {
     ByteBufUtils.writeUTF8String(buffer, entityFluid.getName());
+    ByteBufUtils.writeVarInt(buffer, currentUseCooldown, 4);
   }
 
   @Override
   public void readSpawnData(final ByteBuf additionalData) {
     setEntityFluid(EntityHelper.getContainableFluid(ByteBufUtils.readUTF8String(additionalData)));
+    setCurrentUseCooldown(ByteBufUtils.readVarInt(additionalData, 4));
     entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
   }
 }
