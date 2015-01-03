@@ -20,7 +20,6 @@
 package com.robrit.moofluids.common.plugins.waila;
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
-import com.robrit.moofluids.common.util.LogHelper;
 
 import mcp.mobius.waila.api.IWailaRegistrar;
 
@@ -28,7 +27,6 @@ public class WailaRegistrar {
 
   public static void wailaCallback(IWailaRegistrar registrar) {
     // Entities
-    LogHelper.info("REACHED ME, BITCH!");
     registrar.registerBodyProvider(new FluidCowDataProvider(), EntityFluidCow.class);
   }
 }
