@@ -22,6 +22,7 @@ package com.robrit.moofluids.common.plugins.thaumcraft;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.util.EntityHelper;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -35,10 +36,16 @@ public class AspectRegistry {
 
   public static void registerEntityAspects() {
     for (final Fluid fluid : EntityHelper.getContainableFluidsArray()) {
+      boolean hasAspects = false;
+      ItemStack fluidBlockItemStack = new ItemStack(Blocks.air);
+
+      if (fluid.getBlock() != null) {
+        fluidBlockItemStack = new ItemStack(fluid.getBlock());
+        hasAspects = ThaumcraftApi.exists(fluidBlockItemStack.getItem(),
+                                                        fluidBlockItemStack.getItemDamage());
+      }
+
       AspectList entityAspects = new AspectList();
-      final ItemStack fluidBlockItemStack = new ItemStack(fluid.getBlock());
-      final boolean hasAspects = ThaumcraftApi.exists(fluidBlockItemStack.getItem(),
-                                                      fluidBlockItemStack.getItemDamage());
       if (fluid.canBePlacedInWorld() && hasAspects) {
         entityAspects = ThaumcraftApiHelper.getObjectAspects(fluidBlockItemStack);
       } else {
@@ -58,7 +65,7 @@ public class AspectRegistry {
       }
       final ThaumcraftApi.EntityTagsNBT entityIdentifierTag =
           new ThaumcraftApi.EntityTagsNBT(EntityFluidCow.NBT_TAG_FLUID_NAME, fluid.getName());
-      
+
       ThaumcraftApi.registerEntityTag("EntityFluidCow", entityAspects, entityIdentifierTag);
     }
   }
