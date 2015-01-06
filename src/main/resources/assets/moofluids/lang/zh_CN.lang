@@ -1,0 +1,19 @@
+#Forge Fluid Localizations
+fluid.tile.water=水
+fluid.tile.lava=岩浆
+
+#Death Message Localizations
+death.attack.burn=%1$s被一头牛烧死了
+death.attack.whacked=%1$s被捶打成了肉酱
+
+#Entity Name Localizations
+entity.EntityFluidCow.name=变异流体牛
+entity.EntityChristmasCow.name=圣诞牛
+entity.EntityNewYearsCow.name=贺年牛
+entity.EntityHalloweenCow.name=鬼灵牛
+entity.EntityEasterCow.name=彩蛋牛
+
+#WAILA Tooltip Localizations
+moofluids.waila.tooltip.fluid-name=流体:%s
+moofluids.waila.tooltip.current-cooldown=距离生产时间:%s ticks
+moofluids.waila.tooltip.breeding-item=食物:%s
