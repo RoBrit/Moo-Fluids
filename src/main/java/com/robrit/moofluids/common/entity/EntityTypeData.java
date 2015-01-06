@@ -32,7 +32,6 @@ public class EntityTypeData {
   /* Non-configurable values */
   @SideOnly(Side.CLIENT)
   private ResourceLocation texture;
-  @SideOnly(Side.CLIENT)
   private int overlay = 0x00000000;
 
   private boolean causeFireDamage = false;
