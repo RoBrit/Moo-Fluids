@@ -110,6 +110,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         applyDamagesToEntity(entity);
       }
     }
+    
+    super.collideWithEntity(entity);
   }
 
   @Override
@@ -117,6 +119,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     if (entityTypeData.canDamagePlayers()) {
       applyDamagesToEntity(entityPlayer);
     }
+
+    super.onCollideWithPlayer(entityPlayer);
   }
 
   @Override
