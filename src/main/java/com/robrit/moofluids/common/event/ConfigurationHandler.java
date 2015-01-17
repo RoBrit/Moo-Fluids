@@ -27,7 +27,6 @@ import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import java.io.File;
 
@@ -105,11 +104,7 @@ public class ConfigurationHandler {
         /* Non-configurable entity data */
 
         entityTypeData.setCauseFireDamage(entityTypeData.getFireDamageAmount() > 0);
-
         entityTypeData.setCauseNormalDamage(entityTypeData.getNormalDamageAmount() > 0);
-
-        entityTypeData.setHeavy(containableFluid.getDensity() >
-                                FluidRegistry.WATER.getDensity() * 3);
 
         EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
       }

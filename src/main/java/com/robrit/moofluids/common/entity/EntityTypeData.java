@@ -36,7 +36,6 @@ public class EntityTypeData {
 
   private boolean causeFireDamage = false;
   private boolean causeNormalDamage = false;
-  private boolean isHeavy = false;
 
   /* Configurable values */
   private boolean isSpawnable;
@@ -89,14 +88,6 @@ public class EntityTypeData {
 
   public void setCauseNormalDamage(final boolean causeNormalDamage) {
     this.causeNormalDamage = causeNormalDamage;
-  }
-
-  public boolean isHeavy() {
-    return isHeavy;
-  }
-
-  public void setHeavy(boolean isHeavy) {
-    this.isHeavy = isHeavy;
   }
 
   public boolean isSpawnable() {
