@@ -36,6 +36,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -58,7 +59,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     setEntityTypeData(EntityHelper.getEntityData(getEntityFluid().getName()));
     setCurrentUseCooldown(entityTypeData.getMaxUseCooldown());
 
-    if (entityTypeData.canCauseFireDamage()) {
+    if (getEntityFluid().getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
       isImmuneToFire = true;
     }
   }

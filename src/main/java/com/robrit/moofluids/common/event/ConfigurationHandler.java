@@ -104,8 +104,7 @@ public class ConfigurationHandler {
 
         /* Non-configurable entity data */
 
-        entityTypeData.setCauseFireDamage(
-            containableFluid.getTemperature() >= FluidRegistry.LAVA.getTemperature());
+        entityTypeData.setCauseFireDamage(entityTypeData.getFireDamageAmount() > 0);
 
         entityTypeData.setCauseNormalDamage(entityTypeData.getNormalDamageAmount() > 0);
 
