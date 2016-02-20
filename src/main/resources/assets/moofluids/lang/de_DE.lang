@@ -1,0 +1,19 @@
+#Forge Fluid Localizations
+fluid.tile.water=Wasser
+fluid.tile.lava=Lava
+
+#Death Message Localizations
+death.attack.burn=%1$s wurde etwas zu knusprig
+death.attack.whacked=%1$s wurde zu Tode geklopft
+
+#Entity Name Localizations
+entity.EntityFluidCow.name=Flüssikeitskuh
+entity.EntityChristmasCow.name=Weihnachtskuh
+entity.EntityNewYearsCow.name=Sylvesterkuh
+entity.EntityHalloweenCow.name=Halloweenkuh
+entity.EntityEasterCow.name=Osterkuh
+
+#WAILA Tooltip Localizations
+moofluids.waila.tooltip.fluid-name=Flüssigkeits Name: %s
+moofluids.waila.tooltip.current-cooldown=Verbleibender Cooldown: %s Ticks
+moofluids.waila.tooltip.breeding-item=Zucht Item: %s
