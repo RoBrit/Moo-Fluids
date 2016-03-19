@@ -23,14 +23,14 @@ import com.robrit.moofluids.common.entity.INamedEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntityFireworkSparkFX;
+import net.minecraft.client.particle.EntityFirework;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.init.Items;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityNewYearsCow extends EntityCow implements INamedEntity {
 
@@ -87,7 +87,7 @@ public class EntityNewYearsCow extends EntityCow implements INamedEntity {
   private void spawnParticle() {
     final Minecraft minecraft = Minecraft.getMinecraft();
     if (minecraft.gameSettings.particleSetting != 2) {
-      final EntityFX entityFX = new EntityFireworkSparkFX(worldObj, posX, posY + 1D, posZ,
+      final EntityFX entityFX = new EntityFirework.SparkFX(worldObj, posX, posY + 1D, posZ,
                                                           rand.nextGaussian() * 0.15D,
                                                           -motionY * 0.5D,
                                                           rand.nextGaussian() * 0.15D,

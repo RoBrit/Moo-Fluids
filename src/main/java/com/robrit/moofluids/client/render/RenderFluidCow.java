@@ -22,21 +22,32 @@ package com.robrit.moofluids.client.render;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelCow;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderCow;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.RenderManager;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderFluidCow extends RenderCow {
 
-  public RenderFluidCow(ModelBase modelBase, float shadowSize) {
-    super(modelBase, shadowSize);
+  public RenderFluidCow(RenderManager renderManager, ModelBase modelBase, float shadowSize) {
+    super(renderManager, modelBase, shadowSize);
   }
 
   @Override
-  protected int getColorMultiplier(EntityLivingBase entityLivingBase, float par2, float par3) {
+  protected int getColorMultiplier(EntityCow entityLivingBase, float par2, float par3) {
     return ((EntityFluidCow) entityLivingBase).getOverlay();
+  }
+
+  public static class Factory implements IRenderFactory<EntityCow> {
+    @Override
+    public Render<? super EntityCow> createRenderFor(RenderManager renderManager) {
+      return new RenderFluidCow(renderManager, new ModelCow(), 0.8F);
+    }
   }
 }

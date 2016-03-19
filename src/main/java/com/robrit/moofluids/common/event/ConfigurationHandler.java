@@ -30,9 +30,10 @@ import net.minecraftforge.fluids.Fluid;
 
 import java.io.File;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
 
 public class ConfigurationHandler {
 
@@ -44,62 +45,93 @@ public class ConfigurationHandler {
   }
 
   public static void updateConfiguration() {
+    updateGlobalConfiguration();
+    updateFluidConfiguration();
+  }
+
+  public static void updateGlobalConfiguration() {
+    try {
+      configuration.load();
+
+      /* Category comments */
+      configuration.addCustomCategoryComment(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+              ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT);
+
+      ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE =
+              configuration.get(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+                      ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+                      ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE).getInt();
+
+      ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE =
+              configuration.get(ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
+                      ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
+                      ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
+    } catch (Exception exception) {
+      LogHelper.error("Unable to read configuration for " + ModInformation.MOD_NAME);
+      LogHelper.error(exception);
+    } finally {
+      if (configuration.hasChanged()) {
+        configuration.save();
+      }
+    }
+  }
+
+  public static void updateFluidConfiguration()
+  {
     try {
       configuration.load();
 
       for (final Fluid containableFluid : EntityHelper.getContainableFluids().values()) {
-        final String containableFluidLocalizedName = containableFluid.getLocalizedName();
         final String
-            localizationForCow =
-            LanguageRegistry.instance().getStringLocalization("entity.Cow.name");
+                containableFluidLocalizedName =
+                containableFluid.getLocalizedName(new FluidStack(containableFluid, 0));
+        final String
+                localizationForCow =
+                LanguageRegistry.instance().getStringLocalization("entity.Cow.name");
         final String entityName = containableFluidLocalizedName + " " + localizationForCow;
         final EntityTypeData entityTypeData = new EntityTypeData();
 
-        /* Category comments */
-        configuration.addCustomCategoryComment(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
-                                               ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT);
-        
         /* Configurable entity data */
         entityTypeData.setSpawnable(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_IS_SPAWNABLE_KEY,
-                              ConfigurationData.ENTITY_IS_SPAWNABLE_DEFAULT_VALUE).getBoolean());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_IS_SPAWNABLE_KEY,
+                        ConfigurationData.ENTITY_IS_SPAWNABLE_DEFAULT_VALUE).getBoolean());
         entityTypeData.setSpawnRate(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_SPAWN_RATE_KEY,
-                              ConfigurationData.ENTITY_SPAWN_RATE_DEFAULT_VALUE).getInt());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_SPAWN_RATE_KEY,
+                        ConfigurationData.ENTITY_SPAWN_RATE_DEFAULT_VALUE).getInt());
         entityTypeData.setNormalDamageAmount(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
-                .getInt());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
+                        ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
+                        .getInt());
         entityTypeData.setFireDamageAmount(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
-                              ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
+                        ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
         entityTypeData.setNormalDamageAmount(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
-                .getInt());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
+                        ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
+                        .getInt());
         entityTypeData.setGrowUpTime(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_GROW_UP_TIME_KEY,
-                              ConfigurationData.ENTITY_GROW_UP_TIME_DEFAULT_VALUE).getInt());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_GROW_UP_TIME_KEY,
+                        ConfigurationData.ENTITY_GROW_UP_TIME_DEFAULT_VALUE).getInt());
         entityTypeData.setMaxUseCooldown(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_MAX_USE_COOLDOWN_KEY,
-                              ConfigurationData.ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE).getInt());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_MAX_USE_COOLDOWN_KEY,
+                        ConfigurationData.ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE).getInt());
         entityTypeData.setDamagePlayers(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_KEY,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE)
-                .getBoolean());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_KEY,
+                        ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE)
+                        .getBoolean());
         entityTypeData.setDamageEntities(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_KEY,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_DEFAULT_VALUE)
-                .getBoolean());
+                configuration.get(entityName,
+                        ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_KEY,
+                        ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_DEFAULT_VALUE)
+                        .getBoolean());
 
         /* Non-configurable entity data */
 
@@ -108,17 +140,6 @@ public class ConfigurationHandler {
 
         EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
       }
-
-      ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE =
-          configuration.get(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
-                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
-                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE).getInt();
-
-      ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE =
-          configuration.get(ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
-                            ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
-                            ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
-
     } catch (Exception exception) {
       LogHelper.error("Unable to read configuration for " + ModInformation.MOD_NAME);
       LogHelper.error(exception);

@@ -24,12 +24,12 @@ import com.robrit.moofluids.common.proxy.IProxy;
 import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLFingerprintViolationEvent;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = ModInformation.MOD_ID, name = ModInformation.MOD_NAME,
      version = ModInformation.MOD_VERSION, dependencies = ModInformation.MOD_DEPENDENCIES,
@@ -55,6 +55,8 @@ public class MooFluids {
   public static void preInit(FMLPreInitializationEvent event) {
     ConfigurationHandler.setConfigFile(event.getSuggestedConfigurationFile());
     ConfigurationHandler.init();
+    ConfigurationHandler.updateGlobalConfiguration();
+    proxy.registerEntities();
 
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished pre-initialisation stage for %s",
@@ -65,9 +67,8 @@ public class MooFluids {
   @Mod.EventHandler
   public static void init(FMLInitializationEvent event) {
     proxy.initContainableFluids();
-    ConfigurationHandler.updateConfiguration();
+    ConfigurationHandler.updateFluidConfiguration();
     proxy.registerEventHandlers();
-    proxy.registerEntities();
     proxy.registerPlugins();
 
     if (ModInformation.DEBUG_MODE) {

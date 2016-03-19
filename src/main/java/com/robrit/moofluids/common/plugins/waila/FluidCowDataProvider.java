@@ -25,8 +25,10 @@ import com.robrit.moofluids.common.ref.UnlocalizedStrings;
 import com.robrit.moofluids.common.util.LocalizationHelper;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
@@ -84,7 +86,8 @@ public class FluidCowDataProvider implements IWailaEntityProvider {
   }
 
   @Override
-  public NBTTagCompound getNBTData(Entity ent, NBTTagCompound tag) {
+  public NBTTagCompound getNBTData(EntityPlayerMP player, Entity ent,
+                                   NBTTagCompound tag, World world) {
     return null;
   }
 }

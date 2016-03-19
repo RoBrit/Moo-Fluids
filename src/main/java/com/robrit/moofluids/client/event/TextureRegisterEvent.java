@@ -26,7 +26,7 @@ import com.robrit.moofluids.common.util.LogHelper;
 import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.IIcon;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -38,14 +38,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TextureRegisterEvent {
 
-  private static final byte TEXTURE_MAP_ID_BLOCK = 0;
   private static final String SEPARATOR = "/";
   private static final String TEXTURE_LOCATION = "textures/entity/cow";
   private static final String BASE_TEXTURE = TEXTURE_LOCATION + SEPARATOR + "cow.png";
@@ -104,46 +103,43 @@ public class TextureRegisterEvent {
 
   @SubscribeEvent
   public void onTextureStitch(TextureStitchEvent.Post event) {
-    if (event.map.getTextureType() == TEXTURE_MAP_ID_BLOCK) {
-      for (final Fluid fluid : EntityHelper.getContainableFluids().values()) {
-        try {
-          final String fluidName = fluid.getName();
-          final IIcon fluidIcon = fluid.getIcon();
-          int[][] textureData2d = new int[fluidIcon.getIconWidth()][fluidIcon.getIconHeight()];
-          boolean hasColour = false;
+    for (final Fluid fluid : EntityHelper.getContainableFluids().values()) {
+      try {
+        final String fluidName = fluid.getName();
+        final EntityTypeData entityTypeData = EntityHelper.getEntityData(fluidName);
+        final TextureAtlasSprite fluidIcon =
+                event.map.getAtlasSprite(fluid.getStill().toString());
+        final int fluidColor = fluid.getColor();
 
-          if (event.map.getAtlasSprite(fluidIcon.getIconName()) != null) {
-            textureData2d =
-                event.map.getAtlasSprite(fluidIcon.getIconName()).getFrameTextureData(0);
-            hasColour = true;
-          }
+        if (fluidColor != 0xFFFFFFFF)
+        {
+          entityTypeData.setOverlay(new Color((fluidColor >> 16) & 0xFF,
+                  (fluidColor >> 8) & 0xFF,
+                  (fluidColor) & 0xFF,
+                  128).getRGB());
+        } else if (fluidIcon != null && fluidIcon.getFrameTextureData(0) != null) {
+          final Color meanColour = ColorHelper.getMeanColour(fluidIcon.getFrameTextureData(0));
+          entityTypeData.setOverlay(new Color(meanColour.getRed(),
+                  meanColour.getGreen(),
+                  meanColour.getBlue(),
+                  128).getRGB());
+        } else {
+          entityTypeData.setOverlay(0xFFFFFFFF);
+        }
 
-          final EntityTypeData entityTypeData = EntityHelper.getEntityData(fluidName);
+        EntityHelper.setEntityData(fluidName, entityTypeData);
 
-          if (hasColour) {
-            final Color meanColour = ColorHelper.getMeanColour(textureData2d);
-            entityTypeData.setOverlay(new Color(meanColour.getRed(),
-                                                meanColour.getGreen(),
-                                                meanColour.getBlue(),
-                                                128).getRGB());
-          } else {
-            final int fluidColor = fluid.getColor();
-            entityTypeData.setOverlay(new Color((fluidColor) & 0xFF,
-                                                (fluidColor >> 8) & 0xFF,
-                                                (fluidColor >> 16) & 0xFF,
-                                                128).getRGB());
-          }
-
-          EntityHelper.setEntityData(fluidName, entityTypeData);
-
-          if (ModInformation.DEBUG_MODE) {
-            LogHelper.info("Successfully added colour overlay for " + fluid.getName());
+        if (ModInformation.DEBUG_MODE) {
+          LogHelper.info("Successfully added colour overlay for " + fluidName +
+                         " with value " + entityTypeData.getOverlay());
+          if (fluidIcon != null)
+          {
             LogHelper.info("Successfully added colour overlay for " + fluidIcon.getIconName());
           }
-        } catch (final Exception ex) {
-          LogHelper.error("Encountered an issue when attempting to manipulate texture");
-          ex.printStackTrace();
         }
+      } catch (final Exception ex) {
+        LogHelper.error("Encountered an issue when attempting to manipulate texture");
+        ex.printStackTrace();
       }
     }
   }

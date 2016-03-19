@@ -39,9 +39,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public abstract class CommonProxy implements IProxy {
 
@@ -61,68 +62,75 @@ public abstract class CommonProxy implements IProxy {
         }
       }
     }
+
+    if (FluidRegistry.isUniversalBucketEnabled()) {
+      for (final Fluid fluid : FluidRegistry.getBucketFluids()) {
+        final String fluidName = fluid.getName();
+        if (!EntityHelper.hasContainableFluid(fluidName)) {
+          EntityHelper.setContainableFluid(fluidName, fluid);
+
+          if (ModInformation.DEBUG_MODE) {
+            LogHelper.info(fluidName + " has been added as an containable (i.e. bucketable) fluid");
+          }
+        }
+      }
+    }
   }
 
   @Override
   public void registerEventHandlers() {
-    FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
+    MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
     MinecraftForge.EVENT_BUS.register(new EntitySpawnHandler());
   }
 
   @Override
   public void registerEntities() {
-    EntityRegistry.registerGlobalEntityID(EntityFluidCow.class, "EntityFluidCow",
-                                          EntityRegistry.findGlobalUniqueEntityId(),
-                                          0xFFFFFF, 0xFFFFFF);
     EntityRegistry.registerModEntity(EntityFluidCow.class, "EntityFluidCow",
                                      EntityHelper.getRegisteredEntityId(),
-                                     MooFluids.getInstance(), 64, 1, true);
+                                     MooFluids.getInstance(), 64, 1,
+                                     true, 0xFFFFFF, 0xFFFFFF);
 
     for (final BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
       EntityRegistry.addSpawn(EntityFluidCow.class,
                               ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE, 1, 1,
-                              EnumCreatureType.creature,
+                              EnumCreatureType.CREATURE,
                               BiomeDictionary.getBiomesForType(biomeType));
     }
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
       /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
       if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
-        EntityRegistry.registerGlobalEntityID(EntityChristmasCow.class, "EntityChristmasCow",
-                                              EntityRegistry.findGlobalUniqueEntityId(),
-                                              0x228B22, 0xAE0505);
         EntityRegistry.registerModEntity(EntityChristmasCow.class, "EntityChristmasCow",
                                          EntityHelper.getRegisteredEntityId(),
-                                         MooFluids.getInstance(), 64, 1, true);
+                                         MooFluids.getInstance(), 64, 1,
+                                         true, 0x228B22, 0xAE0505);
 
-        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.COLD));
 
-        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST));
 
-        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.creature,
+        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
       }
       /* Checks if the current date is between the dates (12/29/2014) and (01/02/2015) */
       if (DateHelper.isDateBetweenEpochBoundaries(1419811200, 1420156800)) {
-        EntityRegistry.registerGlobalEntityID(EntityNewYearsCow.class, "EntityNewYearsCow",
-                                              EntityRegistry.findGlobalUniqueEntityId(),
-                                              0xC0C0C0, 0xFFD700);
         EntityRegistry.registerModEntity(EntityNewYearsCow.class, "EntityNewYearsCow",
                                          EntityHelper.getRegisteredEntityId(),
-                                         MooFluids.getInstance(), 64, 1, true);
+                                         MooFluids.getInstance(), 64, 1,
+                                         true, 0xC0C0C0, 0xFFD700);
 
-        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.LUSH));
 
-        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.MAGICAL));
 
-        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST));
 
-        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.creature,
+        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
       }
     }

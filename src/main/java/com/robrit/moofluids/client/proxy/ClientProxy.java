@@ -32,9 +32,9 @@ import com.robrit.moofluids.common.util.DateHelper;
 import net.minecraft.client.model.ModelCow;
 import net.minecraftforge.common.MinecraftForge;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -49,18 +49,18 @@ public class ClientProxy extends CommonProxy {
   public void registerEntities() {
     super.registerEntities();
     RenderingRegistry.registerEntityRenderingHandler(EntityFluidCow.class,
-                                                     new RenderFluidCow(new ModelCow(), 0.8F));
+                                                     new RenderFluidCow.Factory());
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
       /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
       if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
         RenderingRegistry.registerEntityRenderingHandler(EntityChristmasCow.class,
-                                                         new RenderEventCow(new ModelCow(), 0.8F));
+                                                         new RenderEventCow.Factory());
       }
       /* Checks if the current date is between the dates (12/29/2014) and (01/02/2015) */
       if (DateHelper.isDateBetweenEpochBoundaries(1419811200, 1420156800)) {
         RenderingRegistry.registerEntityRenderingHandler(EntityNewYearsCow.class,
-                                                         new RenderEventCow(new ModelCow(), 0.8F));
+                                                         new RenderEventCow.Factory());
       }
     }
   }

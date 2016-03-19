@@ -7,11 +7,11 @@ death.attack.burn=%1$s стал немного хрустящим
 death.attack.whacked=%1$s сварился до смерти
 
 #Entity Name Localizations
-entity.EntityFluidCow.name=Жидкостная корова
-entity.EntityChristmasCow.name=Рождественская корова
-entity.EntityNewYearsCow.name=Новогодняя корова
-entity.EntityHalloweenCow.name=Хэллоуинская корова
-entity.EntityEasterCow.name=Пасхальная корова
+entity.MooFluids.EntityFluidCow.name=Жидкостная корова
+entity.MooFluids.EntityChristmasCow.name=Рождественская корова
+entity.MooFluids.EntityNewYearsCow.name=Новогодняя корова
+entity.MooFluids.EntityHalloweenCow.name=Хэллоуинская корова
+entity.MooFluids.EntityEasterCow.name=Пасхальная корова
 
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=Название жидкости: %s
