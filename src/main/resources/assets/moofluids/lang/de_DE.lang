@@ -7,11 +7,11 @@ death.attack.burn=%1$s wurde etwas zu knusprig
 death.attack.whacked=%1$s wurde zu Tode geklopft
 
 #Entity Name Localizations
-entity.EntityFluidCow.name=Flüssikeitskuh
-entity.EntityChristmasCow.name=Weihnachtskuh
-entity.EntityNewYearsCow.name=Sylvesterkuh
-entity.EntityHalloweenCow.name=Halloweenkuh
-entity.EntityEasterCow.name=Osterkuh
+entity.MooFluids.EntityFluidCow.name=Flüssikeitskuh
+entity.MooFluids.EntityChristmasCow.name=Weihnachtskuh
+entity.MooFluids.EntityNewYearsCow.name=Sylvesterkuh
+entity.MooFluids.EntityHalloweenCow.name=Halloweenkuh
+entity.MooFluids.EntityEasterCow.name=Osterkuh
 
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=Flüssigkeits Name: %s

@@ -23,24 +23,35 @@ import com.robrit.moofluids.common.entity.INamedEntity;
 import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelCow;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderCow;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.util.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderEventCow extends RenderCow {
 
-  public RenderEventCow(ModelBase modelBase, float shadowSize) {
-    super(modelBase, shadowSize);
+  public RenderEventCow(RenderManager renderManager, ModelBase modelBase, float shadowSize) {
+    super(renderManager, modelBase, shadowSize);
   }
 
   @Override
-  protected ResourceLocation getEntityTexture(Entity entity) {
+  protected ResourceLocation getEntityTexture(EntityCow entity) {
     return new ResourceLocation(ModInformation.MOD_ID.toLowerCase(),
                                 "textures/entity/" +
                                 ((INamedEntity) entity).getEntityName() + ".png");
+  }
+
+  public static class Factory implements IRenderFactory<EntityCow> {
+    @Override
+    public Render<? super EntityCow> createRenderFor(RenderManager renderManager) {
+      return new RenderEventCow(renderManager, new ModelCow(), 0.8F);
+    }
   }
 }

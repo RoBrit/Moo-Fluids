@@ -21,8 +21,8 @@ package com.robrit.moofluids.server.proxy;
 
 import com.robrit.moofluids.common.proxy.CommonProxy;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.SERVER)
 public class ServerProxy extends CommonProxy {

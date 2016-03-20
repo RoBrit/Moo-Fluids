@@ -28,8 +28,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectHelper;
 import thaumcraft.api.aspects.AspectList;
 
 public class AspectRegistry {
@@ -41,13 +41,15 @@ public class AspectRegistry {
 
       if (fluid.getBlock() != null) {
         fluidBlockItemStack = new ItemStack(fluid.getBlock());
-        hasAspects = ThaumcraftApi.exists(fluidBlockItemStack.getItem(),
-                                                        fluidBlockItemStack.getItemDamage());
+        if (fluidBlockItemStack.getItem() != null) {
+          hasAspects = ThaumcraftApi.exists(fluidBlockItemStack.getItem(),
+                  fluidBlockItemStack.getItemDamage());
+        }
       }
 
       AspectList entityAspects = new AspectList();
       if (fluid.canBePlacedInWorld() && hasAspects) {
-        entityAspects = ThaumcraftApiHelper.getObjectAspects(fluidBlockItemStack);
+        entityAspects = AspectHelper.getObjectAspects(fluidBlockItemStack);
       } else {
         entityAspects = new AspectList().add(Aspect.EARTH, 3).add(Aspect.BEAST, 3);
         if (fluid.isGaseous()) {

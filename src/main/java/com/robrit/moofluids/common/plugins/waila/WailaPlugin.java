@@ -21,7 +21,7 @@ package com.robrit.moofluids.common.plugins.waila;
 
 import com.robrit.moofluids.common.util.LogHelper;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 public class WailaPlugin {
 

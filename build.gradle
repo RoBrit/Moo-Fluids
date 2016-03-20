@@ -1,22 +1,17 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
 
-apply plugin: 'forge'
-apply plugin: 'maven-publish'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 archivesBaseName = "MooFluids" // Mod ID
 group = "com.robrit.moofluids" // Mod Package
@@ -24,8 +19,10 @@ version = "${minecraft_version}-${mod_version}" // Mod Version
 
 minecraft {
     version = "${minecraft_version}-${forge_version}"
-    assetDir = "eclipse/assets"
     runDir = 'run'
+
+    // Mapping version WAILA is on, Forge is currently stable_20
+    mappings = "snapshot_20151129"
 
     replace "@VERSION@", project.version
     replaceIn "ModInformation.java"

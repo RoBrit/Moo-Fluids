@@ -30,19 +30,22 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeModContainer;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.UniversalBucket;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData {
@@ -198,9 +201,9 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
                                            final EntityPlayer entityPlayer) {
     boolean canGetFluid = false;
 
-    if (currentItemStack != null && FluidContainerRegistry.isEmptyContainer(currentItemStack)) {
+    if (currentItemStack != null && entityFluid != null) {
       ItemStack filledItemStack;
-      if (entityFluid != null) {
+      if (FluidContainerRegistry.isEmptyContainer(currentItemStack)) {
         if (FluidContainerRegistry
                 .fillFluidContainer(
                     new FluidStack(entityFluid, FluidContainerRegistry.BUCKET_VOLUME),
@@ -223,7 +226,24 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
           canGetFluid = true;
         }
       }
+
+      if (!canGetFluid && currentItemStack.getItem() instanceof ItemBucket &&
+                 FluidRegistry.isUniversalBucketEnabled()) {
+        filledItemStack =
+                UniversalBucket.getFilledBucket(
+                        ForgeModContainer.getInstance().universalBucket, entityFluid);
+        if (currentItemStack.stackSize-- == 1) {
+          entityPlayer.inventory
+                  .setInventorySlotContents(entityPlayer.inventory.currentItem,
+                          filledItemStack.copy());
+        } else if (!entityPlayer.inventory.addItemStackToInventory(filledItemStack.copy())) {
+          entityPlayer.dropPlayerItemWithRandomChoice(filledItemStack.copy(), false);
+        }
+
+        canGetFluid = true;
+      }
     }
+
     return canGetFluid;
   }
 
@@ -269,7 +289,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         }
       }
 
-      func_146082_f(entityPlayer);
+      setInLove(entityPlayer);
 
       return true;
     }

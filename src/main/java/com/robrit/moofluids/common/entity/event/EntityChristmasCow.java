@@ -27,6 +27,8 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -52,16 +54,19 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
       int y = MathHelper.floor_double(posY);
       int z = MathHelper.floor_double(posZ + (double) ((float) (side / 2 % 2 * 2 - 1) * 0.25F));
 
-      if (worldObj.getBlock(x, y, z) == Blocks.air
-          && worldObj.getBiomeGenForCoords(x, z).getFloatTemperature(x, y, z) < 2F
-          && Blocks.snow_layer.canPlaceBlockAt(worldObj, x, y, z)) {
+      BlockPos pos = new BlockPos(x, y, z);
+
+      if (worldObj.getBlockState(pos).getBlock() == Blocks.air
+          && worldObj.getBiomeGenForCoords(pos).getFloatTemperature(pos) < 2F
+          && Blocks.snow_layer.canPlaceBlockAt(worldObj, pos)) {
         double randX = (double) ((float) posX + rand.nextFloat());
         double randY = (double) ((float) posY + rand.nextFloat());
         double randZ = (double) ((float) posZ + rand.nextFloat());
 
-        worldObj.spawnParticle("snowballpoof", randX, randY, randZ, 0.0D, 0.0D, 0.0D);
+        worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, randX, randY, randZ,
+                               0.0D, 0.0D, 0.0D);
 
-        worldObj.setBlock(x, y, z, Blocks.snow_layer);
+        worldObj.setBlockState(pos, Blocks.snow_layer.getDefaultState());
       }
     }
   }
