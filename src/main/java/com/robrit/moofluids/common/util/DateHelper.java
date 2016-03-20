@@ -29,8 +29,6 @@ public class DateHelper {
                                                     final Date upperBoundaryDate) {
     final Date currentDate = new Date();
 
-    final Date testDate = new Date(11, 11, 11);
-
     return currentDate.after(lowerBoundaryDate) && currentDate.before(upperBoundaryDate);
   }
 

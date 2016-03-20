@@ -19,9 +19,9 @@
 
 package com.robrit.moofluids.common.util;
 
-import org.apache.logging.log4j.Level;
-
 import net.minecraftforge.fml.common.FMLLog;
+
+import org.apache.logging.log4j.Level;
 
 public class LogHelper {
 

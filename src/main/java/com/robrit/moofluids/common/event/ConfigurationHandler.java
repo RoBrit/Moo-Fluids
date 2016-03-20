@@ -27,13 +27,12 @@ import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
-
-import java.io.File;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.LanguageRegistry;
+
+import java.io.File;
 
 public class ConfigurationHandler {
 

@@ -25,8 +25,6 @@ import java.util.List;
 
 public class ColorHelper {
 
-  private static final int COLOR_COMPONENT_MAX_VALUE = 255;
-
   public static Color getMeanColour(int[] dataArray) {
     short[] allRedStored = new short[dataArray.length];
     short[] allGreenStored = new short[dataArray.length];
@@ -48,9 +46,9 @@ public class ColorHelper {
       aggregateBlue += allBlueStored[colourIndex];
     }
 
-    short meanRed = COLOR_COMPONENT_MAX_VALUE;
-    short meanGreen = COLOR_COMPONENT_MAX_VALUE;
-    short meanBlue = COLOR_COMPONENT_MAX_VALUE;
+    short meanRed;
+    short meanGreen;
+    short meanBlue;
 
     meanRed = (short) (aggregateRed / (allRedStored.length > 0 ? allRedStored.length : 1));
     meanGreen = (short) (aggregateGreen / (allGreenStored.length > 0 ? allGreenStored.length : 1));

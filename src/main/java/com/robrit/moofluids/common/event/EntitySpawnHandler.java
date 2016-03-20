@@ -27,10 +27,9 @@ import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Random;
-
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EntitySpawnHandler {
 
@@ -72,11 +71,9 @@ public class EntitySpawnHandler {
 
         int highestSpawnChance = 0;
         for (final Fluid possibleEntityFluid : possibleEntityFluids) {
-          final int
-              spawnRate =
+          final int spawnRate =
               EntityHelper.getEntityData(possibleEntityFluid.getName()).getSpawnRate();
-          final boolean
-              isSpawnable =
+          final boolean isSpawnable =
               EntityHelper.getEntityData(possibleEntityFluid.getName()).isSpawnable();
 
           if (!isSpawnable || spawnRate <= 0) {
