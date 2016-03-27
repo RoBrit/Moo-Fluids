@@ -40,8 +40,8 @@ public class EntitySpawnHandler {
 
   @SubscribeEvent
   public void onEntityConstruction(EntityEvent.EntityConstructing event) {
-    if (event.entity instanceof EntityFluidCow) {
-      final EntityFluidCow entityFluidCow = (EntityFluidCow) event.entity;
+    if (event.getEntity() instanceof EntityFluidCow) {
+      final EntityFluidCow entityFluidCow = (EntityFluidCow) event.getEntity();
 
       if (entityFluidCow.getEntityFluid() == null) {
         final Fluid entityFluid = getEntityFluid();

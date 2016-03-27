@@ -30,7 +30,7 @@ public class WailaPlugin {
       "com.robrit.moofluids.common.plugins.waila.WailaRegistrar.wailaCallback";
 
   public static void init() {
-    LogHelper.info("WAILA detected. Registering entities with WAILA registry.");
-    FMLInterModComms.sendMessage("Waila", "register", WAILA_REGISTRAR_CLASSPATH);
+    //LogHelper.info("WAILA detected. Registering entities with WAILA registry.");
+    //FMLInterModComms.sendMessage("Waila", "register", WAILA_REGISTRAR_CLASSPATH);
   }
 }

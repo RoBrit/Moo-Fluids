@@ -19,7 +19,7 @@
 
 package com.robrit.moofluids.common.util;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class LocalizationHelper {
 
@@ -34,6 +34,6 @@ public class LocalizationHelper {
       unlocalizedString = PREFIX + unlocalizedString;
     }
 
-    return StatCollector.translateToLocal(unlocalizedString);
+    return I18n.translateToLocal(unlocalizedString);
   }
 }

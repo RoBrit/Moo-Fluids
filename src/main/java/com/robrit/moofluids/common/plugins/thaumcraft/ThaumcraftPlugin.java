@@ -22,6 +22,6 @@ package com.robrit.moofluids.common.plugins.thaumcraft;
 public class ThaumcraftPlugin {
 
   public static void init() {
-    AspectRegistry.registerEntityAspects();
+    //AspectRegistry.registerEntityAspects();
   }
 }

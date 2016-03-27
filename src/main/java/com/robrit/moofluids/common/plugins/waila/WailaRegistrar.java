@@ -21,12 +21,12 @@ package com.robrit.moofluids.common.plugins.waila;
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 
-import mcp.mobius.waila.api.IWailaRegistrar;
+//import mcp.mobius.waila.api.IWailaRegistrar;
 
 public class WailaRegistrar {
 
-  public static void wailaCallback(IWailaRegistrar registrar) {
-    // Entities
-    registrar.registerBodyProvider(new FluidCowDataProvider(), EntityFluidCow.class);
-  }
+//  public static void wailaCallback(IWailaRegistrar registrar) {
+//    // Entities
+//    registrar.registerBodyProvider(new FluidCowDataProvider(), EntityFluidCow.class);
+//  }
 }

@@ -107,7 +107,7 @@ public class TextureRegisterEvent {
         final String fluidName = fluid.getName();
         final EntityTypeData entityTypeData = EntityHelper.getEntityData(fluidName);
         final TextureAtlasSprite fluidIcon =
-                event.map.getAtlasSprite(fluid.getStill().toString());
+                event.getMap().getAtlasSprite(fluid.getStill().toString());
         final int fluidColor = fluid.getColor();
 
         if (fluidColor != 0xFFFFFFFF)

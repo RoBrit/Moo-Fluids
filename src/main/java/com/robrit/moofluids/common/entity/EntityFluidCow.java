@@ -33,7 +33,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeModContainer;
 
@@ -50,7 +54,8 @@ import io.netty.buffer.ByteBuf;
 
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData {
 
-  private static final int DATA_WATCHER_ID_CURRENT_USE_COOLDOWN = 23;
+  private static final DataParameter<Integer> DATA_WATCHER_CURRENT_USE_COOLDOWN =
+          EntityDataManager.createKey(EntityFluidCow.class, DataSerializers.VARINT);
   public static final String NBT_TAG_FLUID_NAME = "FluidName";
   public static final String NBT_TAG_CURRENT_USE_COOLDOWN = "CurrentUseCooldown";
   private int currentUseCooldown;
@@ -70,7 +75,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   protected void entityInit() {
     super.entityInit();
-    dataWatcher.addObject(DATA_WATCHER_ID_CURRENT_USE_COOLDOWN, 0);
+    dataWatcher.register(DATA_WATCHER_CURRENT_USE_COOLDOWN, 0);
   }
 
   @Override
@@ -83,9 +88,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   @Override
-  public boolean interact(final EntityPlayer entityPlayer) {
+  public boolean processInteract(EntityPlayer entityPlayer, EnumHand hand, ItemStack currentItemStack) {
     if (!isChild()) {
-      final ItemStack currentItemStack = entityPlayer.inventory.getCurrentItem();
 
       if (ModInformation.DEBUG_MODE) {
         setCurrentUseCooldown(0);
@@ -131,7 +135,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public boolean attackEntityFrom(final DamageSource damageSource, final float damageAmount) {
     if (damageSource.getEntity() instanceof EntityPlayer) {
       final EntityPlayer entityPlayer = (EntityPlayer) damageSource.getEntity();
-      if (entityPlayer.getCurrentEquippedItem() == null) {
+      if (entityPlayer.getHeldItem(EnumHand.MAIN_HAND) == null) {
         applyDamagesToEntity(entityPlayer);
       }
     }
@@ -310,7 +314,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   public void setCurrentUseCooldown(final int currentUseCooldown) {
-    dataWatcher.updateObject(DATA_WATCHER_ID_CURRENT_USE_COOLDOWN, currentUseCooldown);
+    dataWatcher.set(DATA_WATCHER_CURRENT_USE_COOLDOWN, currentUseCooldown);
     this.currentUseCooldown = currentUseCooldown;
   }
 

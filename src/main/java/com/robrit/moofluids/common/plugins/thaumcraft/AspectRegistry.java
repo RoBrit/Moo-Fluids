@@ -27,48 +27,48 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectHelper;
-import thaumcraft.api.aspects.AspectList;
+//import thaumcraft.api.ThaumcraftApi;
+//import thaumcraft.api.aspects.Aspect;
+//import thaumcraft.api.aspects.AspectHelper;
+//import thaumcraft.api.aspects.AspectList;
 
 public class AspectRegistry {
 
-  public static void registerEntityAspects() {
-    for (final Fluid fluid : EntityHelper.getContainableFluidsArray()) {
-      boolean hasAspects = false;
-      ItemStack fluidBlockItemStack = new ItemStack(Blocks.air);
-
-      if (fluid.getBlock() != null) {
-        fluidBlockItemStack = new ItemStack(fluid.getBlock());
-        if (fluidBlockItemStack.getItem() != null) {
-          hasAspects = ThaumcraftApi.exists(fluidBlockItemStack.getItem(),
-                  fluidBlockItemStack.getItemDamage());
-        }
-      }
-
-      AspectList entityAspects = new AspectList();
-      if (fluid.canBePlacedInWorld() && hasAspects) {
-        entityAspects = AspectHelper.getObjectAspects(fluidBlockItemStack);
-      } else {
-        entityAspects = new AspectList().add(Aspect.EARTH, 3).add(Aspect.BEAST, 3);
-        if (fluid.isGaseous()) {
-          entityAspects.add(Aspect.AIR, 3);
-        }
-        if (fluid.getLuminosity() > 0) {
-          entityAspects.add(Aspect.LIGHT, 3);
-        }
-        if (fluid.getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
-          entityAspects.add(Aspect.FIRE, 3);
-        }
-        if (fluid.getDensity() >= FluidRegistry.WATER.getDensity() * 3) {
-          entityAspects.add(Aspect.TRAP, 3);
-        }
-      }
-      final ThaumcraftApi.EntityTagsNBT entityIdentifierTag =
-          new ThaumcraftApi.EntityTagsNBT(EntityFluidCow.NBT_TAG_FLUID_NAME, fluid.getName());
-
-      ThaumcraftApi.registerEntityTag("EntityFluidCow", entityAspects, entityIdentifierTag);
-    }
-  }
+//  public static void registerEntityAspects() {
+//    for (final Fluid fluid : EntityHelper.getContainableFluidsArray()) {
+//      boolean hasAspects = false;
+//      ItemStack fluidBlockItemStack = new ItemStack(Blocks.air);
+//
+//      if (fluid.getBlock() != null) {
+//        fluidBlockItemStack = new ItemStack(fluid.getBlock());
+//        if (fluidBlockItemStack.getItem() != null) {
+//          hasAspects = ThaumcraftApi.exists(fluidBlockItemStack.getItem(),
+//                  fluidBlockItemStack.getItemDamage());
+//        }
+//      }
+//
+//      AspectList entityAspects = new AspectList();
+//      if (fluid.canBePlacedInWorld() && hasAspects) {
+//        entityAspects = AspectHelper.getObjectAspects(fluidBlockItemStack);
+//      } else {
+//        entityAspects = new AspectList().add(Aspect.EARTH, 3).add(Aspect.BEAST, 3);
+//        if (fluid.isGaseous()) {
+//          entityAspects.add(Aspect.AIR, 3);
+//        }
+//        if (fluid.getLuminosity() > 0) {
+//          entityAspects.add(Aspect.LIGHT, 3);
+//        }
+//        if (fluid.getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
+//          entityAspects.add(Aspect.FIRE, 3);
+//        }
+//        if (fluid.getDensity() >= FluidRegistry.WATER.getDensity() * 3) {
+//          entityAspects.add(Aspect.TRAP, 3);
+//        }
+//      }
+//      final ThaumcraftApi.EntityTagsNBT entityIdentifierTag =
+//          new ThaumcraftApi.EntityTagsNBT(EntityFluidCow.NBT_TAG_FLUID_NAME, fluid.getName());
+//
+//      ThaumcraftApi.registerEntityTag("EntityFluidCow", entityAspects, entityIdentifierTag);
+//    }
+//  }
 }

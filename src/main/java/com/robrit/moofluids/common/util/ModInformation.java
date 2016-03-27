@@ -24,7 +24,7 @@ public class ModInformation {
   public static final String MOD_ID = "MooFluids";
   public static final String MOD_NAME = "Moo Fluids";
   public static final String MOD_VERSION = "@VERSION@";
-  public static final String MOD_DEPENDENCIES = "after:*";
+  public static final String MOD_DEPENDENCIES = "after:*;required-after:Forge@[12.16.0.1805,)";
   public static final String MOD_FINGERPRINT = "@FINGERPRINT@";
   public static final String MOD_PACKAGE = "com.robrit.moofluids";
 
