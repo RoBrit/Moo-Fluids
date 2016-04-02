@@ -29,7 +29,6 @@ import com.robrit.moofluids.common.proxy.CommonProxy;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.util.DateHelper;
 
-import net.minecraft.client.model.ModelCow;
 import net.minecraftforge.common.MinecraftForge;
 
 import net.minecraftforge.fml.client.registry.RenderingRegistry;

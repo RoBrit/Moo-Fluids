@@ -23,7 +23,7 @@ package com.robrit.moofluids.common.event;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
-import com.robrit.moofluids.common.util.ModInformation;
+import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fluids.Fluid;

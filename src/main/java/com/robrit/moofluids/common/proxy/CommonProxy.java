@@ -25,23 +25,18 @@ import com.robrit.moofluids.common.entity.event.EntityChristmasCow;
 import com.robrit.moofluids.common.entity.event.EntityNewYearsCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
-import com.robrit.moofluids.common.plugins.thaumcraft.ThaumcraftPlugin;
-import com.robrit.moofluids.common.plugins.waila.WailaPlugin;
 import com.robrit.moofluids.common.ref.ConfigurationData;
+import com.robrit.moofluids.common.ref.ModInformation;
 import com.robrit.moofluids.common.util.DateHelper;
 import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
-import com.robrit.moofluids.common.util.ModInformation;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public abstract class CommonProxy implements IProxy {
@@ -133,17 +128,6 @@ public abstract class CommonProxy implements IProxy {
         EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
                                 BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS));
       }
-    }
-  }
-
-  @Override
-  public void registerPlugins() {
-    if (Loader.isModLoaded("Waila")) {
-      WailaPlugin.init();
-    }
-
-    if (Loader.isModLoaded("Thaumcraft")) {
-      ThaumcraftPlugin.init();
     }
   }
 }

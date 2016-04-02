@@ -22,7 +22,7 @@ package com.robrit.moofluids.common;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.proxy.IProxy;
 import com.robrit.moofluids.common.util.LogHelper;
-import com.robrit.moofluids.common.util.ModInformation;
+import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -69,7 +69,6 @@ public class MooFluids {
     proxy.initContainableFluids();
     ConfigurationHandler.updateFluidConfiguration();
     proxy.registerEventHandlers();
-    proxy.registerPlugins();
 
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished initialisation stage for %s", ModInformation.MOD_ID));

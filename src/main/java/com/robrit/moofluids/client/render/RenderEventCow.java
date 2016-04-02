@@ -20,7 +20,7 @@
 package com.robrit.moofluids.client.render;
 
 import com.robrit.moofluids.common.entity.INamedEntity;
-import com.robrit.moofluids.common.util.ModInformation;
+import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelCow;

@@ -23,7 +23,7 @@ import com.robrit.moofluids.common.entity.EntityTypeData;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
-import com.robrit.moofluids.common.util.ModInformation;
+import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.config.Configuration;

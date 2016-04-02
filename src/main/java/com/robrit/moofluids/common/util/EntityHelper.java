@@ -27,8 +27,7 @@ import java.util.TreeMap;
 
 public class EntityHelper {
 
-  private static TreeMap<String, Fluid> containableFluids =
-      new TreeMap<String, Fluid>();
+  private static TreeMap<String, Fluid> containableFluids = new TreeMap<String, Fluid>();
   private static TreeMap<String, EntityTypeData> entityDataMap =
       new TreeMap<String, EntityTypeData>();
   private static int registeredEntityId = 0;

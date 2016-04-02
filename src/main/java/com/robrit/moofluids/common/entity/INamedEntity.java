@@ -21,5 +21,5 @@ package com.robrit.moofluids.common.entity;
 
 public interface INamedEntity {
 
-  public abstract String getEntityName();
+  String getEntityName();
 }

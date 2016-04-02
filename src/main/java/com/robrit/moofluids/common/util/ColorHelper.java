@@ -60,9 +60,9 @@ public class ColorHelper {
   public static Color getMeanColour(int[][] data2dArray) {
     final List<Integer> list = new ArrayList<Integer>();
 
-    for (int dataIndexX = 0; dataIndexX < data2dArray.length; dataIndexX++) {
-      for (int dataIndexY = 0; dataIndexY < data2dArray[dataIndexX].length; dataIndexY++) {
-        list.add(data2dArray[dataIndexX][dataIndexY]);
+    for (int[] aData2dArray : data2dArray) {
+      for (int anAData2dArray : aData2dArray) {
+        list.add(anAData2dArray);
       }
     }
 

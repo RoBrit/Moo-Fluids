@@ -21,11 +21,9 @@ package com.robrit.moofluids.common.proxy;
 
 public interface IProxy {
 
-  public void initContainableFluids();
+  void initContainableFluids();
 
-  public void registerEventHandlers();
+  void registerEventHandlers();
 
-  public void registerEntities();
-
-  public void registerPlugins();
+  void registerEntities();
 }

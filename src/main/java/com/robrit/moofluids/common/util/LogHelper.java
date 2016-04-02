@@ -19,6 +19,8 @@
 
 package com.robrit.moofluids.common.util;
 
+import com.robrit.moofluids.common.ref.ModInformation;
+
 import net.minecraftforge.fml.common.FMLLog;
 
 import org.apache.logging.log4j.Level;

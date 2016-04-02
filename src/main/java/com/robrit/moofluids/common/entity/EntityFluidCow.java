@@ -19,8 +19,8 @@
 
 package com.robrit.moofluids.common.entity;
 
+import com.robrit.moofluids.common.ref.ModInformation;
 import com.robrit.moofluids.common.util.EntityHelper;
-import com.robrit.moofluids.common.util.ModInformation;
 import com.robrit.moofluids.common.util.damage.AttackDamageSource;
 import com.robrit.moofluids.common.util.damage.BurnDamageSource;
 
@@ -40,7 +40,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeModContainer;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -50,12 +49,13 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import io.netty.buffer.ByteBuf;
 
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData {
 
   private static final DataParameter<Integer> DATA_WATCHER_CURRENT_USE_COOLDOWN =
-          EntityDataManager.createKey(EntityFluidCow.class, DataSerializers.VARINT);
+      EntityDataManager.createKey(EntityFluidCow.class, DataSerializers.VARINT);
   public static final String NBT_TAG_FLUID_NAME = "FluidName";
   public static final String NBT_TAG_CURRENT_USE_COOLDOWN = "CurrentUseCooldown";
   private int currentUseCooldown;
@@ -88,7 +88,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   @Override
-  public boolean processInteract(EntityPlayer entityPlayer, EnumHand hand, ItemStack currentItemStack) {
+  public boolean processInteract(EntityPlayer entityPlayer, EnumHand hand,
+                                 ItemStack currentItemStack) {
     if (!isChild()) {
 
       if (ModInformation.DEBUG_MODE) {
@@ -118,7 +119,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         applyDamagesToEntity(entity);
       }
     }
-    
+
     super.collideWithEntity(entity);
   }
 
@@ -220,9 +221,9 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
                       currentItemStack);
 
           if (currentItemStack.stackSize-- == 1) {
-            entityPlayer.inventory
-                .setInventorySlotContents(entityPlayer.inventory.currentItem,
-                                          filledItemStack.copy());
+            entityPlayer.inventory.setInventorySlotContents(
+                entityPlayer.inventory.currentItem,
+                filledItemStack.copy());
           } else if (!entityPlayer.inventory.addItemStackToInventory(filledItemStack.copy())) {
             entityPlayer.dropPlayerItemWithRandomChoice(filledItemStack.copy(), false);
           }
@@ -232,14 +233,14 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
       }
 
       if (!canGetFluid && currentItemStack.getItem() instanceof ItemBucket &&
-                 FluidRegistry.isUniversalBucketEnabled()) {
+          FluidRegistry.isUniversalBucketEnabled()) {
         filledItemStack =
-                UniversalBucket.getFilledBucket(
-                        ForgeModContainer.getInstance().universalBucket, entityFluid);
+            UniversalBucket.getFilledBucket(
+                ForgeModContainer.getInstance().universalBucket, entityFluid);
         if (currentItemStack.stackSize-- == 1) {
-          entityPlayer.inventory
-                  .setInventorySlotContents(entityPlayer.inventory.currentItem,
-                          filledItemStack.copy());
+          entityPlayer.inventory.setInventorySlotContents(
+              entityPlayer.inventory.currentItem,
+              filledItemStack.copy());
         } else if (!entityPlayer.inventory.addItemStackToInventory(filledItemStack.copy())) {
           entityPlayer.dropPlayerItemWithRandomChoice(filledItemStack.copy(), false);
         }
@@ -263,9 +264,9 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
             if (containerData.filledContainer.isItemEqual(currentItemStack)) {
               emptyItemStack = containerData.emptyContainer;
               if (currentItemStack.stackSize-- == 1) {
-                entityPlayer.inventory
-                    .setInventorySlotContents(entityPlayer.inventory.currentItem,
-                                              emptyItemStack.copy());
+                entityPlayer.inventory.setInventorySlotContents(
+                    entityPlayer.inventory.currentItem,
+                    emptyItemStack.copy());
               } else if (!entityPlayer.inventory.addItemStackToInventory(emptyItemStack.copy())) {
                 entityPlayer.dropPlayerItemWithRandomChoice(emptyItemStack.copy(), false);
               }
@@ -288,8 +289,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         currentItemStack.stackSize--;
 
         if (currentItemStack.stackSize <= 0) {
-          entityPlayer.inventory
-              .setInventorySlotContents(entityPlayer.inventory.currentItem, (ItemStack) null);
+          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, null);
         }
       }
 

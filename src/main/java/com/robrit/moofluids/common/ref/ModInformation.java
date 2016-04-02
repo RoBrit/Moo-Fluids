@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.util;
+package com.robrit.moofluids.common.ref;
 
 public class ModInformation {
 
