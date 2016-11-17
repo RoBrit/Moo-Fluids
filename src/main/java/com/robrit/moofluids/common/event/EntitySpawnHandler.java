@@ -54,7 +54,7 @@ public class EntitySpawnHandler {
       Fluid currentEntityFluid = containableFluids[0];
       EntityTypeData entityData = EntityHelper.getEntityData(currentEntityFluid.getName());
 
-      if (!entityData.isSpawnable() || entityData.getSpawnRate() <= 0) {
+      if (entityData == null || !entityData.isSpawnable() || entityData.getSpawnRate() <= 0) {
         currentEntityFluid = null;
       }
 
