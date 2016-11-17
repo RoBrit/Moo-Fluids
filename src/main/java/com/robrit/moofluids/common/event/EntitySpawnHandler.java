@@ -34,8 +34,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EntitySpawnHandler {
 
-  private static final int SPAWN_LOWER_BOUNDARY = 3;
-  private static final int SPAWN_UPPER_BOUNDARY = 5;
   private static final Fluid[] containableFluids = EntityHelper.getContainableFluidsArray();
   private static final Random random = new Random();
 
@@ -54,40 +52,39 @@ public class EntitySpawnHandler {
   private Fluid getEntityFluid() {
     if (containableFluids.length > 0) {
       Fluid currentEntityFluid = containableFluids[0];
+      EntityTypeData entityData = EntityHelper.getEntityData(currentEntityFluid.getName());
+
+      if (!entityData.isSpawnable() || entityData.getSpawnRate() <= 0) {
+        currentEntityFluid = null;
+      }
 
       if (containableFluids.length > 1) {
-        final int
-            fluidsToCheck =
-            random.nextInt(SPAWN_UPPER_BOUNDARY - SPAWN_LOWER_BOUNDARY) + SPAWN_LOWER_BOUNDARY;
+        boolean cowSpawned = false;
+        int cumulatedSpawnChances = EntityHelper.getCumulatedSpawnChances();
+        int addedSpawnChances = 0;
 
-        final Fluid[] possibleEntityFluids = new Fluid[fluidsToCheck];
+        while (!cowSpawned) {
+          int currentRandomChance = random.nextInt(cumulatedSpawnChances);
 
-        for (int currentFluidIndex = 0; currentFluidIndex < fluidsToCheck; currentFluidIndex++) {
-          possibleEntityFluids[currentFluidIndex] =
-              containableFluids[random.nextInt(containableFluids.length)];
-          if (ModInformation.DEBUG_MODE) {
-            LogHelper.info("POSSIBLE SPAWN FLUID: " + possibleEntityFluids[currentFluidIndex].getName());
-          }
-        }
+          for (Fluid currentFluid : containableFluids) {
+            EntityTypeData currentEntityData = EntityHelper.getEntityData(currentFluid.getName());
 
-        int highestSpawnChance = 0;
-        for (final Fluid possibleEntityFluid : possibleEntityFluids) {
-          final int
-              spawnRate =
-              EntityHelper.getEntityData(possibleEntityFluid.getName()).getSpawnRate();
-          final boolean
-              isSpawnable =
-              EntityHelper.getEntityData(possibleEntityFluid.getName()).isSpawnable();
+            if (currentEntityData == null) {
+              continue;
+            }
 
-          if (!isSpawnable || spawnRate <= 0) {
-            continue;
-          }
+            final boolean isSpawnable = currentEntityData.isSpawnable();
+            final int spawnRate = currentEntityData.getSpawnRate();
 
-          final int currentSpawnChance = random.nextInt(spawnRate);
+            if (!isSpawnable || spawnRate <= 0) {
+              continue;
+            }
 
-          if (currentSpawnChance >= highestSpawnChance) {
-            currentEntityFluid = possibleEntityFluid;
-            highestSpawnChance = currentSpawnChance;
+            addedSpawnChances += spawnRate;
+            if (addedSpawnChances >= currentRandomChance) {
+              cowSpawned = true;
+              currentEntityFluid = currentFluid;
+            }
           }
         }
       }
