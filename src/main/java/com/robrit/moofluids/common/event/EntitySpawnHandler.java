@@ -58,9 +58,10 @@ public class EntitySpawnHandler {
         currentEntityFluid = null;
       }
 
-      if (containableFluids.length > 1) {
+      int cumulatedSpawnChances = EntityHelper.getCumulatedSpawnChances();
+
+      if (containableFluids.length > 1 && cumulatedSpawnChances > 0) {
         boolean cowSpawned = false;
-        int cumulatedSpawnChances = EntityHelper.getCumulatedSpawnChances();
         int addedSpawnChances = 0;
 
         while (!cowSpawned) {
