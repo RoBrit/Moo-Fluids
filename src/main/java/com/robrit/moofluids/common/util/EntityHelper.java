@@ -28,9 +28,9 @@ import java.util.TreeMap;
 public class EntityHelper {
 
   private static TreeMap<String, Fluid> containableFluids = new TreeMap<String, Fluid>();
-  private static TreeMap<String, EntityTypeData> entityDataMap =
-      new TreeMap<String, EntityTypeData>();
+  private static TreeMap<String, EntityTypeData> entityDataMap = new TreeMap<String, EntityTypeData>();
   private static int registeredEntityId = 0;
+  private static int cumulatedSpawnChances = 0;
 
   public static TreeMap<String, Fluid> getContainableFluids() {
     return containableFluids;
@@ -61,7 +61,15 @@ public class EntityHelper {
   }
 
   public static void setEntityData(final String fluidName, final EntityTypeData entityTypeData) {
+    // Since Treemap.put() replaces any existing entries in the Map, we need to compensate for that
+    if (hasEntityData(fluidName) && getEntityData(fluidName).isSpawnable() && getEntityData(fluidName).getSpawnRate() > 0) {
+      cumulatedSpawnChances -= getEntityData(fluidName).getSpawnRate();
+    }
+
     entityDataMap.put(fluidName, entityTypeData);
+    if (entityTypeData.isSpawnable() && entityTypeData.getSpawnRate() > 0) {
+      cumulatedSpawnChances += entityTypeData.getSpawnRate();
+    }
   }
 
   public static boolean hasEntityData(final String fluidName) {
@@ -76,6 +84,10 @@ public class EntityHelper {
     return null;
   }
 
+  public static int getCumulatedSpawnChances() {
+    return cumulatedSpawnChances;
+  }
+  
   public static int getRegisteredEntityId() {
     return registeredEntityId++;
   }
