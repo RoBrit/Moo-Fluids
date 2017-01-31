@@ -21,21 +21,19 @@ package com.robrit.moofluids.common.event;
 
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
+import com.robrit.moofluids.common.entity.EntityTypeData;
 import com.robrit.moofluids.common.util.EntityHelper;
-import com.robrit.moofluids.common.util.LogHelper;
-import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.Random;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import java.util.ArrayList;
 
 public class EntitySpawnHandler {
 
-  private static final Fluid[] containableFluids = EntityHelper.getContainableFluidsArray();
-  private static final Random random = new Random();
+  private static final Fluid[] SPAWNABLE_FLUIDS = getSpawnableFluids();
+  private static final double CUMULATIVE_SPAWN_WEIGHT = getCumulativeSpawnWeight();
 
   @SubscribeEvent
   public void onEntityConstruction(EntityEvent.EntityConstructing event) {
@@ -43,56 +41,72 @@ public class EntitySpawnHandler {
       final EntityFluidCow entityFluidCow = (EntityFluidCow) event.getEntity();
 
       if (entityFluidCow.getEntityFluid() == null) {
-        final Fluid entityFluid = getEntityFluid();
-        entityFluidCow.setEntityFluid(entityFluid);
+        entityFluidCow.setEntityFluid(getEntityFluid());
       }
     }
   }
 
-  private Fluid getEntityFluid() {
-    if (containableFluids.length > 0) {
-      Fluid currentEntityFluid = containableFluids[0];
-      EntityTypeData entityData = EntityHelper.getEntityData(currentEntityFluid.getName());
+  private static Fluid getEntityFluid() {
+    if (SPAWNABLE_FLUIDS.length > 0) {
+      // Weighted random chance for activation
+      double activationWeight = Math.random() * CUMULATIVE_SPAWN_WEIGHT;
+      // Accumulated chance from iteration
+      double accumulatedWeight = 0.0;
 
-      if (entityData == null || !entityData.isSpawnable() || entityData.getSpawnRate() <= 0) {
-        currentEntityFluid = null;
-      }
+      for (final Fluid potentialEntityFluid : SPAWNABLE_FLUIDS) {
+        final EntityTypeData entityData =
+            EntityHelper.getEntityData(potentialEntityFluid.getName());
 
-      int cumulatedSpawnChances = EntityHelper.getCumulatedSpawnChances();
+        if (entityData == null) {
+          continue;
+        }
 
-      if (containableFluids.length > 1 && cumulatedSpawnChances > 0) {
-        boolean cowSpawned = false;
-        int addedSpawnChances = 0;
-
-        while (!cowSpawned) {
-          int currentRandomChance = random.nextInt(cumulatedSpawnChances);
-
-          for (Fluid currentFluid : containableFluids) {
-            EntityTypeData currentEntityData = EntityHelper.getEntityData(currentFluid.getName());
-
-            if (currentEntityData == null) {
-              continue;
-            }
-
-            final boolean isSpawnable = currentEntityData.isSpawnable();
-            final int spawnRate = currentEntityData.getSpawnRate();
-
-            if (!isSpawnable || spawnRate <= 0) {
-              continue;
-            }
-
-            addedSpawnChances += spawnRate;
-            if (addedSpawnChances >= currentRandomChance) {
-              cowSpawned = true;
-              currentEntityFluid = currentFluid;
-            }
-          }
+        accumulatedWeight += entityData.getSpawnRate();
+        if (accumulatedWeight >= activationWeight) {
+          return potentialEntityFluid;
         }
       }
-
-      return currentEntityFluid;
     }
 
     return null;
+  }
+
+  private static Fluid[] getSpawnableFluids() {
+    final ArrayList<Fluid> spawnableFluids = new ArrayList<Fluid>();
+
+    for (final Fluid fluid : EntityHelper.getContainableFluidsArray()) {
+      final EntityTypeData entityData = EntityHelper.getEntityData(fluid.getName());
+
+      if (entityData == null) {
+        continue;
+      }
+
+      final boolean isSpawnable = entityData.isSpawnable();
+      final int spawnRate = entityData.getSpawnRate();
+
+      if (!isSpawnable || spawnRate <= 0) {
+        continue;
+      }
+
+      spawnableFluids.add(fluid);
+    }
+
+    return spawnableFluids.toArray(new Fluid[spawnableFluids.size()]);
+  }
+
+  private static double getCumulativeSpawnWeight() {
+    double cumulativeSpawnWeight = 0.0;
+
+    for (final Fluid spawnableFluid : SPAWNABLE_FLUIDS) {
+      final EntityTypeData entityData = EntityHelper.getEntityData(spawnableFluid.getName());
+
+      if (entityData == null) {
+        continue;
+      }
+
+      cumulativeSpawnWeight += entityData.getSpawnRate();
+    }
+
+    return cumulativeSpawnWeight;
   }
 }
