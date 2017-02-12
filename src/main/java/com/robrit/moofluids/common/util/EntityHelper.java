@@ -109,8 +109,7 @@ public class EntityHelper {
     final String entityNameLocalized =
         CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entityName);
 
-    return new ResourceLocation(ModInformation.MOD_ID.toLowerCase(),
-                                "entities/" + entityNameLocalized);
+    return new ResourceLocation(ModInformation.MOD_ID, "entities/" + entityNameLocalized);
   }
 
   public static int getRegisteredEntityId() {

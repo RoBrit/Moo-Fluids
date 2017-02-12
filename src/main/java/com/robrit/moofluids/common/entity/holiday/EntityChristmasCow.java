@@ -49,23 +49,23 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
     super.onLivingUpdate();
 
     for (int side = 0; side < 4; ++side) {
-      int x = MathHelper.floor_double(posX + (double) ((float) (side % 2 * 2 - 1) * 0.25F));
-      int y = MathHelper.floor_double(posY);
-      int z = MathHelper.floor_double(posZ + (double) ((float) (side / 2 % 2 * 2 - 1) * 0.25F));
+      int x = MathHelper.floor(posX + (double) ((float) (side % 2 * 2 - 1) * 0.25F));
+      int y = MathHelper.floor(posY);
+      int z = MathHelper.floor(posZ + (double) ((float) (side / 2 % 2 * 2 - 1) * 0.25F));
 
       BlockPos pos = new BlockPos(x, y, z);
 
-      if (worldObj.getBlockState(pos).getBlock() == Blocks.air
-          && worldObj.getBiomeGenForCoords(pos).getFloatTemperature(pos) < 2F
-          && Blocks.snow_layer.canPlaceBlockAt(worldObj, pos)) {
+      if (world.getBlockState(pos).getBlock() == Blocks.AIR
+          && world.getBiome(pos).getFloatTemperature(pos) < 2F
+          && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)) {
         double randX = (double) ((float) posX + rand.nextFloat());
         double randY = (double) ((float) posY + rand.nextFloat());
         double randZ = (double) ((float) posZ + rand.nextFloat());
 
-        worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, randX, randY, randZ,
+        world.spawnParticle(EnumParticleTypes.SNOWBALL, randX, randY, randZ,
                                0.0D, 0.0D, 0.0D);
 
-        worldObj.setBlockState(pos, Blocks.snow_layer.getDefaultState());
+        world.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState());
       }
     }
   }
@@ -77,6 +77,6 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
 
   @Override
   public EntityChristmasCow createChild(EntityAgeable entityAgeable) {
-    return new EntityChristmasCow(worldObj);
+    return new EntityChristmasCow(world);
   }
 }

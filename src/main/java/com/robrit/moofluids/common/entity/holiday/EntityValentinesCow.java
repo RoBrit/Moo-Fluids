@@ -23,8 +23,8 @@ import com.robrit.moofluids.common.entity.INamedEntity;
 import com.robrit.moofluids.common.util.EntityHelper;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntityHeartFX;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleHeart;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.util.ResourceLocation;
@@ -53,7 +53,7 @@ public class EntityValentinesCow extends EntityCow implements INamedEntity {
   @Override
   public void onEntityUpdate() {
     super.onEntityUpdate();
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       spawnParticle();
     }
   }
@@ -62,20 +62,20 @@ public class EntityValentinesCow extends EntityCow implements INamedEntity {
   private void spawnParticle() {
     final Minecraft minecraft = Minecraft.getMinecraft();
     if (minecraft.gameSettings.particleSetting != 2) {
-      final EntityHeartFX.Factory heartFXFactory = new EntityHeartFX.Factory();
-      final EntityFX entityFX =
-          heartFXFactory.getEntityFX(1, worldObj,
-                                     posX + rand.nextDouble(),
-                                     posY + rand.nextDouble(),
-                                     posZ + rand.nextDouble(),
-                                     rand.nextGaussian() * 0.30D, -motionY * 0.5D,
-                                     rand.nextGaussian() * 0.30D);
-      minecraft.effectRenderer.addEffect(entityFX);
+      final ParticleHeart.Factory particleHeartFactory = new ParticleHeart.Factory();
+      final Particle particle =
+          particleHeartFactory.createParticle(1, world,
+                                              posX + rand.nextDouble(),
+                                              posY + rand.nextDouble(),
+                                              posZ + rand.nextDouble(),
+                                              rand.nextGaussian() * 0.30D, -motionY * 0.5D,
+                                              rand.nextGaussian() * 0.30D);
+      minecraft.effectRenderer.addEffect(particle);
     }
   }
 
   @Override
   public EntityValentinesCow createChild(EntityAgeable entityAgeable) {
-    return new EntityValentinesCow(worldObj);
+    return new EntityValentinesCow(world);
   }
 }

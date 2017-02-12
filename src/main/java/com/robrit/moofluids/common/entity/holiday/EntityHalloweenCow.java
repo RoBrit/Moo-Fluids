@@ -89,7 +89,7 @@ public class EntityHalloweenCow extends EntityCow implements INamedEntity {
 
   @Override
   public EntityHalloweenCow createChild(EntityAgeable entityAgeable) {
-    return new EntityHalloweenCow(worldObj);
+    return new EntityHalloweenCow(world);
   }
 
   @Override
@@ -104,7 +104,7 @@ public class EntityHalloweenCow extends EntityCow implements INamedEntity {
     }
 
     @Override
-    protected double func_179512_a(EntityLivingBase attackTarget) {
+    protected double getAttackReachSqr(EntityLivingBase attackTarget) {
       return (double) (4.0F + attackTarget.width);
     }
   }

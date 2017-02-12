@@ -1,6 +1,7 @@
 {
   "pools": [
     {
+      "name": "christmas_cow",
       "rolls": 1,
       "entries": [
         {
@@ -27,16 +28,7 @@
       ]
     },
     {
-      "conditions": [
-        {
-          "condition": "killed_by_player"
-        },
-        {
-          "condition": "random_chance_with_looting",
-          "chance": 0.05,
-          "looting_multiplier": 0.01
-        }
-      ],
+      "name": "christmas_cow",
       "rolls": 1,
       "entries": [
         {
@@ -71,6 +63,16 @@
           "type": "item",
           "name": "minecraft:diamond",
           "weight": 1
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "killed_by_player"
+        },
+        {
+          "condition": "random_chance_with_looting",
+          "chance": 0.05,
+          "looting_multiplier": 0.01
         }
       ]
     }

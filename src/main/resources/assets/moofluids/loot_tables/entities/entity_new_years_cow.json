@@ -1,6 +1,7 @@
 {
   "pools": [
     {
+      "name": "new_years_cow",
       "rolls": 1,
       "entries": [
         {
@@ -11,6 +12,15 @@
       ]
     },
     {
+      "name": "new_years_cow",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:clock",
+          "weight": 1
+        }
+      ],
       "conditions": [
         {
           "condition": "killed_by_player"
@@ -19,14 +29,6 @@
           "condition": "random_chance_with_looting",
           "chance": 0.1,
           "looting_multiplier": 0.01
-        }
-      ],
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "item",
-          "name": "minecraft:clock",
-          "weight": 1
         }
       ]
     }

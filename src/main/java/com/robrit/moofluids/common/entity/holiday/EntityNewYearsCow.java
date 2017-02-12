@@ -23,8 +23,8 @@ import com.robrit.moofluids.common.entity.INamedEntity;
 import com.robrit.moofluids.common.util.EntityHelper;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntityFirework;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFirework;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.util.ResourceLocation;
@@ -52,7 +52,7 @@ public class EntityNewYearsCow extends EntityCow implements INamedEntity {
 
   @Override
   protected void onDeathUpdate() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       final byte maxParticles = (byte) ((byte) rand.nextInt(10) + 1);
       byte currentParticles = 0;
       while (currentParticles < maxParticles) {
@@ -66,7 +66,7 @@ public class EntityNewYearsCow extends EntityCow implements INamedEntity {
   @Override
   public void onEntityUpdate() {
     super.onEntityUpdate();
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       spawnParticle();
     }
   }
@@ -75,18 +75,21 @@ public class EntityNewYearsCow extends EntityCow implements INamedEntity {
   private void spawnParticle() {
     final Minecraft minecraft = Minecraft.getMinecraft();
     if (minecraft.gameSettings.particleSetting != 2) {
-      final EntityFX entityFX = new EntityFirework.SparkFX(worldObj, posX, posY + 1D, posZ,
-                                                           rand.nextGaussian() * 0.15D,
-                                                           -motionY * 0.5D,
-                                                           rand.nextGaussian() * 0.15D,
-                                                           minecraft.effectRenderer);
-      entityFX.setRBGColorF(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-      minecraft.effectRenderer.addEffect(entityFX);
+      final ParticleFirework.Factory particleFireworkFactory = new ParticleFirework.Factory();
+      final Particle particle =
+          particleFireworkFactory.createParticle(1, world,
+                                                 posX, posY + 1D, posZ,
+                                                 rand.nextGaussian() * 0.15D,
+                                                 -motionY * 0.5D,
+                                                 rand.nextGaussian() * 0.15D);
+
+      particle.setRBGColorF(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+      minecraft.effectRenderer.addEffect(particle);
     }
   }
 
   @Override
   public EntityNewYearsCow createChild(EntityAgeable entityAgeable) {
-    return new EntityNewYearsCow(worldObj);
+    return new EntityNewYearsCow(world);
   }
 }

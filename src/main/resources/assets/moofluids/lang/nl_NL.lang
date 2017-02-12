@@ -7,12 +7,12 @@ death.attack.burn=%1$s is een beetje te knapperig geworden
 death.attack.whacked=%1$s is tot moes geslagen
 
 #Entity Name Localizations
-entity.MooFluids.EntityFluidCow.name=Vloeibare Koe
-entity.MooFluids.EntityChristmasCow.name=Kerstmis Koe
-entity.MooFluids.EntityEasterCow.name=Paas Koe
-entity.MooFluids.EntityHalloweenCow.name=Halloween Koe
-entity.MooFluids.EntityNewYearsCow.name=Nieuwjaars Koe
-entity.MooFluids.EntityValentinesCow.name=Valentine's Cow
+entity.moofluids.EntityFluidCow.name=Vloeibare Koe
+entity.moofluids.EntityChristmasCow.name=Kerstmis Koe
+entity.moofluids.EntityEasterCow.name=Paas Koe
+entity.moofluids.EntityHalloweenCow.name=Halloween Koe
+entity.moofluids.EntityNewYearsCow.name=Nieuwjaars Koe
+entity.moofluids.EntityValentinesCow.name=Valentine's Cow
 
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=Vloeistof: %s

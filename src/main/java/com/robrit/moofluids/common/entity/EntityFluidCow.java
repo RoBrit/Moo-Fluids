@@ -75,7 +75,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   protected void entityInit() {
     super.entityInit();
-    dataWatcher.register(DATA_WATCHER_CURRENT_USE_COOLDOWN, 0);
+    dataManager.register(DATA_WATCHER_CURRENT_USE_COOLDOWN, 0);
   }
 
   @Override
@@ -167,7 +167,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   @Override
   public EntityFluidCow createChild(final EntityAgeable entityAgeable) {
-    final EntityFluidCow childEntity = new EntityFluidCow(worldObj);
+    final EntityFluidCow childEntity = new EntityFluidCow(world);
     childEntity.setEntityFluid(entityFluid);
 
     return childEntity;
@@ -225,7 +225,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
                 entityPlayer.inventory.currentItem,
                 filledItemStack.copy());
           } else if (!entityPlayer.inventory.addItemStackToInventory(filledItemStack.copy())) {
-            entityPlayer.dropPlayerItemWithRandomChoice(filledItemStack.copy(), false);
+            entityPlayer.dropItem(filledItemStack.copy(), false);
           }
 
           canGetFluid = true;
@@ -242,7 +242,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
               entityPlayer.inventory.currentItem,
               filledItemStack.copy());
         } else if (!entityPlayer.inventory.addItemStackToInventory(filledItemStack.copy())) {
-          entityPlayer.dropPlayerItemWithRandomChoice(filledItemStack.copy(), false);
+          entityPlayer.dropItem(filledItemStack.copy(), false);
         }
 
         canGetFluid = true;
@@ -268,7 +268,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
                     entityPlayer.inventory.currentItem,
                     emptyItemStack.copy());
               } else if (!entityPlayer.inventory.addItemStackToInventory(emptyItemStack.copy())) {
-                entityPlayer.dropPlayerItemWithRandomChoice(emptyItemStack.copy(), false);
+                entityPlayer.dropItem(emptyItemStack.copy(), false);
               }
               heal(4F);
               cowHealed = true;
@@ -314,7 +314,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   public void setCurrentUseCooldown(final int currentUseCooldown) {
-    dataWatcher.set(DATA_WATCHER_CURRENT_USE_COOLDOWN, currentUseCooldown);
+    dataManager.set(DATA_WATCHER_CURRENT_USE_COOLDOWN, currentUseCooldown);
     this.currentUseCooldown = currentUseCooldown;
   }
 

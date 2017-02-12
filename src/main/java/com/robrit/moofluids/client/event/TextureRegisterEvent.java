@@ -59,7 +59,7 @@ public class TextureRegisterEvent {
 
       final File outputPath = new File(Minecraft.getMinecraft().mcDataDir + SEPARATOR +
                                        "assets" + SEPARATOR,
-                                       ModInformation.MOD_ID.toLowerCase() + SEPARATOR +
+                                       ModInformation.MOD_ID + SEPARATOR +
                                        TEXTURE_LOCATION + SEPARATOR +
                                        fluidName + ".png");
 
@@ -91,7 +91,7 @@ public class TextureRegisterEvent {
   }
 
   private void registerTexture(final String fluidName) {
-    final ResourceLocation entityTexture = new ResourceLocation(ModInformation.MOD_ID.toLowerCase(),
+    final ResourceLocation entityTexture = new ResourceLocation(ModInformation.MOD_ID,
                                                                 TEXTURE_LOCATION + SEPARATOR +
                                                                 fluidName + ".png");
 

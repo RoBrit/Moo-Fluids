@@ -45,7 +45,7 @@ public class EntityTypeData {
   private int normalDamageAmount;
   private PotionEffect[] potionEffects;
 
-  private ItemStack breedingItem = new ItemStack(Items.wheat, 1);
+  private ItemStack breedingItem = new ItemStack(Items.WHEAT, 1);
   private ItemStack[] droppedItems;
 
   private int growUpTime;

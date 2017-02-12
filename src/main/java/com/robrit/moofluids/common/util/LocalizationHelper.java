@@ -25,7 +25,7 @@ import net.minecraft.util.text.translation.I18n;
 
 public class LocalizationHelper {
 
-  private static final String PREFIX = ModInformation.MOD_ID.toLowerCase() + ".";
+  private static final String PREFIX = ModInformation.MOD_ID + ".";
 
   public static String localize(final String unlocalizedString) {
     return localize(unlocalizedString, true);

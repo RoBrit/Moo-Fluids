@@ -26,7 +26,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
 
@@ -37,10 +37,9 @@ group = "com.robrit.moofluids" // Mod Package
 version = "${minecraft_version}-${mod_version}" // Mod Version
 
 minecraft {
-    version = "${minecraft_version}-${forge_version}-${minecraft_version}"
-    runDir = 'run'
-
-    mappings = "snapshot_20160312"
+    version = "${minecraft_version}-${forge_version}"
+    mappings = "stable_29"
+    runDir = "run"
 
     replace "@VERSION@", project.version
     replaceIn "ModInformation.java"
@@ -67,18 +66,14 @@ sourceSets {
     }
 }
 
-//dependencies {
-//    compile "mcp.mobius.waila:Waila:${waila_version}"
-//}
-
 processResources {
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "MCversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
         include '*.info'
 
-        expand 'version': project.version, 'mc_version': project.minecraft.version
+        expand 'version': project.version, 'MCversion': project.minecraft.version
     }
 
     // copy everything else, thats not the mcmod.info

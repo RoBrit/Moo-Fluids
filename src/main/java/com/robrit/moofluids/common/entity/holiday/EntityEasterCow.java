@@ -40,7 +40,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -52,9 +52,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityEasterCow extends EntityCow implements INamedEntity {
 
   private static final String ENTITY_NAME = "EntityEasterCow";
-  private int field_175540_bm = 0; // Possibly jump/movement cooldowns
-  private int field_175535_bn = 0; // Possibly jump/movement cooldowns
-  private boolean canJump = false;
+  private int jumpTicks;
+  private int jumpDuration;
+  private boolean wasOnGround;
   private int currentMoveTypeDuration = 0;
 
   public EntityEasterCow(final World world) {
@@ -75,7 +75,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
     tasks.addTask(0, new EntityAISwimming(this));
     tasks.addTask(1, new EntityAIPanic(this, 2.0D));
     tasks.addTask(2, new EntityAIMate(this, 1.0D));
-    tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.golden_carrot, false));
+    tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.GOLDEN_CARROT, false));
     tasks.addTask(4, new EntityAIAvoidEntity<EntityPlayer>
         (this, EntityPlayer.class, 8.0F, 2.2D, 2.2D));
     tasks.addTask(4, new EntityAIAvoidEntity<EntityWolf>
@@ -97,17 +97,16 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
 
   @Override
   public EntityEasterCow createChild(final EntityAgeable entityAgeable) {
-    return new EntityEasterCow(worldObj);
+    return new EntityEasterCow(world);
   }
 
   @Override
   protected float getJumpUpwardsMotion() {
     if (!isCollidedHorizontally && (!moveHelper.isUpdating() || moveHelper.getY() <= posY + 0.5D)) {
-      final PathEntity pathEntity = navigator.getPath();
+      final Path path = navigator.getPath();
 
-      if (pathEntity != null &&
-          pathEntity.getCurrentPathIndex() < pathEntity.getCurrentPathLength()) {
-        final Vec3d vec3d = pathEntity.getPosition(this);
+      if (path != null && path.getCurrentPathIndex() < path.getCurrentPathLength()) {
+        final Vec3d vec3d = path.getPosition(this);
 
         if (vec3d.yCoord > posY) {
           return 0.5F;
@@ -129,12 +128,12 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
       double d1 = motionX * motionX + motionZ * motionZ;
 
       if (d1 < 0.010000000000000002D) {
-        moveFlying(0.0F, 1.0F, 0.1F);
+        moveRelative(0.0F, 1.0F, 0.1F);
       }
     }
 
-    if (!worldObj.isRemote) {
-      worldObj.setEntityState(this, (byte) 1);
+    if (!world.isRemote) {
+      world.setEntityState(this, (byte) 1);
     }
   }
 
@@ -155,8 +154,8 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
 
   public void func_184770_cZ() {
     setJumping(true);
-    field_175535_bn = 10;
-    field_175540_bm = 0;
+    jumpDuration = 10;
+    jumpTicks = 0;
   }
 
   @Override
@@ -166,7 +165,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
     }
 
     if (onGround) {
-      if (!canJump) {
+      if (!wasOnGround) {
         setJumping(false);
         func_175517_cu();
       }
@@ -179,7 +178,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
           moveHelper.setMoveTo(entityLivingBase.posX, entityLivingBase.posY,
                                entityLivingBase.posZ, moveHelper.getSpeed());
           func_184770_cZ();
-          canJump = true;
+          wasOnGround = true;
         }
       }
 
@@ -189,12 +188,11 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
 
       if (!entityEasterCow$jumpHelper.getIsJumping()) {
         if (moveHelper.isUpdating() && currentMoveTypeDuration == 0) {
-          final PathEntity pathEntity = navigator.getPath();
+          final Path path = navigator.getPath();
           Vec3d vec3d = new Vec3d(moveHelper.getX(), moveHelper.getY(), moveHelper.getZ());
 
-          if (pathEntity != null &&
-              pathEntity.getCurrentPathIndex() < pathEntity.getCurrentPathLength()) {
-            vec3d = pathEntity.getPosition(this);
+          if (path != null && path.getCurrentPathIndex() < path.getCurrentPathLength()) {
+            vec3d = path.getPosition(this);
           }
 
           calculateRotationYaw(vec3d.xCoord, vec3d.zCoord);
@@ -205,7 +203,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
       }
     }
 
-    canJump = onGround;
+    wasOnGround = onGround;
   }
 
   private void calculateRotationYaw(double x, double z) {
@@ -237,25 +235,25 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
   public void onLivingUpdate() {
     super.onLivingUpdate();
 
-    if (field_175540_bm != field_175535_bn) {
-      ++field_175540_bm;
-    } else if (this.field_175535_bn != 0) {
-      field_175540_bm = 0;
-      field_175535_bn = 0;
+    if (jumpTicks != jumpDuration) {
+      ++jumpTicks;
+    } else if (this.jumpDuration != 0) {
+      jumpTicks = 0;
+      jumpDuration = 0;
       setJumping(false);
     }
   }
 
   protected SoundEvent getJumpSound() {
-    return SoundEvents.entity_horse_jump;
+    return SoundEvents.ENTITY_HORSE_JUMP;
   }
 
   @SideOnly(Side.CLIENT)
   public void handleStatusUpdate(byte id) {
     if (id == 1) {
       this.createRunningParticles();
-      this.field_175535_bn = 10;
-      this.field_175540_bm = 0;
+      this.jumpDuration = 10;
+      this.jumpTicks = 0;
     } else {
       super.handleStatusUpdate(id);
     }
@@ -264,7 +262,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
   private class JumpHelper extends EntityJumpHelper {
 
     private EntityEasterCow theEntity;
-    private boolean field_180068_d = false;
+    private boolean canJump;
 
     public JumpHelper(EntityEasterCow entity) {
       super(entity);
@@ -276,11 +274,11 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
     }
 
     public boolean func_180065_d() {
-      return field_180068_d;
+      return canJump;
     }
 
     public void func_180066_a(boolean p_180066_1_) {
-      field_180068_d = p_180066_1_;
+      canJump = p_180066_1_;
     }
 
     @Override
@@ -295,7 +293,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
   private static class MoveHelper extends EntityMoveHelper {
 
     private EntityEasterCow theEntity;
-    private double movementSpeed;
+    private double nextJumpSpeed;
 
     public MoveHelper(EntityEasterCow entity) {
       super(entity);
@@ -308,7 +306,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
           !((EntityEasterCow.JumpHelper) theEntity.jumpHelper).getIsJumping()) {
         theEntity.setMovementSpeed(0.0D);
       } else if (isUpdating()) {
-        theEntity.setMovementSpeed(movementSpeed);
+        theEntity.setMovementSpeed(nextJumpSpeed);
       }
 
       super.onUpdateMoveHelper();
@@ -323,7 +321,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
       super.setMoveTo(x, y, z, speedIn);
 
       if (speedIn > 0.0D) {
-        movementSpeed = speedIn;
+        nextJumpSpeed = speedIn;
       }
     }
   }

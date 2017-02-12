@@ -44,7 +44,7 @@ public class RenderEventCow extends RenderCow {
 
   @Override
   protected ResourceLocation getEntityTexture(EntityCow entity) {
-    return new ResourceLocation(ModInformation.MOD_ID.toLowerCase(),
+    return new ResourceLocation(ModInformation.MOD_ID,
                                 ENTITY_RESOURCE_LOCATION +
                                 ((INamedEntity) entity).getEntityName() + ".png");
   }

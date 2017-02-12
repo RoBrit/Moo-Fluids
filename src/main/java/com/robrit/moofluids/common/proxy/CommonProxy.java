@@ -35,9 +35,7 @@ import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
 
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -120,16 +118,12 @@ public abstract class CommonProxy implements IProxy {
       EntityRegistry.registerModEntity(EntityValentinesCow.class, "EntityValentinesCow",
                                        EntityHelper.getRegisteredEntityId(),
                                        MooFluids.getInstance(), 64, 1, true, 0xDDDDDD, 0xFF3BC5);
-
-      for (ResourceLocation res : LootTableList.getAll()) {
-        LogHelper.error(res);
-      }
     }
   }
 
   @Override
   public void registerEntitySpawns() {
-    final ArrayList<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
+    final ArrayList<Biome> biomes = new ArrayList<Biome>();
     for (final BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
       biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType))); // Add biomes
     }
@@ -137,7 +131,7 @@ public abstract class CommonProxy implements IProxy {
     EntityRegistry.addSpawn(EntityFluidCow.class,
                             ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE, 1, 1,
                             EnumCreatureType.CREATURE,
-                            biomes.toArray(new BiomeGenBase[biomes.size()]));
+                            biomes.toArray(new Biome[biomes.size()]));
     biomes.clear(); // Reset biome list
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
@@ -149,7 +143,7 @@ public abstract class CommonProxy implements IProxy {
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
 
         EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new BiomeGenBase[biomes.size()]));
+                                biomes.toArray(new Biome[biomes.size()]));
         biomes.clear(); // Reset biome list
       }
 
@@ -161,7 +155,7 @@ public abstract class CommonProxy implements IProxy {
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
 
         EntityRegistry.addSpawn(EntityEasterCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new BiomeGenBase[biomes.size()]));
+                                biomes.toArray(new Biome[biomes.size()]));
         biomes.clear(); // Reset biome list
       }
 
@@ -174,7 +168,7 @@ public abstract class CommonProxy implements IProxy {
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
 
         EntityRegistry.addSpawn(EntityHalloweenCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new BiomeGenBase[biomes.size()]));
+                                biomes.toArray(new Biome[biomes.size()]));
         biomes.clear(); // Reset biome list
       }
 
@@ -188,7 +182,7 @@ public abstract class CommonProxy implements IProxy {
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
 
         EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new BiomeGenBase[biomes.size()]));
+                                biomes.toArray(new Biome[biomes.size()]));
         biomes.clear(); // Reset biome list
       }
 
@@ -200,7 +194,7 @@ public abstract class CommonProxy implements IProxy {
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
 
         EntityRegistry.addSpawn(EntityValentinesCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new BiomeGenBase[biomes.size()]));
+                                biomes.toArray(new Biome[biomes.size()]));
         biomes.clear(); // Reset biome list
       }
     }
