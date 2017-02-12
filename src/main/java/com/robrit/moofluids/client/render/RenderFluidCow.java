@@ -1,7 +1,7 @@
 /*
  * RenderFluidCow.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,9 +44,9 @@ public class RenderFluidCow extends RenderCow {
     return ((EntityFluidCow) entityLivingBase).getOverlay();
   }
 
-  public static class Factory implements IRenderFactory<EntityCow> {
+  public static class Factory implements IRenderFactory<EntityFluidCow> {
     @Override
-    public Render<? super EntityCow> createRenderFor(RenderManager renderManager) {
+    public Render<? super EntityFluidCow> createRenderFor(RenderManager renderManager) {
       return new RenderFluidCow(renderManager, new ModelCow(), 0.8F);
     }
   }

@@ -1,7 +1,7 @@
 /*
  * LocalizationHelper.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,20 @@
 
 package com.robrit.moofluids.common.util;
 
-import net.minecraft.util.StatCollector;
+import com.robrit.moofluids.common.ref.ModInformation;
+
+import net.minecraft.util.text.translation.I18n;
 
 public class LocalizationHelper {
 
-  private static final String PREFIX = "moofluids.";
+  private static final String PREFIX = ModInformation.MOD_ID.toLowerCase() + ".";
 
   public static String localize(final String unlocalizedString) {
     return localize(unlocalizedString, true);
   }
 
-  public static String localize(String unlocalizedString, final boolean prependPrefix) {
-    if (prependPrefix) {
-      unlocalizedString = PREFIX + unlocalizedString;
-    }
-
-    return StatCollector.translateToLocal(unlocalizedString);
+  public static String localize(final String unlocalizedString, final boolean prependPrefix) {
+    return prependPrefix ? I18n.translateToLocal(PREFIX + unlocalizedString)
+                         : I18n.translateToLocal(unlocalizedString);
   }
 }

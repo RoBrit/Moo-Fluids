@@ -1,7 +1,7 @@
 /*
  * ConfigurationHandler.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,17 +23,16 @@ import com.robrit.moofluids.common.entity.EntityTypeData;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
-import com.robrit.moofluids.common.util.ModInformation;
+import com.robrit.moofluids.common.ref.ModInformation;
 
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
-
-import java.io.File;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.LanguageRegistry;
+
+import java.io.File;
 
 public class ConfigurationHandler {
 
@@ -85,9 +84,7 @@ public class ConfigurationHandler {
         final String
                 containableFluidLocalizedName =
                 containableFluid.getLocalizedName(new FluidStack(containableFluid, 0));
-        final String
-                localizationForCow =
-                LanguageRegistry.instance().getStringLocalization("entity.Cow.name");
+        final String localizationForCow = I18n.translateToLocal("entity.Cow.name");
         final String entityName = containableFluidLocalizedName + " " + localizationForCow;
         final EntityTypeData entityTypeData = new EntityTypeData();
 
@@ -168,7 +165,7 @@ public class ConfigurationHandler {
 
   @SubscribeEvent
   public static void onConfigurationChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-    if (event.modID.equalsIgnoreCase(ModInformation.MOD_ID)) {
+    if (event.getModID().equalsIgnoreCase(ModInformation.MOD_ID)) {
       updateConfiguration();
     }
   }

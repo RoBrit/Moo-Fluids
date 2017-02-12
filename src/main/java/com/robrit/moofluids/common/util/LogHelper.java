@@ -1,7 +1,7 @@
 /*
  * LogHelper.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,11 @@
 
 package com.robrit.moofluids.common.util;
 
-import org.apache.logging.log4j.Level;
+import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraftforge.fml.common.FMLLog;
+
+import org.apache.logging.log4j.Level;
 
 public class LogHelper {
 

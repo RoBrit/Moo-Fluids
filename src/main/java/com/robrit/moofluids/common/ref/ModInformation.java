@@ -1,5 +1,5 @@
 /*
- * UnlocalizedStrings.java
+ * ModInformation.java
  *
  * Copyright (c) 2014-2017 TheRoBrit
  *
@@ -19,10 +19,17 @@
 
 package com.robrit.moofluids.common.ref;
 
-public class UnlocalizedStrings {
+public class ModInformation {
 
-  /* WAILA Tooltips */
-  public static final String FLUID_TOOLTIP = "waila.tooltip.fluid-name";
-  public static final String CURRENT_COOLDOWN_TOOLTIP = "waila.tooltip.current-cooldown";
-  public static final String BREEDING_ITEM_TOOLTIP = "waila.tooltip.breeding-item";
+  public static final String MOD_ID = "MooFluids";
+  public static final String MOD_NAME = "Moo Fluids";
+  public static final String MOD_VERSION = "@VERSION@";
+  public static final String MOD_DEPENDENCIES = "after:*;required-after:Forge@[12.16.0.1805,)";
+  public static final String MOD_FINGERPRINT = "@FINGERPRINT@";
+  public static final String MOD_PACKAGE = "com.robrit.moofluids";
+
+  public static final String PROXY_CLIENT_LOCATION = MOD_PACKAGE + ".client.proxy.ClientProxy";
+  public static final String PROXY_SERVER_LOCATION = MOD_PACKAGE + ".server.proxy.ServerProxy";
+
+  public static final boolean DEBUG_MODE = true;
 }

@@ -1,7 +1,7 @@
 /*
  * IProxy.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,11 @@ package com.robrit.moofluids.common.proxy;
 
 public interface IProxy {
 
-  public void initContainableFluids();
+  void initContainableFluids();
 
-  public void registerEventHandlers();
+  void registerEventHandlers();
 
-  public void registerEntities();
+  void registerEntities();
 
-  public void registerPlugins();
+  void registerEntitySpawns();
 }

@@ -1,7 +1,7 @@
 /*
  * EntityHelper.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,24 @@
 
 package com.robrit.moofluids.common.util;
 
-import com.robrit.moofluids.common.entity.EntityTypeData;
+import com.google.common.base.CaseFormat;
 
+import com.robrit.moofluids.common.MooFluids;
+import com.robrit.moofluids.common.entity.EntityTypeData;
+import com.robrit.moofluids.common.ref.ModInformation;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.TreeMap;
 
 public class EntityHelper {
 
   private static TreeMap<String, Fluid> containableFluids = new TreeMap<String, Fluid>();
-  private static TreeMap<String, EntityTypeData>
-      entityDataMap =
+  private static TreeMap<String, EntityTypeData> entityDataMap =
       new TreeMap<String, EntityTypeData>();
   private static int registeredEntityId = 0;
 
@@ -75,6 +82,35 @@ public class EntityHelper {
     }
 
     return null;
+  }
+
+  public static void registerEntity(final Class<? extends Entity> entityClass,
+                                    final String entityName, final int trackingRange,
+                                    final int updateFrequency, final boolean sendsVelocityUpdates) {
+    EntityRegistry.registerModEntity(entityClass, entityName, EntityHelper.getRegisteredEntityId(),
+                                     MooFluids.getInstance(), updateFrequency, trackingRange,
+                                     sendsVelocityUpdates);
+  }
+
+  public static void registerEntity(final Class<? extends Entity> entityClass,
+                                    final String entityName, final int trackingRange,
+                                    final int updateFrequency, final boolean sendsVelocityUpdates,
+                                    final int eggPrimary, final int eggSecondary) {
+    EntityRegistry.registerModEntity(entityClass, entityName, getRegisteredEntityId(),
+                                     MooFluids.getInstance(), updateFrequency, trackingRange,
+                                     sendsVelocityUpdates, eggPrimary, eggSecondary);
+  }
+
+  public static void registerEntityLootTable(final String entityName) {
+    LootTableList.register(getLootTable(entityName));
+  }
+
+  public static ResourceLocation getLootTable(final String entityName) {
+    final String entityNameLocalized =
+        CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entityName);
+
+    return new ResourceLocation(ModInformation.MOD_ID.toLowerCase(),
+                                "entities/" + entityNameLocalized);
   }
 
   public static int getRegisteredEntityId() {

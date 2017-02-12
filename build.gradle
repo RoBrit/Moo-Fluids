@@ -1,3 +1,22 @@
+/*
+ * build.gradle
+ *
+ * Copyright (c) 2014-2017 TheRoBrit
+ *
+ * Moo-Fluids is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Moo-Fluids is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 buildscript {
     repositories {
         jcenter()
@@ -18,11 +37,10 @@ group = "com.robrit.moofluids" // Mod Package
 version = "${minecraft_version}-${mod_version}" // Mod Version
 
 minecraft {
-    version = "${minecraft_version}-${forge_version}"
+    version = "${minecraft_version}-${forge_version}-${minecraft_version}"
     runDir = 'run'
 
-    // Mapping version WAILA is on, Forge is currently stable_20
-    mappings = "snapshot_20151129"
+    mappings = "snapshot_20160312"
 
     replace "@VERSION@", project.version
     replaceIn "ModInformation.java"
@@ -49,9 +67,9 @@ sourceSets {
     }
 }
 
-dependencies {
-    compile "mcp.mobius.waila:Waila:${waila_version}"
-}
+//dependencies {
+//    compile "mcp.mobius.waila:Waila:${waila_version}"
+//}
 
 processResources {
     inputs.property "version", project.version

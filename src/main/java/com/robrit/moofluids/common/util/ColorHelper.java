@@ -1,7 +1,7 @@
 /*
  * ColorHelper.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@ import java.util.List;
 
 public class ColorHelper {
 
-  private static final int COLOR_COMPONENT_MAX_VALUE = 255;
-
   public static Color getMeanColour(int[] dataArray) {
     short[] allRedStored = new short[dataArray.length];
     short[] allGreenStored = new short[dataArray.length];
@@ -48,9 +46,9 @@ public class ColorHelper {
       aggregateBlue += allBlueStored[colourIndex];
     }
 
-    short meanRed = COLOR_COMPONENT_MAX_VALUE;
-    short meanGreen = COLOR_COMPONENT_MAX_VALUE;
-    short meanBlue = COLOR_COMPONENT_MAX_VALUE;
+    short meanRed;
+    short meanGreen;
+    short meanBlue;
 
     meanRed = (short) (aggregateRed / (allRedStored.length > 0 ? allRedStored.length : 1));
     meanGreen = (short) (aggregateGreen / (allGreenStored.length > 0 ? allGreenStored.length : 1));
@@ -62,9 +60,9 @@ public class ColorHelper {
   public static Color getMeanColour(int[][] data2dArray) {
     final List<Integer> list = new ArrayList<Integer>();
 
-    for (int dataIndexX = 0; dataIndexX < data2dArray.length; dataIndexX++) {
-      for (int dataIndexY = 0; dataIndexY < data2dArray[dataIndexX].length; dataIndexY++) {
-        list.add(data2dArray[dataIndexX][dataIndexY]);
+    for (int[] aData2dArray : data2dArray) {
+      for (int anAData2dArray : aData2dArray) {
+        list.add(anAData2dArray);
       }
     }
 

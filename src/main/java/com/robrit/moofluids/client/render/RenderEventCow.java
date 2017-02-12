@@ -1,7 +1,7 @@
 /*
  * RenderEventCow.java
  *
- * Copyright (c) 2014 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 package com.robrit.moofluids.client.render;
 
 import com.robrit.moofluids.common.entity.INamedEntity;
-import com.robrit.moofluids.common.util.ModInformation;
+import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelCow;
@@ -29,13 +29,14 @@ import net.minecraft.client.renderer.entity.RenderCow;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderEventCow extends RenderCow {
+
+  private static final String ENTITY_RESOURCE_LOCATION = "textures/entity/";
 
   public RenderEventCow(RenderManager renderManager, ModelBase modelBase, float shadowSize) {
     super(renderManager, modelBase, shadowSize);
@@ -44,11 +45,12 @@ public class RenderEventCow extends RenderCow {
   @Override
   protected ResourceLocation getEntityTexture(EntityCow entity) {
     return new ResourceLocation(ModInformation.MOD_ID.toLowerCase(),
-                                "textures/entity/" +
+                                ENTITY_RESOURCE_LOCATION +
                                 ((INamedEntity) entity).getEntityName() + ".png");
   }
 
   public static class Factory implements IRenderFactory<EntityCow> {
+
     @Override
     public Render<? super EntityCow> createRenderFor(RenderManager renderManager) {
       return new RenderEventCow(renderManager, new ModelCow(), 0.8F);
