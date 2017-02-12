@@ -1,7 +1,7 @@
 /*
  * ClientProxy.java
  *
- * Copyright (c) 2014-2016 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,15 @@ import com.robrit.moofluids.client.event.TextureRegisterEvent;
 import com.robrit.moofluids.client.render.RenderEventCow;
 import com.robrit.moofluids.client.render.RenderFluidCow;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
-import com.robrit.moofluids.common.entity.event.EntityChristmasCow;
-import com.robrit.moofluids.common.entity.event.EntityNewYearsCow;
+import com.robrit.moofluids.common.entity.holiday.EntityChristmasCow;
+import com.robrit.moofluids.common.entity.holiday.EntityEasterCow;
+import com.robrit.moofluids.common.entity.holiday.EntityHalloweenCow;
+import com.robrit.moofluids.common.entity.holiday.EntityNewYearsCow;
+import com.robrit.moofluids.common.entity.holiday.EntityValentinesCow;
 import com.robrit.moofluids.common.proxy.CommonProxy;
 import com.robrit.moofluids.common.ref.ConfigurationData;
-import com.robrit.moofluids.common.util.DateHelper;
 
 import net.minecraftforge.common.MinecraftForge;
-
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,16 +52,12 @@ public class ClientProxy extends CommonProxy {
                                                      new RenderFluidCow.Factory());
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
-      /* Checks if the current date is between the dates (12/16/2014) and (12/28/2014) */
-      if (DateHelper.isDateBetweenEpochBoundaries(1418688000, 1419724800)) {
-        RenderingRegistry.registerEntityRenderingHandler(EntityChristmasCow.class,
-                                                         new RenderEventCow.Factory());
-      }
-      /* Checks if the current date is between the dates (12/29/2014) and (01/02/2015) */
-      if (DateHelper.isDateBetweenEpochBoundaries(1419811200, 1420156800)) {
-        RenderingRegistry.registerEntityRenderingHandler(EntityNewYearsCow.class,
-                                                         new RenderEventCow.Factory());
-      }
+      final RenderEventCow.Factory renderFactory = new RenderEventCow.Factory();
+      RenderingRegistry.registerEntityRenderingHandler(EntityChristmasCow.class, renderFactory);
+      RenderingRegistry.registerEntityRenderingHandler(EntityEasterCow.class, renderFactory);
+      RenderingRegistry.registerEntityRenderingHandler(EntityHalloweenCow.class, renderFactory);
+      RenderingRegistry.registerEntityRenderingHandler(EntityNewYearsCow.class, renderFactory);
+      RenderingRegistry.registerEntityRenderingHandler(EntityValentinesCow.class, renderFactory);
     }
   }
 }

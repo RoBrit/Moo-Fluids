@@ -1,7 +1,7 @@
 /*
  * DateHelper.java
  *
- * Copyright (c) 2014-2016 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +19,56 @@
 
 package com.robrit.moofluids.common.util;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class DateHelper {
 
-  private static final int MILLIS = 1000;
+  public static boolean isDateBetweenBoundaries(final int lowerBoundaryDay,
+                                                final int lowerBoundaryMonth,
+                                                final int lowerBoundaryYear,
+                                                final int upperBoundaryDay,
+                                                final int upperBoundaryMonth,
+                                                final int upperBoundaryYear) {
+    final Calendar currentTime = Calendar.getInstance();
+    final Calendar upperBoundaryDate = Calendar.getInstance();
+    final Calendar lowerBoundaryDate = Calendar.getInstance();
 
-  public static boolean isDateBetweenDateBoundaries(final Date lowerBoundaryDate,
-                                                    final Date upperBoundaryDate) {
-    final Date currentDate = new Date();
+    lowerBoundaryDate.set(Calendar.MILLISECOND, 0);
+    lowerBoundaryDate.set(Calendar.SECOND, 0);
+    lowerBoundaryDate.set(Calendar.MINUTE, 0);
+    lowerBoundaryDate.set(Calendar.HOUR, 0);
+    lowerBoundaryDate.set(Calendar.DAY_OF_MONTH, lowerBoundaryDay);
+    lowerBoundaryDate.set(Calendar.MONTH, lowerBoundaryMonth - 1); // Months are zero bound
+    lowerBoundaryDate.set(Calendar.YEAR, lowerBoundaryYear);
 
-    return currentDate.after(lowerBoundaryDate) && currentDate.before(upperBoundaryDate);
+    upperBoundaryDate.set(Calendar.MILLISECOND, 0);
+    upperBoundaryDate.set(Calendar.SECOND, 0);
+    upperBoundaryDate.set(Calendar.MINUTE, 0);
+    upperBoundaryDate.set(Calendar.HOUR, 0);
+    upperBoundaryDate.set(Calendar.DAY_OF_MONTH, upperBoundaryDay);
+    upperBoundaryDate.set(Calendar.MONTH, upperBoundaryMonth - 1); // Months are zero bound
+    upperBoundaryDate.set(Calendar.YEAR, upperBoundaryYear);
+
+    return currentTime.after(lowerBoundaryDate) && currentTime.before(upperBoundaryDate);
   }
 
-  public static boolean isDateBetweenEpochBoundaries(final long lowerBoundaryEpoch,
-                                                     final long upperBoundaryEpoch) {
-    final Date lowerBoundaryDate = new Date(lowerBoundaryEpoch * MILLIS);
-    final Date upperBoundaryDate = new Date(upperBoundaryEpoch * MILLIS);
+  public static boolean isDateBetweenBoundaries(final int lowerBoundaryDay,
+                                                final int lowerBoundaryMonth,
+                                                final int upperBoundaryDay,
+                                                final int upperBoundaryMonth) {
+    final Calendar currentTime = Calendar.getInstance();
+    return isDateBetweenBoundaries(lowerBoundaryDay, lowerBoundaryMonth,
+                                   currentTime.get(Calendar.YEAR),
+                                   upperBoundaryDay, upperBoundaryMonth,
+                                   currentTime.get(Calendar.YEAR));
+  }
 
-    return isDateBetweenDateBoundaries(lowerBoundaryDate, upperBoundaryDate);
+  public static boolean isDateBetweenBoundaries(final int lowerBoundaryDay,
+                                                final int upperBoundaryDay) {
+    final Calendar currentTime = Calendar.getInstance();
+    return isDateBetweenBoundaries(lowerBoundaryDay, currentTime.get(Calendar.MONTH),
+                                   currentTime.get(Calendar.YEAR),
+                                   upperBoundaryDay, currentTime.get(Calendar.MONTH),
+                                   currentTime.get(Calendar.YEAR));
   }
 }

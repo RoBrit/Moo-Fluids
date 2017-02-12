@@ -1,7 +1,7 @@
 /*
  * TextureRegisterEvent.java
  *
- * Copyright (c) 2014-2016 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -136,8 +136,7 @@ public class TextureRegisterEvent {
         EntityHelper.setEntityData(fluidName, entityTypeData);
 
         if (ModInformation.DEBUG_MODE) {
-          LogHelper.info("Successfully added colour overlay for " + fluidName +
-                         " with value " + entityTypeData.getOverlay());
+          LogHelper.info(String.format("Successfully added colour overlay for %s", fluidName));
           if (fluidIcon != null) {
             LogHelper.info("Successfully added colour overlay for " + fluidIcon.getIconName());
           }

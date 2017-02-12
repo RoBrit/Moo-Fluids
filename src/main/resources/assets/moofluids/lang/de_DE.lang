@@ -9,9 +9,10 @@ death.attack.whacked=%1$s wurde zu Tode geklopft
 #Entity Name Localizations
 entity.MooFluids.EntityFluidCow.name=Flüssikeitskuh
 entity.MooFluids.EntityChristmasCow.name=Weihnachtskuh
-entity.MooFluids.EntityNewYearsCow.name=Sylvesterkuh
-entity.MooFluids.EntityHalloweenCow.name=Halloweenkuh
 entity.MooFluids.EntityEasterCow.name=Osterkuh
+entity.MooFluids.EntityHalloweenCow.name=Halloweenkuh
+entity.MooFluids.EntityNewYearsCow.name=Sylvesterkuh
+entity.MooFluids.EntityValentinesCow.name=Valentine's Cow
 
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=Flüssigkeits Name: %s

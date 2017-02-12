@@ -1,7 +1,7 @@
 /*
  * MooFluids.java
  *
- * Copyright (c) 2014-2016 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ public class MooFluids {
     ConfigurationHandler.init();
     ConfigurationHandler.updateGlobalConfiguration();
     proxy.registerEntities();
+    proxy.registerEntitySpawns();
 
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished pre-initialisation stage for %s",

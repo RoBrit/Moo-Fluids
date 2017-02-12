@@ -1,7 +1,7 @@
 /*
  * EntityChristmasCow.java
  *
- * Copyright (c) 2014-2016 TheRoBrit
+ * Copyright (c) 2014-2017 TheRoBrit
  *
  * Moo-Fluids is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.entity.event;
-
+package com.robrit.moofluids.common.entity.holiday;
 
 import com.robrit.moofluids.common.entity.INamedEntity;
+import com.robrit.moofluids.common.util.EntityHelper;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityChristmasCow extends EntityCow implements INamedEntity {
 
-  private static final String ENTITY_NAME = "Christmas Cow";
+  private static final String ENTITY_NAME = "EntityChristmasCow";
 
   public EntityChristmasCow(final World world) {
     super(world);
@@ -72,24 +71,8 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
   }
 
   @Override
-  protected Item getDropItem() {
-    return Items.cookie;
-  }
-
-  @Override
-  protected void dropFewItems(boolean hasRecentlyBeenHitByPlayer, int levelOfLootingUsed) {
-    int maxSpawnedAmount = rand.nextInt(3) + rand.nextInt(1 + levelOfLootingUsed);
-    int currentSpawnedAmount = 0;
-    int numberToDropExtra = 100; /* The chance to drop extra item(s)/blocks(s) */
-
-    for (currentSpawnedAmount = 0; currentSpawnedAmount < maxSpawnedAmount;
-         currentSpawnedAmount++) {
-      dropItem(getDropItem(), 4);
-    }
-    /* 1 in numberToDropExtra chance of occurring (1/numberToDropExtra) */
-    if (rand.nextInt(numberToDropExtra - 1) + 1 == 1) {
-      dropItem(Items.diamond, 1); /* Drops an EntityItem into the world with the given ID and the specified amount */
-    }
+  protected ResourceLocation getLootTable() {
+    return EntityHelper.getLootTable(getEntityName());
   }
 
   @Override
