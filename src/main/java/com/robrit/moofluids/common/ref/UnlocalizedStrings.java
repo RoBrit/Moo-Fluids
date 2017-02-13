@@ -32,6 +32,6 @@ public class UnlocalizedStrings {
 
   /* WAILA Tooltips */
   public static final String FLUID_TOOLTIP = "waila.tooltip.fluid-name";
-  public static final String CURRENT_COOLDOWN_TOOLTIP = "waila.tooltip.current-cooldown";
+  public static final String NEXT_USE_TOOLTIP = "waila.tooltip.next-use";
   public static final String BREEDING_ITEM_TOOLTIP = "waila.tooltip.breeding-item";
 }

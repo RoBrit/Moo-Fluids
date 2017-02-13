@@ -25,5 +25,5 @@ moofluids.temporal.time.now=Now
 
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=流体:%s
-moofluids.waila.tooltip.current-cooldown=距离生产时间:%s
+moofluids.waila.tooltip.next-use=Next Usable: %s
 moofluids.waila.tooltip.breeding-item=食物:%s
