@@ -34,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityNewYearsCow extends EntityCow implements INamedEntity {
 
-  private static final String ENTITY_NAME = "EntityNewYearsCow";
+  public static final String ENTITY_NAME = "EntityNewYearsCow";
 
   public EntityNewYearsCow(final World world) {
     super(world);

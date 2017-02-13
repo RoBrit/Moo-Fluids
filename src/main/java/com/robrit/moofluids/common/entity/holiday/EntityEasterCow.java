@@ -51,7 +51,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityEasterCow extends EntityCow implements INamedEntity {
 
-  private static final String ENTITY_NAME = "EntityEasterCow";
+  public static final String ENTITY_NAME = "EntityEasterCow";
   private int jumpTicks;
   private int jumpDuration;
   private boolean wasOnGround;

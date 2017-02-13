@@ -40,7 +40,7 @@ import net.minecraft.world.World;
 
 public class EntityHalloweenCow extends EntityCow implements INamedEntity {
 
-  private static final String ENTITY_NAME = "EntityHalloweenCow";
+  public static final String ENTITY_NAME = "EntityHalloweenCow";
 
   public EntityHalloweenCow(final World world) {
     super(world);
