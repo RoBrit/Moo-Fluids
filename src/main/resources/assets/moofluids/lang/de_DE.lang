@@ -7,23 +7,23 @@ death.attack.burn=%1$s wurde etwas zu knusprig
 death.attack.whacked=%1$s wurde zu Tode geklopft
 
 #Entity Name Localizations
-entity.moofluids.EntityFluidCow.name=Flüssikeitskuh
+entity.moofluids.EntityFluidCow.name=Flüssigkeitskuh
 entity.moofluids.EntityChristmasCow.name=Weihnachtskuh
 entity.moofluids.EntityEasterCow.name=Osterkuh
 entity.moofluids.EntityHalloweenCow.name=Halloweenkuh
-entity.moofluids.EntityNewYearsCow.name=Sylvesterkuh
-entity.moofluids.EntityValentinesCow.name=Valentine's Cow
+entity.moofluids.EntityNewYearsCow.name=Silvesterkuh
+entity.moofluids.EntityValentinesCow.name=Valentinskuh
 
 #Temporal Localizations
-moofluids.temporal.time.hour=Hour
+moofluids.temporal.time.hour=Stunde
 moofluids.temporal.time.minute=Minute
-moofluids.temporal.time.second=Second
-moofluids.temporal.time.hours=Hours
-moofluids.temporal.time.minutes=Minutes
-moofluids.temporal.time.seconds=Seconds
-moofluids.temporal.time.now=Now
+moofluids.temporal.time.second=Sekunde
+moofluids.temporal.time.hours=Stunden
+moofluids.temporal.time.minutes=Minuten
+moofluids.temporal.time.seconds=Sekunden
+moofluids.temporal.time.now=Jetzt
 
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=Flüssigkeitsname: %s
-moofluids.waila.tooltip.next-use=Next Usable: %s
+moofluids.waila.tooltip.next-use=Nächste Verwendung: %s
 moofluids.waila.tooltip.breeding-item=Zuchtgegenstand: %s
