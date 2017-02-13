@@ -1,5 +1,5 @@
 /*
- * IProxy.java
+ * curseforge.gradle
  *
  * Copyright (c) 2014-2017 TheRoBrit
  *
@@ -17,17 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.proxy;
-
-public interface IProxy {
-
-  void initContainableFluids();
-
-  void registerEventHandlers();
-
-  void registerEntities();
-
-  void registerEntitySpawns();
-
-  void registerPlugins();
+curseforge {
+    apiKey = {
+        curseforge_api_key
+        project {
+            id = curseforge_mod_id
+            changelog = ""
+            releaseType = "release"
+            addGameVersion minecraft_version
+            relations {}
+        }
+    }
 }

@@ -62,8 +62,7 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
         double randY = (double) ((float) posY + rand.nextFloat());
         double randZ = (double) ((float) posZ + rand.nextFloat());
 
-        world.spawnParticle(EnumParticleTypes.SNOWBALL, randX, randY, randZ,
-                               0.0D, 0.0D, 0.0D);
+        world.spawnParticle(EnumParticleTypes.SNOWBALL, randX, randY, randZ, 0.0D, 0.0D, 0.0D);
 
         world.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState());
       }

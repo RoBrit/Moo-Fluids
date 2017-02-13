@@ -51,11 +51,20 @@ public class MooFluids {
     return proxy;
   }
 
+  // Functions to be called before any event lifecycle
+  static {
+    FluidRegistry.enableUniversalBucket();
+    FluidRegistry.addBucketForFluid(FluidRegistry.WATER);
+    FluidRegistry.addBucketForFluid(FluidRegistry.LAVA);
+  }
+
   @Mod.EventHandler
   public static void preInit(FMLPreInitializationEvent event) {
     ConfigurationHandler.setConfigFile(event.getSuggestedConfigurationFile());
     ConfigurationHandler.init();
     ConfigurationHandler.updateGlobalConfiguration();
+    proxy.initContainableFluids();
+    ConfigurationHandler.updateFluidConfiguration();
     proxy.registerEntities();
     proxy.registerEntitySpawns();
 
@@ -67,9 +76,8 @@ public class MooFluids {
 
   @Mod.EventHandler
   public static void init(FMLInitializationEvent event) {
-    proxy.initContainableFluids();
-    ConfigurationHandler.updateFluidConfiguration();
     proxy.registerEventHandlers();
+    proxy.registerPlugins();
 
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished initialisation stage for %s", ModInformation.MOD_ID));

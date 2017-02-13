@@ -21,15 +21,15 @@ package com.robrit.moofluids.common.ref;
 
 public class ModInformation {
 
-  public static final String MOD_ID = "moofluids";
-  public static final String MOD_NAME = "Moo Fluids";
-  public static final String MOD_VERSION = "@VERSION@";
-  public static final String MOD_DEPENDENCIES = "after:*;required-after:Forge@[12.16.0.1805,)";
+  public static final String MOD_ID = "@MOD_ID@";
+  public static final String MOD_NAME = "@MOD_NAME@";
+  public static final String MOD_VERSION = "@MOD_VERSION@";
+  public static final String MOD_DEPENDENCIES = "after:*;";
   public static final String MOD_FINGERPRINT = "@FINGERPRINT@";
-  public static final String MOD_PACKAGE = "com.robrit.moofluids";
+  public static final String MOD_PACKAGE = "@MOD_PACKAGE@";
 
   public static final String PROXY_CLIENT_LOCATION = MOD_PACKAGE + ".client.proxy.ClientProxy";
   public static final String PROXY_SERVER_LOCATION = MOD_PACKAGE + ".server.proxy.ServerProxy";
 
-  public static final boolean DEBUG_MODE = true;
+  public static final boolean DEBUG_MODE = false; // TODO: IMPLEMENT INTO ENVIRONMENT VARS
 }

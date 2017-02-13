@@ -14,7 +14,16 @@ entity.moofluids.EntityHalloweenCow.name=Halloween Cow
 entity.moofluids.EntityNewYearsCow.name=New Years Cow
 entity.moofluids.EntityValentinesCow.name=Valentine's Cow
 
+#Temporal Localizations
+moofluids.temporal.time.hour=Hour
+moofluids.temporal.time.minute=Minute
+moofluids.temporal.time.second=Second
+moofluids.temporal.time.hours=Hours
+moofluids.temporal.time.minutes=Minutes
+moofluids.temporal.time.seconds=Seconds
+moofluids.temporal.time.now=Now
+
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=Fluid Name: %s
-moofluids.waila.tooltip.current-cooldown=Current Cooldown: %s ticks
+moofluids.waila.tooltip.current-cooldown=Current Cooldown: %s
 moofluids.waila.tooltip.breeding-item=Breeding Item: %s

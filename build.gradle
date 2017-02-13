@@ -17,6 +17,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Add plugins
+apply plugin: "net.minecraftforge.gradle.forge"
+//apply plugin: "com.matthewprenger.cursegradle"
+apply plugin: "maven-publish"
+
+// Add scripts
+apply from: "gradle/scripts/dependencies.gradle"
+apply from: "gradle/scripts/builds.gradle"
+apply from: "gradle/scripts/sign.gradle"
+//apply from: "gradle/scripts/curseforge.gradle"
+
+// Java version
+sourceCompatibility = 1.8 // Sourcecode Java version
+targetCompatibility = 1.8 // Targeted Java version
+
+// Project information
+archivesBaseName = mod_name // Mod Name
+group = mod_package // Mod Package
+version = "${minecraft_version}-${mod_version}" // Compiled Mod Version
+
+minecraft {
+    version = "${minecraft_version}-${forge_version}"
+    runDir = "run"
+    useDepAts = true // Required for JEI
+
+    mappings = mcp_mappings
+
+    replace "@MOD_ID@", mod_id
+    replace "@MOD_NAME@", mod_name
+    replace "@MOD_VERSION@", project.version
+    replace "@MOD_PACKAGE@", mod_package
+
+    replaceIn "ModInformation.java"
+}
+
 buildscript {
     repositories {
         jcenter()
@@ -24,34 +59,21 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+
+        maven {
+            name = "gradle"
+            url "https://plugins.gradle.org/m2/"
+        }
+
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
+
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-    }
-}
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-
-archivesBaseName = "MooFluids" // Mod ID
-group = "com.robrit.moofluids" // Mod Package
-version = "${minecraft_version}-${mod_version}" // Mod Version
-
-minecraft {
-    version = "${minecraft_version}-${forge_version}"
-    mappings = "stable_29"
-    runDir = "run"
-
-    replace "@VERSION@", project.version
-    replaceIn "ModInformation.java"
-}
-
-repositories {
-    mavenCentral()
-    maven {
-        url = "http://mobiusstrip.eu/maven"
-    }
-    maven {
-        url = "http://chickenbones.net/maven/"
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
+//        classpath "com.matthewprenger:CurseGradle:1.0.7"
     }
 }
 
@@ -60,6 +82,7 @@ sourceSets {
         java {
             srcDir 'src/main/java'
         }
+
         resources {
             srcDir 'src/main/resources'
         }
@@ -67,17 +90,22 @@ sourceSets {
 }
 
 processResources {
-    inputs.property "version", project.version
-    inputs.property "MCversion", project.minecraft.version
+    inputs.property "mod_id", mod_id
+    inputs.property "mod_name", mod_name
+    inputs.property "mod_version", project.version
+    inputs.property "mc_version", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
-        include '*.info'
+        include "*.info"
 
-        expand 'version': project.version, 'MCversion': project.minecraft.version
+        expand "mod_id": mod_id,
+               "mod_name": mod_name,
+               "mod_version": project.version,
+               "mc_version": project.minecraft.version
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything else, that's not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
+        exclude "**/*.info"
     }
 }

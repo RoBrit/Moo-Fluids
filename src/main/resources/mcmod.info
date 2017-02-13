@@ -1,8 +1,8 @@
 [
   {
-    "modid": "moofluids",
-    "name": "Moo Fluids",
-    "version": "${version}",
+    "modid": "${mod_id}",
+    "name": "${mod_name}",
+    "version": "${mod_version}",
     "mcversion": "${mc_version}",
     "description": "Adds dynamically generated cows to the world, that give different fluids when right clicked with a bucket (or fluid container)",
     "credits": "",

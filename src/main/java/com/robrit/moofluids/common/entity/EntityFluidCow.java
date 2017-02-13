@@ -52,10 +52,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import io.netty.buffer.ByteBuf;
 
-public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData {
+public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData, INamedEntity {
 
   private static final DataParameter<Integer> DATA_WATCHER_CURRENT_USE_COOLDOWN =
       EntityDataManager.createKey(EntityFluidCow.class, DataSerializers.VARINT);
+  public static final String ENTITY_NAME = "EntityFluidCow";
   public static final String NBT_TAG_FLUID_NAME = "FluidName";
   public static final String NBT_TAG_CURRENT_USE_COOLDOWN = "CurrentUseCooldown";
   private int currentUseCooldown;
@@ -70,6 +71,11 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     if (getEntityFluid().getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
       isImmuneToFire = true;
     }
+  }
+
+  @Override
+  public String getEntityName() {
+    return ENTITY_NAME;
   }
 
   @Override

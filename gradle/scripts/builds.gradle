@@ -1,5 +1,5 @@
 /*
- * IProxy.java
+ * builds.gradle
  *
  * Copyright (c) 2014-2017 TheRoBrit
  *
@@ -17,17 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.proxy;
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
 
-public interface IProxy {
-
-  void initContainableFluids();
-
-  void registerEventHandlers();
-
-  void registerEntities();
-
-  void registerEntitySpawns();
-
-  void registerPlugins();
+artifacts {
+    archives deobfJar
 }

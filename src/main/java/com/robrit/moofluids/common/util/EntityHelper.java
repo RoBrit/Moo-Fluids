@@ -26,11 +26,17 @@ import com.robrit.moofluids.common.entity.EntityTypeData;
 import com.robrit.moofluids.common.ref.ModInformation;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeMap;
 
 public class EntityHelper {
@@ -97,8 +103,21 @@ public class EntityHelper {
                                     final int updateFrequency, final boolean sendsVelocityUpdates,
                                     final int eggPrimary, final int eggSecondary) {
     EntityRegistry.registerModEntity(entityClass, entityName, getRegisteredEntityId(),
-                                     MooFluids.getInstance(), updateFrequency, trackingRange,
+                                     MooFluids.getInstance(), trackingRange, updateFrequency,
                                      sendsVelocityUpdates, eggPrimary, eggSecondary);
+  }
+
+  public static void addSpawnFromType(final Class<? extends EntityLiving> entityClass,
+                                      final int weightedProb, final int min, final int max,
+                                      final EnumCreatureType typeOfCreature,
+                                      final BiomeDictionary.Type... biomeTypes) {
+    final ArrayList<Biome> biomes = new ArrayList<Biome>();
+    for (final BiomeDictionary.Type biomeType : biomeTypes) {
+      biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType)));
+    }
+
+    EntityRegistry.addSpawn(entityClass, weightedProb, min, max, typeOfCreature,
+                            biomes.toArray(new Biome[biomes.size()]));
   }
 
   public static void registerEntityLootTable(final String entityName) {

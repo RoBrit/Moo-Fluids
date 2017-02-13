@@ -1,7 +1,8 @@
 ## gradle
 /.gradle
 /build
-/gradle
+!/gradle/scripts
+/gradle/wrapper
 /gradlew
 /gradlew.bat
 

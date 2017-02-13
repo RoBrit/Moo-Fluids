@@ -21,6 +21,15 @@ package com.robrit.moofluids.common.ref;
 
 public class UnlocalizedStrings {
 
+  /* Temporal strings */
+  public static final String TIME_HOUR = "temporal.time.hour";
+  public static final String TIME_HOURS = "temporal.time.hours";
+  public static final String TIME_MINUTE = "temporal.time.minute";
+  public static final String TIME_MINUTES = "temporal.time.minutes";
+  public static final String TIME_SECOND = "temporal.time.second";
+  public static final String TIME_SECONDS = "temporal.time.seconds";
+  public static final String TIME_NOW = "temporal.time.now";
+
   /* WAILA Tooltips */
   public static final String FLUID_TOOLTIP = "waila.tooltip.fluid-name";
   public static final String CURRENT_COOLDOWN_TOOLTIP = "waila.tooltip.current-cooldown";

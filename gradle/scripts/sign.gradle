@@ -1,5 +1,5 @@
 /*
- * IProxy.java
+ * sign.gradle
  *
  * Copyright (c) 2014-2017 TheRoBrit
  *
@@ -17,17 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.proxy;
+task signJar(type: SignJar, dependsOn: [jar, deobfJar]) {
+    onlyIf {
+        project.hasProperty('keystore_location')
+    }
 
-public interface IProxy {
+    keyStore = project.hasProperty('keystore_location') ?
+               project.getProperty('keystore_location') : "";
+    storePass = project.hasProperty('keystore_password') ?
+                project.getProperty('keystore_password') : "";
+    alias = project.hasProperty('keystore_alias') ?
+            project.getProperty('keystore_alias') : "";
+    keyPass = project.hasProperty('keystore_password') ?
+              project.getProperty('keystore_password') : "";
 
-  void initContainableFluids();
-
-  void registerEventHandlers();
-
-  void registerEntities();
-
-  void registerEntitySpawns();
-
-  void registerPlugins();
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
 }

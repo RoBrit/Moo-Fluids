@@ -19,7 +19,6 @@
 
 package com.robrit.moofluids.common.proxy;
 
-import com.robrit.moofluids.common.MooFluids;
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.entity.holiday.EntityChristmasCow;
 import com.robrit.moofluids.common.entity.holiday.EntityEasterCow;
@@ -28,6 +27,7 @@ import com.robrit.moofluids.common.entity.holiday.EntityNewYearsCow;
 import com.robrit.moofluids.common.entity.holiday.EntityValentinesCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
+import com.robrit.moofluids.common.plugins.waila.WailaPlugin;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.ref.ModInformation;
 import com.robrit.moofluids.common.util.DateHelper;
@@ -35,48 +35,36 @@ import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
 
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.Loader;
 
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public abstract class CommonProxy implements IProxy {
 
   @Override
   public void initContainableFluids() {
-    for (final FluidContainerRegistry.FluidContainerData fluidContainerData :
-        FluidContainerRegistry.getRegisteredFluidContainerData()) {
-      if (fluidContainerData.filledContainer.getItem() != null) {
-        final String fluidName = fluidContainerData.fluid.getFluid().getName();
-        if (!EntityHelper.hasContainableFluid(fluidName)) {
-          final Fluid fluid = fluidContainerData.fluid.getFluid();
-          EntityHelper.setContainableFluid(fluidName, fluid);
-
-          if (ModInformation.DEBUG_MODE) {
-            LogHelper.info(fluidName + " has been added as an containable (i.e. bucketable) fluid");
-          }
-        }
-      }
-    }
-
     if (FluidRegistry.isUniversalBucketEnabled()) {
-      for (final Fluid fluid : FluidRegistry.getBucketFluids()) {
-        final String fluidName = fluid.getName();
-        if (!EntityHelper.hasContainableFluid(fluidName)) {
-          EntityHelper.setContainableFluid(fluidName, fluid);
+      if (FluidRegistry.getBucketFluids().size() > 0) {
+        for (final Fluid fluid : FluidRegistry.getBucketFluids()) {
+          final String fluidName = fluid.getName();
+          if (!EntityHelper.hasContainableFluid(fluidName)) {
+            EntityHelper.setContainableFluid(fluidName, fluid);
 
-          if (ModInformation.DEBUG_MODE) {
-            LogHelper.info(fluidName + " has been added as an containable (i.e. bucketable) fluid");
+            if (ModInformation.DEBUG_MODE) {
+              LogHelper.info(String.format(fluidName,
+                                           "%s has been added as an containable (i.e. bucketable) fluid"));
+            }
           }
         }
+      } else {
+        LogHelper.error("No registered fluids found");
       }
+    } else {
+      throw new UnsupportedOperationException("Forge UniversalBucket must be enabled");
     }
   }
 
@@ -88,115 +76,94 @@ public abstract class CommonProxy implements IProxy {
 
   @Override
   public void registerEntities() {
-    EntityRegistry.registerModEntity(EntityFluidCow.class, "EntityFluidCow",
-                                     EntityHelper.getRegisteredEntityId(),
-                                     MooFluids.getInstance(), 64, 1, true, 0xFFFFFF, 0xFFFFFF);
+    if (EntityHelper.getContainableFluidsArray().length > 0) {
+      EntityHelper.registerEntity(EntityFluidCow.class, EntityFluidCow.ENTITY_NAME,
+                                  64, 1, true, 0xFFFFFF, 0xFFFFFF);
+    }
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
-      EntityHelper.registerEntityLootTable("EntityChristmasCow");
-      EntityRegistry.registerModEntity(EntityChristmasCow.class, "EntityChristmasCow",
-                                       EntityHelper.getRegisteredEntityId(),
-                                       MooFluids.getInstance(), 64, 1, true, 0x228B22, 0xAE0505);
+      EntityHelper.registerEntityLootTable(EntityChristmasCow.ENTITY_NAME);
+      EntityHelper.registerEntity(EntityChristmasCow.class, EntityChristmasCow.ENTITY_NAME,
+                                  64, 1, true, 0x228B22, 0xAE0505);
 
-      EntityHelper.registerEntityLootTable("EntityEasterCow");
-      EntityRegistry.registerModEntity(EntityEasterCow.class, "EntityEasterCow",
-                                       EntityHelper.getRegisteredEntityId(),
-                                       MooFluids.getInstance(), 64, 1, true, 0x8BEAAF, 0x83DDD6);
+      EntityHelper.registerEntityLootTable(EntityEasterCow.ENTITY_NAME);
+      EntityHelper.registerEntity(EntityEasterCow.class, EntityEasterCow.ENTITY_NAME,
+                                  64, 1, true, 0x8BEAAF, 0x83DDD6);
 
-      EntityHelper.registerEntityLootTable("EntityHalloweenCow");
-      EntityRegistry.registerModEntity(EntityHalloweenCow.class, "EntityHalloweenCow",
-                                       EntityHelper.getRegisteredEntityId(),
-                                       MooFluids.getInstance(), 64, 1, true, 0x101010, 0xFF0000);
+      EntityHelper.registerEntityLootTable(EntityHalloweenCow.ENTITY_NAME);
+      EntityHelper.registerEntity(EntityHalloweenCow.class, EntityHalloweenCow.ENTITY_NAME,
+                                  64, 1, true, 0x101010, 0xFF0000);
 
+      EntityHelper.registerEntityLootTable(EntityNewYearsCow.ENTITY_NAME);
+      EntityHelper.registerEntity(EntityNewYearsCow.class, EntityNewYearsCow.ENTITY_NAME,
+                                  64, 1, true, 0xC0C0C0, 0xFFD700);
 
-      EntityHelper.registerEntityLootTable("EntityNewYearsCow");
-      EntityRegistry.registerModEntity(EntityNewYearsCow.class, "EntityNewYearsCow",
-                                       EntityHelper.getRegisteredEntityId(),
-                                       MooFluids.getInstance(), 64, 1, true, 0xC0C0C0, 0xFFD700);
-
-      EntityHelper.registerEntityLootTable("EntityValentinesCow");
-      EntityRegistry.registerModEntity(EntityValentinesCow.class, "EntityValentinesCow",
-                                       EntityHelper.getRegisteredEntityId(),
-                                       MooFluids.getInstance(), 64, 1, true, 0xDDDDDD, 0xFF3BC5);
+      EntityHelper.registerEntityLootTable(EntityValentinesCow.ENTITY_NAME);
+      EntityHelper.registerEntity(EntityValentinesCow.class, EntityValentinesCow.ENTITY_NAME,
+                                  64, 1, true, 0xDDDDDD, 0xFF3BC5);
     }
   }
 
   @Override
   public void registerEntitySpawns() {
-    final ArrayList<Biome> biomes = new ArrayList<Biome>();
-    for (final BiomeDictionary.Type biomeType : BiomeDictionary.Type.values()) {
-      biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType))); // Add biomes
-    }
-
-    EntityRegistry.addSpawn(EntityFluidCow.class,
-                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE, 1, 1,
-                            EnumCreatureType.CREATURE,
-                            biomes.toArray(new Biome[biomes.size()]));
-    biomes.clear(); // Reset biome list
+    EntityHelper.addSpawnFromType(EntityFluidCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
+                                  BiomeDictionary.Type.values());
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
       /* Checks if the current date is between the dates (16/12) and (28/12) every year */
       if (DateHelper.isDateBetweenBoundaries(16, Month.DECEMBER.getValue(),
                                              28, Month.DECEMBER.getValue())) {
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.COLD)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
-
-        EntityRegistry.addSpawn(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new Biome[biomes.size()]));
-        biomes.clear(); // Reset biome list
+        EntityHelper.addSpawnFromType(EntityChristmasCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
+                                      BiomeDictionary.Type.SNOWY,
+                                      BiomeDictionary.Type.COLD,
+                                      BiomeDictionary.Type.FOREST,
+                                      BiomeDictionary.Type.PLAINS);
       }
 
       /* Checks if the current date is between the dates (10/04) and (24/04) every year */
       if (DateHelper.isDateBetweenBoundaries(10, Month.APRIL.getValue(),
                                              24, Month.APRIL.getValue())) {
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.HILLS)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
-
-        EntityRegistry.addSpawn(EntityEasterCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new Biome[biomes.size()]));
-        biomes.clear(); // Reset biome list
+        EntityHelper.addSpawnFromType(EntityEasterCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
+                                      BiomeDictionary.Type.HILLS,
+                                      BiomeDictionary.Type.FOREST,
+                                      BiomeDictionary.Type.PLAINS);
       }
 
       /* Checks if the current date is between the dates (26/10) and (1/11) every year */
       if (DateHelper.isDateBetweenBoundaries(26, Month.OCTOBER.getValue(),
                                              1, Month.NOVEMBER.getValue())) {
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.SPOOKY)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.DEAD)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
-
-        EntityRegistry.addSpawn(EntityHalloweenCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new Biome[biomes.size()]));
-        biomes.clear(); // Reset biome list
+        EntityHelper.addSpawnFromType(EntityHalloweenCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
+                                      BiomeDictionary.Type.SPOOKY,
+                                      BiomeDictionary.Type.DEAD,
+                                      BiomeDictionary.Type.FOREST,
+                                      BiomeDictionary.Type.PLAINS);
       }
 
       /* Checks if the current date is between the dates (29/12) and (04/01) every year */
       if (DateHelper.isDateBetweenBoundaries(29, Month.DECEMBER.getValue(),
                                              4, Month.JANUARY.getValue())) {
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.LUSH)));
-        biomes
-            .addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.MAGICAL)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
-
-        EntityRegistry.addSpawn(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new Biome[biomes.size()]));
-        biomes.clear(); // Reset biome list
+        EntityHelper.addSpawnFromType(EntityNewYearsCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
+                                      BiomeDictionary.Type.LUSH,
+                                      BiomeDictionary.Type.MAGICAL,
+                                      BiomeDictionary.Type.FOREST,
+                                      BiomeDictionary.Type.PLAINS);
       }
 
       /* Checks if the current date is between the dates (10/02) and (16/02) every year */
       if (DateHelper.isDateBetweenBoundaries(10, Month.FEBRUARY.getValue(),
                                              16, Month.FEBRUARY.getValue())) {
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.HOT)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST)));
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(BiomeDictionary.Type.PLAINS)));
-
-        EntityRegistry.addSpawn(EntityValentinesCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                biomes.toArray(new Biome[biomes.size()]));
-        biomes.clear(); // Reset biome list
+        EntityHelper.addSpawnFromType(EntityValentinesCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
+                                      BiomeDictionary.Type.HOT,
+                                      BiomeDictionary.Type.FOREST,
+                                      BiomeDictionary.Type.PLAINS);
       }
+    }
+  }
+
+  @Override
+  public void registerPlugins() {
+    if (Loader.isModLoaded("Waila")) {
+      WailaPlugin.init();
     }
   }
 }

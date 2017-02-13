@@ -1,5 +1,5 @@
 /*
- * IProxy.java
+ * dependencies.gradle
  *
  * Copyright (c) 2014-2017 TheRoBrit
  *
@@ -17,17 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.proxy;
 
-public interface IProxy {
+repositories {
+    mavenLocal()
 
-  void initContainableFluids();
+    maven {
+        url "http://mobiusstrip.eu/maven"
+    }
 
-  void registerEventHandlers();
+    maven {
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+}
 
-  void registerEntities();
-
-  void registerEntitySpawns();
-
-  void registerPlugins();
+dependencies {
+    deobfCompile "mezz.jei:jei_1.10.2:3.7.8.234"
+    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
 }
