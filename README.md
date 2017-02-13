@@ -1,7 +1,6 @@
 ##Moo Fluids - Minecraft Mod
 
-[Minecraft Forums page](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1293081-moofluids-cows-for-any-fluid)
-[Compiling Moo-Fluids](#compiling-moo-fluids) - For those that want the latest unreleased features.
+[Compiling Moo Fluids](#compiling-moo-fluids) - For those that want the latest unreleased features.
 
 [Contributing](#contributing) - For those that want to help out.
 
