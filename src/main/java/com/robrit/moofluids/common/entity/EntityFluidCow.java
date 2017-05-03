@@ -19,17 +19,23 @@
 
 package com.robrit.moofluids.common.entity;
 
+import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.ref.ModInformation;
+import com.robrit.moofluids.common.ref.UnlocalizedStrings;
 import com.robrit.moofluids.common.util.EntityHelper;
+import com.robrit.moofluids.common.util.LocalizationHelper;
 import com.robrit.moofluids.common.util.damage.AttackDamageSource;
 import com.robrit.moofluids.common.util.damage.BurnDamageSource;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,6 +44,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.Fluid;
@@ -49,8 +57,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import io.netty.buffer.ByteBuf;
 
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData, INamedEntity {
 
@@ -66,8 +72,12 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public EntityFluidCow(final World world) {
     super(world);
     setEntityTypeData(EntityHelper.getEntityData(getEntityFluid().getName()));
-    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
-
+    if (ConfigurationData.GLOBAL_FLUID_COW_STARTING_COOLDOWN_VALUE) {
+    	setNextUseCooldown(0);
+    } else {
+    	setNextUseCooldown(entityTypeData.getMaxUseCooldown());
+    }
+    
     if (getEntityFluid().getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
       isImmuneToFire = true;
     }
@@ -94,9 +104,15 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   @Override
-  public boolean processInteract(EntityPlayer entityPlayer, EnumHand hand,
-                                 ItemStack currentItemStack) {
-    if (!isChild()) {
+  public boolean processInteract(EntityPlayer entityPlayer, EnumHand hand, ItemStack currentItemStack) {
+    
+	if (entityPlayer.world.isRemote && currentItemStack != null && Items.BOOK == currentItemStack.getItem()) {
+	  FluidStack fluidStack = new FluidStack(this.getEntityFluid(), 0);
+	  Minecraft.getMinecraft().player.sendChatMessage(String.format(LocalizationHelper.localize(UnlocalizedStrings.FLUID_TOOLTIP), this.getEntityFluid().getLocalizedName(fluidStack)));
+	  return true;
+	}
+	  
+	if (!isChild()) {
 
       if (ModInformation.DEBUG_MODE) {
         setNextUseCooldown(0);

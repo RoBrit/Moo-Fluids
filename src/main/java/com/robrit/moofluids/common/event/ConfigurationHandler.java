@@ -60,10 +60,15 @@ public class ConfigurationHandler {
                             ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
                             ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE).getInt();
 
+      ConfigurationData.GLOBAL_FLUID_COW_STARTING_COOLDOWN_VALUE =
+          configuration.get(ConfigurationData.GLOBAL_FLUID_COW_STARTING_COOLDOWN_KEY,
+                            ConfigurationData.GLOBAL_FLUID_COW_STARTING_COOLDOWN_KEY,
+                            ConfigurationData.GLOBAL_FLUID_COW_STARTING_COOLDOWN_DEFAULT_VALUE).getBoolean();
+
       ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE =
-          configuration.get(ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
-                            ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
-                            ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
+    		  configuration.get(ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
+    				  ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
+    				  ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
     } catch (Exception exception) {
       LogHelper.error("Unable to read configuration for " + ModInformation.MOD_NAME);
       LogHelper.error(exception);
