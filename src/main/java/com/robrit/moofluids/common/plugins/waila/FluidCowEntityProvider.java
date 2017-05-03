@@ -84,7 +84,7 @@ public class FluidCowEntityProvider implements IWailaEntityProvider {
     return null;
   }
 
-  private static String getTimeUntilNextUse(int totalSeconds) {
+  public static String getTimeUntilNextUse(int totalSeconds) {
 
     final int MINUTES_IN_AN_HOUR = 60;
     final int SECONDS_IN_A_MINUTE = 60;

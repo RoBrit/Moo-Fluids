@@ -19,6 +19,8 @@
 
 package com.robrit.moofluids.common.proxy;
 
+import java.time.Month;
+
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 import com.robrit.moofluids.common.entity.holiday.EntityChristmasCow;
 import com.robrit.moofluids.common.entity.holiday.EntityEasterCow;
@@ -27,6 +29,7 @@ import com.robrit.moofluids.common.entity.holiday.EntityNewYearsCow;
 import com.robrit.moofluids.common.entity.holiday.EntityValentinesCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
+import com.robrit.moofluids.common.plugins.theoneprobe.TopPlugin;
 import com.robrit.moofluids.common.plugins.waila.WailaPlugin;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.ref.ModInformation;
@@ -40,8 +43,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
-
-import java.time.Month;
 
 public abstract class CommonProxy implements IProxy {
 
@@ -162,6 +163,7 @@ public abstract class CommonProxy implements IProxy {
 
   @Override
   public void registerPlugins() {
+	TopPlugin.init();
     if (Loader.isModLoaded("Waila")) {
       WailaPlugin.init();
     }

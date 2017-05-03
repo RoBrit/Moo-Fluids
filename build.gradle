@@ -77,6 +77,26 @@ buildscript {
     }
 }
 
+repositories {
+    maven {
+        name "ProfMobius Maven FS"
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven { // TOP
+    	name 'tterrag maven'
+   		url "http://maven.tterrag.com/"
+	}
+	maven { // McJty's CompatLayer
+        name 'K4 maven'
+        url "http://maven.k-4u.nl/"
+    }
+}
+
+dependencies {
+    deobfCompile "com.github.mcjty:compatlayer:1.10-0.+"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.+"
+}
+
 sourceSets {
     main {
         java {

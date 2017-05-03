@@ -23,6 +23,7 @@ public class ConfigurationData {
 
   /* Configuration keys */
   public static final String GLOBAL_FLUID_COW_SPAWN_RATE_KEY = "Fluid Cow Global Spawn Rate";
+  public static final String GLOBAL_FLUID_COW_STARTING_COOLDOWN_KEY = "Cooldown at Zero on Spawn";
   public static final String ENTITY_IS_SPAWNABLE_KEY = "Is Spawnable?";
   public static final String ENTITY_SPAWN_RATE_KEY = "Spawn Rate";
   public static final String ENTITY_NORMAL_DAMAGE_AMOUNT_KEY = "Normal Damage Amount";
@@ -35,6 +36,7 @@ public class ConfigurationData {
 
   /* Configuration default values */
   public static final int GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE = 8;
+  public static final boolean GLOBAL_FLUID_COW_STARTING_COOLDOWN_DEFAULT_VALUE = false;
   public static final boolean ENTITY_IS_SPAWNABLE_DEFAULT_VALUE = true;
   public static final int ENTITY_SPAWN_RATE_DEFAULT_VALUE = 100;
   public static final int ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE = 0;
@@ -47,6 +49,7 @@ public class ConfigurationData {
 
   /* Configuration values */
   public static int GLOBAL_FLUID_COW_SPAWN_RATE_VALUE;
+  public static boolean GLOBAL_FLUID_COW_STARTING_COOLDOWN_VALUE;
   public static boolean EVENT_ENTITIES_ENABLED_VALUE;
 
   /* Configuration comments */
