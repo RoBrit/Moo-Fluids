@@ -40,8 +40,13 @@ public class EntitySpawnHandler {
     if (event.getEntity() instanceof EntityFluidCow) {
       final EntityFluidCow entityFluidCow = (EntityFluidCow) event.getEntity();
 
-      if (entityFluidCow.getEntityFluid() == null) {
-        entityFluidCow.setEntityFluid(getEntityFluid());
+      if (entityFluidCow.getEntityFluid() == null) 
+	  {
+		Fluid temp = getEntityFluid();
+		if(temp != null)
+			entityFluidCow.setEntityFluid(temp);
+		else
+			entityFluidCow.setEntityFluid(SPAWNABLE_FLUIDS[0]);
       }
     }
   }
@@ -57,13 +62,12 @@ public class EntitySpawnHandler {
         final EntityTypeData entityData =
             EntityHelper.getEntityData(potentialEntityFluid.getName());
 
-        if (entityData == null) {
-          continue;
-        }
-
-        accumulatedWeight += entityData.getSpawnRate();
-        if (accumulatedWeight >= activationWeight) {
-          return potentialEntityFluid;
+        if (entityData != null) 
+		{
+          accumulatedWeight += entityData.getSpawnRate();
+		  if (accumulatedWeight >= activationWeight) {
+			return potentialEntityFluid;
+		  }
         }
       }
     }
@@ -87,7 +91,7 @@ public class EntitySpawnHandler {
       if (!isSpawnable || spawnRate <= 0) {
         continue;
       }
-
+	  
       spawnableFluids.add(fluid);
     }
 
