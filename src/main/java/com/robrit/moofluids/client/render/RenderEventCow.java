@@ -22,8 +22,6 @@ package com.robrit.moofluids.client.render;
 import com.robrit.moofluids.common.entity.INamedEntity;
 import com.robrit.moofluids.common.ref.ModInformation;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderCow;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -38,8 +36,8 @@ public class RenderEventCow extends RenderCow {
 
   private static final String ENTITY_RESOURCE_LOCATION = "textures/entity/";
 
-  public RenderEventCow(RenderManager renderManager, ModelBase modelBase, float shadowSize) {
-    super(renderManager, modelBase, shadowSize);
+  public RenderEventCow(RenderManager renderManager) {
+    super(renderManager);
   }
 
   @Override
@@ -50,10 +48,9 @@ public class RenderEventCow extends RenderCow {
   }
 
   public static class Factory implements IRenderFactory<EntityCow> {
-
     @Override
     public Render<? super EntityCow> createRenderFor(RenderManager renderManager) {
-      return new RenderEventCow(renderManager, new ModelCow(), 0.8F);
+      return new RenderEventCow(renderManager);
     }
   }
 }

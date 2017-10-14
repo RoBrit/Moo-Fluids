@@ -146,13 +146,13 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
   public void setJumping(boolean jumping) {
     super.setJumping(jumping);
 
-    if (jumping) {
+    if (jumping && !isInWater()) {
       playSound(getJumpSound(), getSoundVolume(),
                 ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
     }
   }
 
-  public void func_184770_cZ() {
+  public void startJumping() {
     setJumping(true);
     jumpDuration = 10;
     jumpTicks = 0;
@@ -167,7 +167,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
     if (onGround) {
       if (!wasOnGround) {
         setJumping(false);
-        func_175517_cu();
+        checkLandingDelay();
       }
 
       if (currentMoveTypeDuration == 0) {
@@ -177,7 +177,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
           calculateRotationYaw(entityLivingBase.posX, entityLivingBase.posZ);
           moveHelper.setMoveTo(entityLivingBase.posX, entityLivingBase.posY,
                                entityLivingBase.posZ, moveHelper.getSpeed());
-          func_184770_cZ();
+          startJumping();
           wasOnGround = true;
         }
       }
@@ -196,10 +196,10 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
           }
 
           calculateRotationYaw(vec3d.xCoord, vec3d.zCoord);
-          func_184770_cZ();
+          startJumping();
         }
-      } else if (!entityEasterCow$jumpHelper.func_180065_d()) {
-        func_175518_cr();
+      } else if (!entityEasterCow$jumpHelper.canJump()) {
+        enableJumpControl();
       }
     }
 
@@ -210,12 +210,12 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
     rotationYaw = (float) (MathHelper.atan2(z - posZ, x - posX) * (180D / Math.PI)) - 90.0F;
   }
 
-  private void func_175518_cr() {
-    ((EntityEasterCow.JumpHelper) jumpHelper).func_180066_a(true);
+  private void enableJumpControl() {
+    ((EntityEasterCow.JumpHelper) jumpHelper).setCanJump(true);
   }
 
-  private void func_175520_cs() {
-    ((EntityEasterCow.JumpHelper) jumpHelper).func_180066_a(false);
+  private void disableJumpControl() {
+    ((EntityEasterCow.JumpHelper) jumpHelper).setCanJump(false);
   }
 
   private void updateMoveTypeDuration() {
@@ -226,9 +226,9 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
     }
   }
 
-  private void func_175517_cu() {
+  private void checkLandingDelay() {
     updateMoveTypeDuration();
-    func_175520_cs();
+    disableJumpControl();
   }
 
   @Override
@@ -273,18 +273,18 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
       return isJumping;
     }
 
-    public boolean func_180065_d() {
+    public boolean canJump() {
       return canJump;
     }
 
-    public void func_180066_a(boolean p_180066_1_) {
+    public void setCanJump(boolean p_180066_1_) {
       canJump = p_180066_1_;
     }
 
     @Override
     public void doJump() {
       if (isJumping) {
-        theEntity.func_184770_cZ();
+        theEntity.startJumping();
         isJumping = false;
       }
     }
