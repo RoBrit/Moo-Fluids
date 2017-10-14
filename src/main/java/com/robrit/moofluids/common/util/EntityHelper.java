@@ -35,7 +35,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.TreeMap;

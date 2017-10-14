@@ -56,7 +56,7 @@ public class EntityChristmasCow extends EntityCow implements INamedEntity {
       BlockPos pos = new BlockPos(x, y, z);
 
       if (world.getBlockState(pos).getBlock() == Blocks.AIR
-          && world.getBiome(pos).getFloatTemperature(pos) < 2F
+          && world.getBiome(pos).getTemperature(pos) < 2F
           && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)) {
         double randX = (double) ((float) posX + rand.nextFloat());
         double randY = (double) ((float) posY + rand.nextFloat());

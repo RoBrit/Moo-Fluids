@@ -68,6 +68,7 @@ public class MooFluids {
     ConfigurationHandler.updateFluidConfiguration();
     proxy.registerEntities();
     proxy.registerEntitySpawns();
+    proxy.registerEventHandlers();
 
     if (ModInformation.DEBUG_MODE) {
       LogHelper.info(String.format("Finished pre-initialisation stage for %s",
@@ -77,7 +78,6 @@ public class MooFluids {
 
   @Mod.EventHandler
   public static void init(FMLInitializationEvent event) {
-    proxy.registerEventHandlers();
     proxy.registerPlugins();
 
     if (ModInformation.DEBUG_MODE) {
