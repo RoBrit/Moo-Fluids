@@ -27,6 +27,7 @@ import com.robrit.moofluids.common.entity.holiday.EntityNewYearsCow;
 import com.robrit.moofluids.common.entity.holiday.EntityValentinesCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.event.EntitySpawnHandler;
+import com.robrit.moofluids.common.plugins.theoneprobe.TheOneProbePlugin;
 import com.robrit.moofluids.common.plugins.waila.WailaPlugin;
 import com.robrit.moofluids.common.ref.ConfigurationData;
 import com.robrit.moofluids.common.ref.ModInformation;
@@ -106,8 +107,7 @@ public abstract class CommonProxy implements IProxy {
 
   @Override
   public void registerEntitySpawns() {
-    EntityHelper.addSpawnFromType(EntityFluidCow.class, 8, 4, 4, EnumCreatureType.CREATURE,
-                                  BiomeDictionary.Type.values());
+    EntityHelper.addSpawnAllBiomes(EntityFluidCow.class, 8, 4, 4, EnumCreatureType.CREATURE);
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
       /* Checks if the current date is between the dates (16/12) and (28/12) every year */
@@ -162,8 +162,12 @@ public abstract class CommonProxy implements IProxy {
 
   @Override
   public void registerPlugins() {
-    if (Loader.isModLoaded("Waila")) {
+    if (Loader.isModLoaded("waila")) {
       WailaPlugin.init();
+    }
+
+    if (Loader.isModLoaded("theoneprobe")) {
+      TheOneProbePlugin.init();
     }
   }
 }

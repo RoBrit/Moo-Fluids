@@ -34,9 +34,10 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TreeMap;
 
 public class EntityHelper {
@@ -93,18 +94,21 @@ public class EntityHelper {
   public static void registerEntity(final Class<? extends Entity> entityClass,
                                     final String entityName, final int trackingRange,
                                     final int updateFrequency, final boolean sendsVelocityUpdates) {
-    EntityRegistry.registerModEntity(entityClass, entityName, EntityHelper.getRegisteredEntityId(),
-                                     MooFluids.getInstance(), updateFrequency, trackingRange,
-                                     sendsVelocityUpdates);
+    EntityRegistry.registerModEntity(new ResourceLocation(ModInformation.MOD_ID, entityName),
+                                     entityClass, ModInformation.MOD_ID + "." + entityName,
+                                     getRegisteredEntityId(), MooFluids.getInstance(),
+                                     updateFrequency, trackingRange, sendsVelocityUpdates);
   }
 
   public static void registerEntity(final Class<? extends Entity> entityClass,
                                     final String entityName, final int trackingRange,
                                     final int updateFrequency, final boolean sendsVelocityUpdates,
                                     final int eggPrimary, final int eggSecondary) {
-    EntityRegistry.registerModEntity(entityClass, entityName, getRegisteredEntityId(),
-                                     MooFluids.getInstance(), trackingRange, updateFrequency,
-                                     sendsVelocityUpdates, eggPrimary, eggSecondary);
+    EntityRegistry.registerModEntity(new ResourceLocation(ModInformation.MOD_ID, entityName),
+                                     entityClass, ModInformation.MOD_ID + "." + entityName,
+                                     getRegisteredEntityId(), MooFluids.getInstance(),
+                                     trackingRange, updateFrequency, sendsVelocityUpdates,
+                                     eggPrimary, eggSecondary);
   }
 
   public static void addSpawnFromType(final Class<? extends EntityLiving> entityClass,
@@ -113,11 +117,20 @@ public class EntityHelper {
                                       final BiomeDictionary.Type... biomeTypes) {
     final ArrayList<Biome> biomes = new ArrayList<Biome>();
     for (final BiomeDictionary.Type biomeType : biomeTypes) {
-      biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType)));
+      biomes.addAll(BiomeDictionary.getBiomes(biomeType));
     }
 
     EntityRegistry.addSpawn(entityClass, weightedProb, min, max, typeOfCreature,
                             biomes.toArray(new Biome[biomes.size()]));
+  }
+
+  public static void addSpawnAllBiomes(final Class<? extends EntityLiving> entityClass,
+                                      final int weightedProb, final int min, final int max,
+                                      final EnumCreatureType typeOfCreature) {
+    IForgeRegistry<Biome> biomeReg = GameRegistry.findRegistry(Biome.class);
+    Biome[] biomes = biomeReg.getValues().toArray(new Biome[biomeReg.getValues().size()]);
+
+    EntityRegistry.addSpawn(entityClass, weightedProb, min, max, typeOfCreature, biomes);
   }
 
   public static void registerEntityLootTable(final String entityName) {

@@ -118,7 +118,8 @@ public class TextureRegisterEvent {
                 (fluidColor) & 0xFF,
                 128).getRGB());
           }
-        } else if (fluidIcon != null && fluidIcon.getFrameTextureData(0) != null) {
+        } else if (fluidIcon != event.getMap().getMissingSprite() &&
+                   fluidIcon.getFrameTextureData(0) != null) {
           final Color meanColour = ColorHelper.getMeanColour(fluidIcon.getFrameTextureData(0));
           if (entityTypeData != null) {
             entityTypeData.setOverlay(new Color(

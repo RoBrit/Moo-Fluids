@@ -1,5 +1,5 @@
 /*
- * WailaPlugin.java
+ * TheOneProbePlugin.java
  *
  * Copyright (c) 2014-2017 TheRoBrit
  *
@@ -17,28 +17,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.plugins.waila;
+package com.robrit.moofluids.common.plugins.theoneprobe;
 
-import com.robrit.moofluids.common.entity.EntityFluidCow;
+import com.google.common.base.Function;
+
 import com.robrit.moofluids.common.ref.ModInformation;
 import com.robrit.moofluids.common.util.LogHelper;
 
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 
-import mcp.mobius.waila.api.IWailaRegistrar;
+import javax.annotation.Nullable;
 
-public class WailaPlugin {
+import mcjty.theoneprobe.api.ITheOneProbe;
 
+public class TheOneProbePlugin {
   private static final String REGISTRAR_CLASSPATH =
-      ModInformation.MOD_PACKAGE + ".common.plugins.waila.WailaPlugin.register";
+      ModInformation.MOD_PACKAGE + ".common.plugins.theoneprobe.TheOneProbePlugin$Register";
 
   public static void init() {
-    LogHelper.info("WAILA detected. Registering entities with WAILA registry.");
-    FMLInterModComms.sendMessage("waila", "register", REGISTRAR_CLASSPATH);
+    LogHelper.info("TheOneProbe detected. Registering entities with TheOneProbe registry.");
+    FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", REGISTRAR_CLASSPATH);
   }
 
-  public static void register(IWailaRegistrar registrar) {
-    LogHelper.info("WAILA tooltip successfully registered.");
-    registrar.registerBodyProvider(new FluidCowEntityProvider(), EntityFluidCow.class);
+  public static class Register implements Function<ITheOneProbe, Void> {
+    @Nullable
+    @Override
+    public Void apply(ITheOneProbe probe) {
+      probe.registerEntityProvider(new FluidCowEntityProvider());
+      return null;
+    }
   }
 }

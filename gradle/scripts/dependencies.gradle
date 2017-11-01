@@ -22,15 +22,28 @@ repositories {
     mavenLocal()
 
     maven {
-        url "http://mobiusstrip.eu/maven"
+        url "http://dvs1.progwml6.com/files/maven"
     }
 
     maven {
-        url "http://dvs1.progwml6.com/files/maven"
+        url "http://tehnut.info/maven"
+    }
+
+    maven {
+        url "http://maven.tterrag.com"
+    }
+
+    maven {
+        url "http://maven.k-4u.nl"
     }
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.10.2:3.7.8.234"
-    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
+    deobfCompile "mezz.jei:jei_1.11.2:4.5.1.296:api"
+    runtime "mezz.jei:jei_1.11.2:4.5.1.296"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.17-B31_1.11:api"
+    runtime "mcp.mobius.waila:Hwyla:1.8.17-B31_1.11"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.18-58:api"
+    runtime "mcjty.theoneprobe:TheOneProbe:1.1x-1.4.18-58"
+    runtime "com.github.mcjty:compatlayer:1.11.2-0.2.9"
 }

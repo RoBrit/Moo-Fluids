@@ -21,8 +21,6 @@ package com.robrit.moofluids.client.render;
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderCow;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -35,8 +33,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderFluidCow extends RenderCow {
 
-  public RenderFluidCow(RenderManager renderManager, ModelBase modelBase, float shadowSize) {
-    super(renderManager, modelBase, shadowSize);
+  public RenderFluidCow(RenderManager renderManager) {
+    super(renderManager);
   }
 
   @Override
@@ -47,7 +45,7 @@ public class RenderFluidCow extends RenderCow {
   public static class Factory implements IRenderFactory<EntityFluidCow> {
     @Override
     public Render<? super EntityFluidCow> createRenderFor(RenderManager renderManager) {
-      return new RenderFluidCow(renderManager, new ModelCow(), 0.8F);
+      return new RenderFluidCow(renderManager);
     }
   }
 }

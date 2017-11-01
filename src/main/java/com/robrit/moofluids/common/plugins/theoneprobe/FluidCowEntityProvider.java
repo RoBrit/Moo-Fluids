@@ -17,14 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.robrit.moofluids.common.plugins.waila;
+package com.robrit.moofluids.common.plugins.theoneprobe;
 
 import com.robrit.moofluids.common.entity.EntityFluidCow;
+import com.robrit.moofluids.common.ref.ModInformation;
 import com.robrit.moofluids.common.ref.UnlocalizedStrings;
 import com.robrit.moofluids.common.util.LocalizationHelper;
 import com.robrit.moofluids.common.util.TooltipHelper;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
@@ -33,55 +35,39 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
+import mcjty.theoneprobe.api.IProbeHitEntityData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
+import mcjty.theoneprobe.api.ProbeMode;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
 
-public class FluidCowEntityProvider implements IWailaEntityProvider {
+public class FluidCowEntityProvider implements IProbeInfoEntityProvider {
 
   @Override
-  public Entity getWailaOverride(IWailaEntityAccessor accessor, IWailaConfigHandler config) {
-    return null;
+  public String getID() {
+    return ModInformation.MOD_ID + "." + EntityFluidCow.ENTITY_NAME;
   }
 
   @Override
-  public List<String> getWailaHead(Entity entity, List<String> currenttip,
-                                   IWailaEntityAccessor accessor, IWailaConfigHandler config) {
-    return currenttip;
-  }
-
-  @Override
-  public List<String> getWailaBody(Entity entity, List<String> currenttip,
-                                   IWailaEntityAccessor accessor, IWailaConfigHandler config) {
-    if (accessor.getEntity() instanceof EntityFluidCow) {
-      final EntityFluidCow entityFluidCow = (EntityFluidCow) accessor.getEntity();
+  public void addProbeEntityInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player,
+                                 World world, Entity entity, IProbeHitEntityData data) {
+    if (entity instanceof EntityFluidCow) {
+      final EntityFluidCow entityFluidCow = (EntityFluidCow) entity;
       final FluidStack fluidStack = new FluidStack(entityFluidCow.getEntityFluid(), 0);
 
-      currenttip.add(String.format(
+      probeInfo.horizontal().text(String.format(
           TextFormatting.WHITE +
           LocalizationHelper.localize(UnlocalizedStrings.FLUID_TOOLTIP),
           TextFormatting.AQUA +
           entityFluidCow.getEntityFluid().getLocalizedName(fluidStack)));
 
-      currenttip.add(String.format(
+      probeInfo.horizontal().text(String.format(
           TextFormatting.WHITE +
           LocalizationHelper.localize(UnlocalizedStrings.NEXT_USE_TOOLTIP),
           TextFormatting.AQUA +
           TooltipHelper.getTimeUntilNextUse(entityFluidCow.getNextUseCooldown() / 20)));
     }
-
-    return currenttip;
-  }
-
-  @Override
-  public List<String> getWailaTail(Entity entity, List<String> currenttip,
-                                   IWailaEntityAccessor accessor, IWailaConfigHandler config) {
-    return currenttip;
-  }
-
-  @Override
-  public NBTTagCompound getNBTData(EntityPlayerMP entityPlayerMP, Entity entity,
-                                   NBTTagCompound nbtTagCompound, World world) {
-    return null;
   }
 }
