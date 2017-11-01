@@ -36,6 +36,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -139,10 +140,13 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   @Override
   public boolean attackEntityFrom(final DamageSource damageSource, final float damageAmount) {
-    if (damageSource.getEntity() instanceof EntityPlayer) {
-      final EntityPlayer entityPlayer = (EntityPlayer) damageSource.getEntity();
-      if (entityPlayer.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
-        applyDamagesToEntity(entityPlayer);
+    if (damageSource instanceof EntityDamageSource) {
+      EntityDamageSource entityDamageSource = (EntityDamageSource)damageSource;
+      if (entityDamageSource.getTrueSource() instanceof EntityPlayer) {
+        final EntityPlayer entityPlayer = (EntityPlayer) damageSource.getTrueSource();
+        if (entityPlayer.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+          applyDamagesToEntity(entityPlayer);
+        }
       }
     }
     return super.attackEntityFrom(damageSource, damageAmount);

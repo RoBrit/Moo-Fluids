@@ -102,13 +102,13 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
 
   @Override
   protected float getJumpUpwardsMotion() {
-    if (!isCollidedHorizontally && (!moveHelper.isUpdating() || moveHelper.getY() <= posY + 0.5D)) {
+    if (!collidedHorizontally && (!moveHelper.isUpdating() || moveHelper.getY() <= posY + 0.5D)) {
       final Path path = navigator.getPath();
 
       if (path != null && path.getCurrentPathIndex() < path.getCurrentPathLength()) {
         final Vec3d vec3d = path.getPosition(this);
 
-        if (vec3d.yCoord > posY) {
+        if (vec3d.y > posY) {
           return 0.5F;
         }
       }
@@ -128,7 +128,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
       double d1 = motionX * motionX + motionZ * motionZ;
 
       if (d1 < 0.010000000000000002D) {
-        moveRelative(0.0F, 1.0F, 0.1F);
+        moveRelative(0.0F, 0.0F, 1.0F, 0.1F);
       }
     }
 
@@ -173,7 +173,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
       if (currentMoveTypeDuration == 0) {
         final EntityLivingBase entityLivingBase = getAttackTarget();
 
-        if (entityLivingBase != null && getDistanceSqToEntity(entityLivingBase) < 16.0D) {
+        if (entityLivingBase != null && getDistanceSq(entityLivingBase) < 16.0D) {
           calculateRotationYaw(entityLivingBase.posX, entityLivingBase.posZ);
           moveHelper.setMoveTo(entityLivingBase.posX, entityLivingBase.posY,
                                entityLivingBase.posZ, moveHelper.getSpeed());
@@ -195,7 +195,7 @@ public class EntityEasterCow extends EntityCow implements INamedEntity {
             vec3d = path.getPosition(this);
           }
 
-          calculateRotationYaw(vec3d.xCoord, vec3d.zCoord);
+          calculateRotationYaw(vec3d.x, vec3d.z);
           startJumping();
         }
       } else if (!entityEasterCow$jumpHelper.canJump()) {
