@@ -66,7 +66,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public EntityFluidCow(final World world) {
     super(world);
     setEntityTypeData(EntityHelper.getEntityData(getEntityFluid().getName()));
-    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
+    setNextUseCooldown(0);
 
     if (getEntityFluid().getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
       isImmuneToFire = true;
@@ -296,6 +296,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   public void setEntityFluid(final Fluid entityFluid) {
+    if(entityFluid == null)
+	  this.setDead();
     this.entityFluid = entityFluid;
   }
 
@@ -307,7 +309,18 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     dataManager.set(DATA_WATCHER_CURRENT_USE_COOLDOWN, nextUseCooldown);
     this.nextUseCooldown = nextUseCooldown;
   }
+  
+  // TEMP FIX
+  public int getCurrentUseCooldown() {
+    return nextUseCooldown;
+  }
 
+  public void setCurrentUseCooldown(final int nextUseCooldown) {
+    dataManager.set(DATA_WATCHER_CURRENT_USE_COOLDOWN, nextUseCooldown);
+    this.nextUseCooldown = nextUseCooldown;
+  }
+  // END TEMP FIX
+  
   public EntityTypeData getEntityTypeData() {
     return entityTypeData;
   }
