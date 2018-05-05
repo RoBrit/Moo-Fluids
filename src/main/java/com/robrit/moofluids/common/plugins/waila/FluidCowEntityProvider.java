@@ -64,9 +64,9 @@ public class FluidCowEntityProvider implements IWailaEntityProvider {
 
       currenttip.add(String.format(
           TextFormatting.WHITE +
-          LocalizationHelper.localize(UnlocalizedStrings.NEXT_USE_TOOLTIP),
+          LocalizationHelper.localize(UnlocalizedStrings.CURRENT_COOLDOWN_TOOLTIP),
           TextFormatting.AQUA +
-          getTimeUntilNextUse(entityFluidCow.getNextUseCooldown() / 20)));
+          getTimeUntilNextUse(entityFluidCow.getCurrentUseCooldown() / 20)));
     }
 
     return currenttip;

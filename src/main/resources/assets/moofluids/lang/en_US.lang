@@ -25,5 +25,5 @@ moofluids.temporal.time.now=Now
 
 #WAILA Tooltip Localizations
 moofluids.waila.tooltip.fluid-name=Fluid Name: %s
-moofluids.waila.tooltip.next-use=Next Usable: %s
+moofluids.waila.tooltip.current-cooldown=Current Cooldown: %s
 moofluids.waila.tooltip.breeding-item=Breeding Item: %s
