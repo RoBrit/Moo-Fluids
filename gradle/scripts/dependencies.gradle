@@ -22,15 +22,15 @@ repositories {
     mavenLocal()
 
     maven {
-        url "http://mobiusstrip.eu/maven"
+        url "http://dvs1.progwml6.com/files/maven"
     }
 
     maven {
-        url "http://dvs1.progwml6.com/files/maven"
+        url "http://tehnut.info/maven"
     }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_1.10.2:3.7.8.234"
-    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.17-B31_1.10.2"
 }
