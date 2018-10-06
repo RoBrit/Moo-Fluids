@@ -102,15 +102,20 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
       }
 
       if (getNextUseCooldown() == 0) {
+        boolean success = false;
         ItemStack currentItemStack = entityPlayer.getHeldItem(hand);
-        if (!entityPlayer.capabilities.isCreativeMode) {
-          setNextUseCooldown(entityTypeData.getMaxUseCooldown());
-        }
         if (attemptToGetFluidFromCow(currentItemStack, entityPlayer)) {
-          return true;
+          success = true;
         } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer)) {
-          return true;
+          success = true;
         } else if (attemptToBreedCow(currentItemStack, entityPlayer)) {
+          success = true;
+        }
+
+        if (success) {
+          if (!entityPlayer.capabilities.isCreativeMode) {
+            setNextUseCooldown(entityTypeData.getMaxUseCooldown());
+          }
           return true;
         }
       }
