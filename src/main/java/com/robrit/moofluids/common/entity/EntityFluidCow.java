@@ -101,7 +101,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         setNextUseCooldown(0);
       }
 
-      if (getNextUseCooldown() == 0) {
+      if (getNextUseCooldown() == 0 || entityPlayer.capabilities.isCreativeMode) {
         boolean success = false;
         ItemStack currentItemStack = entityPlayer.getHeldItem(hand);
         if (attemptToGetFluidFromCow(currentItemStack, entityPlayer)) {
