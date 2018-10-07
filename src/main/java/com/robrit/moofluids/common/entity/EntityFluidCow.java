@@ -49,6 +49,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import io.netty.buffer.ByteBuf;
 
@@ -104,7 +105,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
       if (getNextUseCooldown() == 0 || entityPlayer.capabilities.isCreativeMode) {
         boolean success = false;
         ItemStack currentItemStack = entityPlayer.getHeldItem(hand);
-        if (attemptToGetFluidFromCow(currentItemStack, entityPlayer)) {
+        if (attemptToGetFluidFromCow(currentItemStack, entityPlayer, hand)) {
           success = true;
         } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer)) {
           success = true;
@@ -217,33 +218,26 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   private boolean attemptToGetFluidFromCow(final ItemStack currentItemStack,
-                                           final EntityPlayer entityPlayer) {
-    boolean canGetFluid = false;
-
+                                           final EntityPlayer entityPlayer,
+                                           final EnumHand hand) {
     if (!currentItemStack.isEmpty() && entityFluid != null) {
-      ItemStack filledItemStack = ItemHandlerHelper.copyStackWithSize(currentItemStack, 1);
-      IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(filledItemStack);
-      if (fluidHandlerItem != null) {
-        if (fluidHandlerItem.fill(
+        IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(
+                ItemHandlerHelper.copyStackWithSize(currentItemStack, 1));
+        if (fluidHandlerItem != null && fluidHandlerItem.fill(
                 new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), true) == Fluid.BUCKET_VOLUME) {
-
-          filledItemStack = fluidHandlerItem.getContainer();
-
-          currentItemStack.shrink(1);
-          if (currentItemStack.isEmpty()) {
-            entityPlayer.inventory.setInventorySlotContents(
-                entityPlayer.inventory.currentItem,
-                filledItemStack.copy());
+          if (currentItemStack.getCount() == 1) {
+            entityPlayer.setHeldItem(hand, fluidHandlerItem.getContainer());
           } else {
-            ItemHandlerHelper.giveItemToPlayer(entityPlayer, filledItemStack.copy());
+            if (!entityPlayer.capabilities.isCreativeMode) { currentItemStack.shrink(1); }
+            entityPlayer.setHeldItem(hand, currentItemStack);
+            ItemStack remainder = ItemHandlerHelper.insertItemStacked(new PlayerMainInvWrapper(entityPlayer.inventory),
+                    fluidHandlerItem.getContainer(), false);
+            if(!remainder.isEmpty()) entityPlayer.dropItem(remainder, false);
           }
-
-          canGetFluid = true;
+          return true;
         }
-      }
     }
-
-    return canGetFluid;
+    return false;
   }
 
   private boolean attemptToHealCowWithFluidContainer(final ItemStack currentItemStack,
