@@ -276,20 +276,10 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
                                     final EntityPlayer entityPlayer) {
     if (isBreedingItem(currentItemStack) &&
         getGrowingAge() == 0) {
-      if (!entityPlayer.capabilities.isCreativeMode) {
-        currentItemStack.shrink(1);
-
-        if (currentItemStack.isEmpty()) {
-          entityPlayer.inventory.setInventorySlotContents(
-                  entityPlayer.inventory.currentItem, ItemStack.EMPTY);
-        }
-      }
-
+      consumeItemFromStack(entityPlayer, currentItemStack);
       setInLove(entityPlayer);
-
       return true;
     }
-
     return false;
   }
 
