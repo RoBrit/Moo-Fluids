@@ -107,7 +107,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         ItemStack currentItemStack = entityPlayer.getHeldItem(hand);
         if (attemptToGetFluidFromCow(currentItemStack, entityPlayer, hand)) {
           success = true;
-        } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer)) {
+        } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer, hand)) {
           success = true;
         } else if (attemptToBreedCow(currentItemStack, entityPlayer)) {
           success = true;
@@ -241,32 +241,35 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   private boolean attemptToHealCowWithFluidContainer(final ItemStack currentItemStack,
-                                                     final EntityPlayer entityPlayer) {
-    boolean cowHealed = false;
-    if (!currentItemStack.isEmpty() && entityFluid != null) {
-      IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(currentItemStack);
-      if (fluidHandlerItem != null) {
-        FluidStack containedFluid = fluidHandlerItem
-                .drain(new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), false);
-        ItemStack emptyItemStack;
-        if (containedFluid != null &&
-                containedFluid.getFluid().getName().equalsIgnoreCase(entityFluid.getName())) {
-          fluidHandlerItem.drain(new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), false);
-          emptyItemStack = fluidHandlerItem.getContainer();
-          currentItemStack.shrink(1);
-          if (currentItemStack.isEmpty()) {
-            entityPlayer.inventory.setInventorySlotContents(
-                    entityPlayer.inventory.currentItem,
-                    emptyItemStack.copy());
-          } else {
-            ItemHandlerHelper.giveItemToPlayer(entityPlayer, emptyItemStack.copy());
+                                                     final EntityPlayer entityPlayer,
+                                                     final EnumHand hand) {
+    if (getHealth() < getMaxHealth()) {
+      if (!currentItemStack.isEmpty() && entityFluid != null) {
+        IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(
+                ItemHandlerHelper.copyStackWithSize(currentItemStack, 1));
+
+        if (fluidHandlerItem != null) {
+          FluidStack containedFluid = fluidHandlerItem
+                  .drain(new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), true);
+          if (containedFluid != null && containedFluid.amount == Fluid.BUCKET_VOLUME) {
+            if (entityPlayer.capabilities.isCreativeMode) {
+              entityPlayer.setHeldItem(hand, currentItemStack);
+            } else if (currentItemStack.getCount() == 1) {
+              entityPlayer.setHeldItem(hand, fluidHandlerItem.getContainer());
+            } else {
+              currentItemStack.shrink(1);
+              entityPlayer.setHeldItem(hand, currentItemStack);
+              ItemStack remainder = ItemHandlerHelper.insertItemStacked(new PlayerMainInvWrapper(entityPlayer.inventory),
+                      fluidHandlerItem.getContainer(), false);
+              if (!remainder.isEmpty()) entityPlayer.dropItem(remainder, false);
+            }
+            heal(4F);
+            return true;
           }
-          heal(4F);
-          cowHealed = true;
         }
       }
     }
-    return cowHealed;
+    return false;
   }
 
   private boolean attemptToBreedCow(final ItemStack currentItemStack,
