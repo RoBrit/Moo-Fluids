@@ -146,9 +146,9 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   @Override
   public boolean attackEntityFrom(final DamageSource damageSource, final float damageAmount) {
+    if (damageSource.damageType.equals(entityFluid.getName())) return false;
     if (damageSource instanceof EntityDamageSource) {
-      EntityDamageSource entityDamageSource = (EntityDamageSource)damageSource;
-      if (entityDamageSource.getTrueSource() instanceof EntityPlayer) {
+      if (((EntityDamageSource)damageSource).getTrueSource() instanceof EntityPlayer) {
         final EntityPlayer entityPlayer = (EntityPlayer) damageSource.getTrueSource();
         if (entityPlayer.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
           applyDamagesToEntity(entityPlayer);
