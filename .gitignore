@@ -1,4 +1,7 @@
-## gradle
+## Github
+/.github
+
+## Gradle
 /.gradle
 /build
 !/gradle/scripts
@@ -9,7 +12,7 @@
 ## ForgeGradle
 /run
 
-## eclipse
+## Eclipse
 /eclipse
 /.settings
 /.metadata
@@ -17,7 +20,7 @@
 /.project
 /bin
 
-## intellij
+## IntelliJ
 /out
 /.idea
 /*.iml
