@@ -39,6 +39,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,12 +55,13 @@ import io.netty.buffer.ByteBuf;
 
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData, INamedEntity {
 
-  private static final DataParameter<Integer> DATA_WATCHER_CURRENT_USE_COOLDOWN =
+  private static final DataParameter<Integer> DATA_WATCHER_NEXT_USE_COOLDOWN =
       EntityDataManager.createKey(EntityFluidCow.class, DataSerializers.VARINT);
   public static final String ENTITY_NAME = "EntityFluidCow";
   public static final String NBT_TAG_FLUID_NAME = "FluidName";
   public static final String NBT_TAG_NEXT_USE_COOLDOWN = "NextUseCooldown";
-  private int nextUseCooldown;
+  private static final int MAX_SYNC_DELAY = 10; /* in ticks */
+  private int ticks = 0;
   private Fluid entityFluid;
   private EntityTypeData entityTypeData;
 
@@ -81,15 +83,19 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   protected void entityInit() {
     super.entityInit();
-    dataManager.register(DATA_WATCHER_CURRENT_USE_COOLDOWN, 0);
+    dataManager.register(DATA_WATCHER_NEXT_USE_COOLDOWN, 0);
   }
 
   @Override
   public void onLivingUpdate() {
     super.onLivingUpdate();
 
-    if (nextUseCooldown > 0) {
-      setNextUseCooldown(nextUseCooldown - 1);
+    if (!world.isRemote && dataManager.get(DATA_WATCHER_NEXT_USE_COOLDOWN) > 0) {
+      int cooldown = dataManager.get(DATA_WATCHER_NEXT_USE_COOLDOWN);
+      if (++ticks >= cooldown || ticks >= MAX_SYNC_DELAY) {
+        cooldown = Math.max(0, cooldown - ticks);
+        setNextUseCooldown(cooldown);
+      }
     }
   }
 
@@ -103,9 +109,12 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
       if (getNextUseCooldown() == 0) {
         ItemStack currentItemStack = entityPlayer.getHeldItem(hand);
-        if (!entityPlayer.capabilities.isCreativeMode) {
+        if (entityPlayer instanceof FakePlayer) {
+          setNextUseCooldown(entityTypeData.getMaxAutomationCooldown());
+        } else if (!entityPlayer.capabilities.isCreativeMode) {
           setNextUseCooldown(entityTypeData.getMaxUseCooldown());
         }
+        
         if (attemptToGetFluidFromCow(currentItemStack, entityPlayer)) {
           return true;
         } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer)) {
@@ -300,12 +309,13 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   public int getNextUseCooldown() {
-    return nextUseCooldown;
+    return Math.max(0, dataManager.get(DATA_WATCHER_NEXT_USE_COOLDOWN) - ticks);
   }
 
+  /* Must be done server side */
   public void setNextUseCooldown(final int nextUseCooldown) {
-    dataManager.set(DATA_WATCHER_CURRENT_USE_COOLDOWN, nextUseCooldown);
-    this.nextUseCooldown = nextUseCooldown;
+    dataManager.set(DATA_WATCHER_NEXT_USE_COOLDOWN, nextUseCooldown);
+    ticks = 0;
   }
 
   public EntityTypeData getEntityTypeData() {
@@ -338,13 +348,11 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   public void writeSpawnData(final ByteBuf buffer) {
     ByteBufUtils.writeUTF8String(buffer, entityFluid.getName());
-    ByteBufUtils.writeVarInt(buffer, nextUseCooldown, 4);
   }
 
   @Override
   public void readSpawnData(final ByteBuf additionalData) {
     setEntityFluid(EntityHelper.getContainableFluid(ByteBufUtils.readUTF8String(additionalData)));
-    setNextUseCooldown(ByteBufUtils.readVarInt(additionalData, 4));
     entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
   }
 }

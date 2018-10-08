@@ -50,6 +50,7 @@ public class EntityTypeData {
 
   private int growUpTime;
   private int maxUseCooldown;
+  private int maxAutomationCooldown;
 
   private boolean damageEntities;
   private boolean damagePlayers;
@@ -160,6 +161,14 @@ public class EntityTypeData {
 
   public void setMaxUseCooldown(final int maxUseCooldown) {
     this.maxUseCooldown = maxUseCooldown;
+  }
+
+  public int getMaxAutomationCooldown() {
+    return maxAutomationCooldown;
+  }
+
+  public void setMaxAutomationCooldown(final int maxAutomationCooldown) {
+    this.maxAutomationCooldown = maxAutomationCooldown;
   }
 
   public boolean canDamageEntities() {
