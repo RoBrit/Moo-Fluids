@@ -50,81 +50,77 @@ public class ConfigurationHandler {
   }
 
   public static void updateGlobalConfiguration() {
-      /* Category comments */
-      configuration.addCustomCategoryComment(ConfigurationData.CATEGORY_GLOBAL,
-                                             ConfigurationData.CATEGORY_GLOBAL_COMMENT);
+    /* Category comments */
+    configuration.addCustomCategoryComment(ConfigurationData.CATEGORY_GLOBAL,
+                                           ConfigurationData.CATEGORY_GLOBAL_COMMENT);
 
-      configuration.addCustomCategoryComment(ConfigurationData.CATEGORY_FLUIDS,
-                                             ConfigurationData.CATEGORY_FLUIDS_COMMENT);
+    configuration.addCustomCategoryComment(ConfigurationData.CATEGORY_FLUIDS,
+                                           ConfigurationData.CATEGORY_FLUIDS_COMMENT);
 
-      /* General configuration */
-      ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE =
-          configuration.get(ConfigurationData.CATEGORY_GLOBAL,
-                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
-                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE,
-                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT).getInt();
+    /* General configuration */
+    ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE =
+        configuration.get(ConfigurationData.CATEGORY_GLOBAL,
+                          ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+                          ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE,
+                          ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT).getInt();
 
-      ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE =
-          configuration.get(ConfigurationData.CATEGORY_GLOBAL,
-                            ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
-                            ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
+    ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE =
+        configuration.get(ConfigurationData.CATEGORY_GLOBAL,
+                          ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
+                          ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
   }
 
   public static void updateFluidConfiguration() {
-      for (final Fluid containableFluid : EntityHelper.getContainableFluids().values()) {
-        final String containableFluidLocalizedName =
-            containableFluid.getLocalizedName(new FluidStack(containableFluid, 0));
-        final String entityName = ConfigurationData.CATEGORY_FLUIDS + "." + containableFluidLocalizedName + " " + "Cow";
-        final EntityTypeData entityTypeData = new EntityTypeData();
+    for (final Fluid containableFluid : EntityHelper.getContainableFluids().values()) {
+      final String containableFluidLocalizedName =
+          containableFluid.getLocalizedName(new FluidStack(containableFluid, 0));
+      final String entityName = ConfigurationData.CATEGORY_FLUIDS + "." + containableFluidLocalizedName + " " + "Cow";
+      final EntityTypeData entityTypeData = new EntityTypeData();
 
-        /* Configurable entity data */
-        entityTypeData.setSpawnable(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_IS_SPAWNABLE_KEY,
-                              ConfigurationData.ENTITY_IS_SPAWNABLE_DEFAULT_VALUE).getBoolean());
-        entityTypeData.setSpawnRate(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_SPAWN_RATE_KEY,
-                              ConfigurationData.ENTITY_SPAWN_RATE_DEFAULT_VALUE).getInt());
-        entityTypeData.setNormalDamageAmount(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
-                .getInt());
-        entityTypeData.setFireDamageAmount(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
-                              ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
-        entityTypeData.setNormalDamageAmount(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
-                              ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE)
-                .getInt());
-        entityTypeData.setGrowUpTime(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_GROW_UP_TIME_KEY,
-                              ConfigurationData.ENTITY_GROW_UP_TIME_DEFAULT_VALUE).getInt());
-        entityTypeData.setMaxUseCooldown(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_MAX_USE_COOLDOWN_KEY,
-                              ConfigurationData.ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE).getInt());
-        entityTypeData.setDamagePlayers(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_KEY,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE)
-                .getBoolean());
-        entityTypeData.setDamageEntities(
-            configuration.get(entityName,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_KEY,
-                              ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_DEFAULT_VALUE)
-                .getBoolean());
+      /* Configurable entity data */
+      entityTypeData.setSpawnable(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_IS_SPAWNABLE_KEY,
+                            ConfigurationData.ENTITY_IS_SPAWNABLE_DEFAULT_VALUE).getBoolean());
+      entityTypeData.setSpawnRate(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_SPAWN_RATE_KEY,
+                            ConfigurationData.ENTITY_SPAWN_RATE_DEFAULT_VALUE).getInt());
+      entityTypeData.setNormalDamageAmount(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
+                            ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
+      entityTypeData.setFireDamageAmount(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
+                            ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
+      entityTypeData.setNormalDamageAmount(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
+                            ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
+      entityTypeData.setGrowUpTime(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_GROW_UP_TIME_KEY,
+                            ConfigurationData.ENTITY_GROW_UP_TIME_DEFAULT_VALUE).getInt());
+      entityTypeData.setMaxUseCooldown(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_MAX_USE_COOLDOWN_KEY,
+                            ConfigurationData.ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE).getInt());
+      entityTypeData.setDamagePlayers(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_KEY,
+                            ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE).getBoolean());
+      entityTypeData.setDamageEntities(
+          configuration.get(entityName,
+                            ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_KEY,
+                            ConfigurationData.ENTITY_CAN_DAMAGE_OTHER_ENTITIES_DEFAULT_VALUE).getBoolean());
 
-        /* Non-configurable entity data */
-        entityTypeData.setCauseFireDamage(entityTypeData.getFireDamageAmount() > 0);
-        entityTypeData.setCauseNormalDamage(entityTypeData.getNormalDamageAmount() > 0);
+      /* Non-configurable entity data */
+      entityTypeData.setCauseFireDamage(entityTypeData.getFireDamageAmount() > 0);
+      entityTypeData.setCauseNormalDamage(entityTypeData.getNormalDamageAmount() > 0);
 
-        EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
-      }
+      EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
+    }
   }
 
   public static Configuration getConfiguration() {
