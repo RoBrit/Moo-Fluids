@@ -115,6 +115,11 @@ public class ConfigurationHandler {
             configuration.get(entityName,
                               ConfigurationData.ENTITY_MAX_USE_COOLDOWN_KEY,
                               ConfigurationData.ENTITY_MAX_USE_COOLDOWN_DEFAULT_VALUE).getInt());
+        entityTypeData.setMaxAutomationCooldown(
+            configuration.get(entityName,
+                              ConfigurationData.ENTITY_MAX_AUTOMATION_COOLDOWN_KEY,
+                              ConfigurationData.ENTITY_MAX_AUTOMATION_COOLDOWN_DEFAULT_VALUE)
+                .getInt());
         entityTypeData.setDamagePlayers(
             configuration.get(entityName,
                               ConfigurationData.ENTITY_CAN_DAMAGE_PLAYER_KEY,
