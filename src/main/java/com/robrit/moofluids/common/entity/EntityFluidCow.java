@@ -65,12 +65,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   public EntityFluidCow(final World world) {
     super(world);
-    setEntityTypeData(EntityHelper.getEntityData(getEntityFluid().getName()));
     setNextUseCooldown(entityTypeData.getMaxUseCooldown());
 
-    if (getEntityFluid().getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
-      isImmuneToFire = true;
-    }
   }
 
   @Override
@@ -297,6 +293,8 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   public void setEntityFluid(final Fluid entityFluid) {
     this.entityFluid = entityFluid;
+    setEntityTypeData(EntityHelper.getEntityData(entityFluid.getName()));
+    isImmuneToFire = entityFluid.getTemperature() >= FluidRegistry.LAVA.getTemperature();
   }
 
   public int getNextUseCooldown() {
@@ -324,7 +322,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   public void writeEntityToNBT(final NBTTagCompound nbtTagCompound) {
     super.writeEntityToNBT(nbtTagCompound);
-    nbtTagCompound.setString(NBT_TAG_FLUID_NAME, getEntityFluid().getName());
+    nbtTagCompound.setString(NBT_TAG_FLUID_NAME, entityFluid.getName());
     nbtTagCompound.setInteger(NBT_TAG_NEXT_USE_COOLDOWN, getNextUseCooldown());
   }
 
@@ -345,6 +343,5 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public void readSpawnData(final ByteBuf additionalData) {
     setEntityFluid(EntityHelper.getContainableFluid(ByteBufUtils.readUTF8String(additionalData)));
     setNextUseCooldown(ByteBufUtils.readVarInt(additionalData, 4));
-    entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
   }
 }
