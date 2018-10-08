@@ -86,10 +86,6 @@ public class ConfigurationHandler {
           configuration.get(entityName,
                             ConfigurationData.ENTITY_SPAWN_RATE_KEY,
                             ConfigurationData.ENTITY_SPAWN_RATE_DEFAULT_VALUE).getInt());
-      entityTypeData.setNormalDamageAmount(
-          configuration.get(entityName,
-                            ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_KEY,
-                            ConfigurationData.ENTITY_NORMAL_DAMAGE_AMOUNT_DEFAULT_VALUE).getInt());
       entityTypeData.setFireDamageAmount(
           configuration.get(entityName,
                             ConfigurationData.ENTITY_FIRE_DAMAGE_AMOUNT_KEY,
