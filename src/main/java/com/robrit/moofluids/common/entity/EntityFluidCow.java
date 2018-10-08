@@ -66,7 +66,12 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public EntityFluidCow(final World world) {
     super(world);
     setNextUseCooldown(entityTypeData.getMaxUseCooldown());
+  }
 
+  public EntityFluidCow(final World world, Fluid entityFluid) {
+    super(world);
+    setEntityFluid(entityFluid);
+    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
   }
 
   @Override
@@ -172,10 +177,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   @Override
   public EntityFluidCow createChild(final EntityAgeable entityAgeable) {
-    final EntityFluidCow childEntity = new EntityFluidCow(world);
-    childEntity.setEntityFluid(entityFluid);
-
-    return childEntity;
+    return new EntityFluidCow(world, entityFluid);
   }
 
   private void applyDamagesToEntity(final Entity entity) {
