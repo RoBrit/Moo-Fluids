@@ -39,7 +39,7 @@ public class ConfigurationHandler {
   private static File configFile;
 
   public static void init() {
-    setConfiguration(new Configuration(configFile));
+    setConfiguration(new Configuration(configFile, ConfigurationData.CONFIG_VERSION, true));
   }
 
   public static void updateConfiguration() {
@@ -52,16 +52,21 @@ public class ConfigurationHandler {
       configuration.load();
 
       /* Category comments */
-      configuration.addCustomCategoryComment(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
-                                             ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT);
+      configuration.addCustomCategoryComment(ConfigurationData.CATEGORY_GLOBAL,
+                                             ConfigurationData.CATEGORY_GLOBAL_COMMENT);
 
+      configuration.addCustomCategoryComment(ConfigurationData.CATEGORY_FLUIDS,
+                                             ConfigurationData.CATEGORY_FLUIDS_COMMENT);
+
+      /* General configuration */
       ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE =
-          configuration.get(ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
+          configuration.get(ConfigurationData.CATEGORY_GLOBAL,
                             ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_KEY,
-                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE).getInt();
+                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE,
+                            ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT).getInt();
 
       ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE =
-          configuration.get(ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
+          configuration.get(ConfigurationData.CATEGORY_GLOBAL,
                             ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
                             ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
     } catch (Exception exception) {
@@ -81,7 +86,7 @@ public class ConfigurationHandler {
       for (final Fluid containableFluid : EntityHelper.getContainableFluids().values()) {
         final String containableFluidLocalizedName =
             containableFluid.getLocalizedName(new FluidStack(containableFluid, 0));
-        final String entityName = containableFluidLocalizedName + " " + "Cow";
+        final String entityName = ConfigurationData.CATEGORY_FLUIDS + "." + containableFluidLocalizedName + " " + "Cow";
         final EntityTypeData entityTypeData = new EntityTypeData();
 
         /* Configurable entity data */

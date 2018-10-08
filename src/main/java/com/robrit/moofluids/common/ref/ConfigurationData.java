@@ -21,6 +21,12 @@ package com.robrit.moofluids.common.ref;
 
 public class ConfigurationData {
 
+  public static final String CONFIG_VERSION = "1";
+
+  /* Configuration categories */
+  public static final String CATEGORY_GLOBAL = "Global";
+  public static final String CATEGORY_FLUIDS = "Individual Fluids";
+
   /* Configuration keys */
   public static final String GLOBAL_FLUID_COW_SPAWN_RATE_KEY = "Fluid Cow Global Spawn Rate";
   public static final String ENTITY_IS_SPAWNABLE_KEY = "Is Spawnable?";
@@ -50,6 +56,9 @@ public class ConfigurationData {
   public static boolean EVENT_ENTITIES_ENABLED_VALUE;
 
   /* Configuration comments */
+  public static final String CATEGORY_GLOBAL_COMMENT = "Global settings.";
+  public static final String CATEGORY_FLUIDS_COMMENT = "Settings for each type of Fluid Cow.";
+
   public static final String
       GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT =
       "The chance of Fluid Cows spawning versus other entities. (8 is the same chance as normal Cows)";
