@@ -45,12 +45,11 @@ public class ConfigurationHandler {
   public static void updateConfiguration() {
     updateGlobalConfiguration();
     updateFluidConfiguration();
+
+    if (configuration.hasChanged()) configuration.save();
   }
 
   public static void updateGlobalConfiguration() {
-    try {
-      configuration.load();
-
       /* Category comments */
       configuration.addCustomCategoryComment(ConfigurationData.CATEGORY_GLOBAL,
                                              ConfigurationData.CATEGORY_GLOBAL_COMMENT);
@@ -69,20 +68,9 @@ public class ConfigurationHandler {
           configuration.get(ConfigurationData.CATEGORY_GLOBAL,
                             ConfigurationData.EVENT_ENTITIES_ENABLED_KEY,
                             ConfigurationData.EVENT_ENTITIES_ENABLED_DEFAULT_VALUE).getBoolean();
-    } catch (Exception exception) {
-      LogHelper.error("Unable to read configuration for " + ModInformation.MOD_NAME);
-      LogHelper.error(exception);
-    } finally {
-      if (configuration.hasChanged()) {
-        configuration.save();
-      }
-    }
   }
 
   public static void updateFluidConfiguration() {
-    try {
-      configuration.load();
-
       for (final Fluid containableFluid : EntityHelper.getContainableFluids().values()) {
         final String containableFluidLocalizedName =
             containableFluid.getLocalizedName(new FluidStack(containableFluid, 0));
@@ -137,14 +125,6 @@ public class ConfigurationHandler {
 
         EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
       }
-    } catch (Exception exception) {
-      LogHelper.error("Unable to read configuration for " + ModInformation.MOD_NAME);
-      LogHelper.error(exception);
-    } finally {
-      if (configuration.hasChanged()) {
-        configuration.save();
-      }
-    }
   }
 
   public static Configuration getConfiguration() {

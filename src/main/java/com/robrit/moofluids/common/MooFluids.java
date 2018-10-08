@@ -61,11 +61,10 @@ public class MooFluids {
 
   @Mod.EventHandler
   public static void preInit(FMLPreInitializationEvent event) {
+    proxy.initContainableFluids();
     ConfigurationHandler.setConfigFile(event.getSuggestedConfigurationFile());
     ConfigurationHandler.init();
-    ConfigurationHandler.updateGlobalConfiguration();
-    proxy.initContainableFluids();
-    ConfigurationHandler.updateFluidConfiguration();
+    ConfigurationHandler.updateConfiguration();
     proxy.registerEntities();
     proxy.registerEntitySpawns();
     proxy.registerEventHandlers();
