@@ -68,7 +68,9 @@ public class ConfigurationData {
           "If false, ONLY cows that match this list will spawn." + System.lineSeparator() +
           "This overrides the " + ENTITY_IS_SPAWNABLE_KEY + "setting on the individual cows below.";
   public static final String FILTER_LIST_COMMENT =
-          "Fluids that should be filtered. You can use the internal name, unlocalized name, or localized name.";
+          "This will compare against the internal name, unlocalized name, and localized name of a fluid." +
+           System.lineSeparator() + "If any of those contain an entry on this list, it will be filtered.";
+    ;
 
   public static final String
       GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT =

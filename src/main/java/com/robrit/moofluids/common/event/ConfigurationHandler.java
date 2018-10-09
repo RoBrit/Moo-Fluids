@@ -33,8 +33,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
-import java.util.Set;
-import java.util.HashSet;
 
 public class ConfigurationHandler {
 
@@ -79,11 +77,10 @@ public class ConfigurationHandler {
                                           ConfigurationData.FILTER_TYPE_KEY,
                                           ConfigurationData.FILTER_TYPE_DEFAULT,
                                           ConfigurationData.FILTER_TYPE_COMMENT).getBoolean();
-    Set<String> filterList = new HashSet<String>();
-    java.util.Collections.addAll(filterList, configuration.get(ConfigurationData.CATEGORY_FLUID_FILTER,
-                                                               ConfigurationData.FILTER_LIST_KEY,
-                                                               ConfigurationData.FILTER_LIST_DEFAULT,
-                                                               ConfigurationData.FILTER_LIST_COMMENT).getStringList());
+    String[] filterList =configuration.get(ConfigurationData.CATEGORY_FLUID_FILTER,
+                                           ConfigurationData.FILTER_LIST_KEY,
+                                           ConfigurationData.FILTER_LIST_DEFAULT,
+                                           ConfigurationData.FILTER_LIST_COMMENT).getStringList();
 
     for (final Fluid containableFluid : EntityHelper.getContainableFluids().values()) {
       final String containableFluidLocalizedName =
@@ -143,10 +140,13 @@ public class ConfigurationHandler {
       entityTypeData.setCauseNormalDamage(entityTypeData.getNormalDamageAmount() > 0);
 
       /* Override spawning based on filter */
-      if(filterModeBlack == (filterList.contains(containableFluid.getName()) ||
-                             filterList.contains(containableFluid.getUnlocalizedName()) ||
-                             filterList.contains(containableFluidLocalizedName))) {
-        entityTypeData.setSpawnable(false);
+      for (String filter: filterList) {
+        if(filterModeBlack == (containableFluid.getName().contains(filter) ||
+                               containableFluid.getUnlocalizedName().contains(filter) ||
+                               containableFluidLocalizedName.contains(filter))) {
+          entityTypeData.setSpawnable(false);
+          break;
+        }
       }
 
       EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
