@@ -274,8 +274,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   private boolean attemptToBreedCow(final ItemStack currentItemStack,
                                     final EntityPlayer entityPlayer) {
-    if (isBreedingItem(currentItemStack) &&
-        getGrowingAge() == 0) {
+    if (isBreedingItem(currentItemStack) && getGrowingAge() == 0 && !isInLove()) {
       consumeItemFromStack(entityPlayer, currentItemStack);
       setInLove(entityPlayer);
       return true;
