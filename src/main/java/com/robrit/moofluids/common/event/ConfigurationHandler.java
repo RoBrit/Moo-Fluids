@@ -33,6 +33,8 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
+import java.util.Set;
+import java.util.HashSet;
 
 public class ConfigurationHandler {
 
@@ -73,6 +75,16 @@ public class ConfigurationHandler {
   }
 
   public static void updateFluidConfiguration() {
+    boolean filterModeBlack = configuration.get(ConfigurationData.CATEGORY_FLUID_FILTER,
+                                          ConfigurationData.FILTER_TYPE_KEY,
+                                          ConfigurationData.FILTER_TYPE_DEFAULT,
+                                          ConfigurationData.FILTER_TYPE_COMMENT).getBoolean();
+    Set<String> filterList = new HashSet<String>();
+    java.util.Collections.addAll(filterList, configuration.get(ConfigurationData.CATEGORY_FLUID_FILTER,
+                                                               ConfigurationData.FILTER_LIST_KEY,
+                                                               ConfigurationData.FILTER_LIST_DEFAULT,
+                                                               ConfigurationData.FILTER_LIST_COMMENT).getStringList());
+
     for (final Fluid containableFluid : EntityHelper.getContainableFluids().values()) {
       final String containableFluidLocalizedName =
           containableFluid.getLocalizedName(new FluidStack(containableFluid, 0));
@@ -129,6 +141,13 @@ public class ConfigurationHandler {
       /* Non-configurable entity data */
       entityTypeData.setCauseFireDamage(entityTypeData.getFireDamageAmount() > 0);
       entityTypeData.setCauseNormalDamage(entityTypeData.getNormalDamageAmount() > 0);
+
+      /* Override spawning based on filter */
+      if(filterModeBlack == (filterList.contains(containableFluid.getName()) ||
+                             filterList.contains(containableFluid.getUnlocalizedName()) ||
+                             filterList.contains(containableFluidLocalizedName))) {
+        entityTypeData.setSpawnable(false);
+      }
 
       EntityHelper.setEntityData(containableFluid.getName(), entityTypeData);
     }

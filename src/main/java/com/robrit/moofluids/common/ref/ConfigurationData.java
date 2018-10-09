@@ -26,6 +26,7 @@ public class ConfigurationData {
   /* Configuration categories */
   public static final String CATEGORY_GLOBAL = "Global";
   public static final String CATEGORY_FLUIDS = "Individual Fluids";
+  public static final String CATEGORY_FLUID_FILTER = ConfigurationData.CATEGORY_GLOBAL + "." + "Fluid Filter";
 
   /* Configuration keys */
   public static final String GLOBAL_FLUID_COW_SPAWN_RATE_KEY = "Fluid Cow Global Spawn Rate";
@@ -38,6 +39,8 @@ public class ConfigurationData {
   public static final String ENTITY_CAN_DAMAGE_PLAYER_KEY = "Can Damage Player";
   public static final String ENTITY_CAN_DAMAGE_OTHER_ENTITIES_KEY = "Can Damage Other Entities";
   public static final String EVENT_ENTITIES_ENABLED_KEY = "Event Entities Enabled";
+  public static final String FILTER_TYPE_KEY = "Blacklist";
+  public static final String FILTER_LIST_KEY = "Fluids";
 
   /* Configuration default values */
   public static final int GLOBAL_FLUID_COW_SPAWN_RATE_DEFAULT_VALUE = 8;
@@ -50,6 +53,8 @@ public class ConfigurationData {
   public static final boolean ENTITY_CAN_DAMAGE_PLAYER_DEFAULT_VALUE = true;
   public static final boolean ENTITY_CAN_DAMAGE_OTHER_ENTITIES_DEFAULT_VALUE = true;
   public static final boolean EVENT_ENTITIES_ENABLED_DEFAULT_VALUE = true;
+  public static final boolean FILTER_TYPE_DEFAULT = true;
+  public static final String[] FILTER_LIST_DEFAULT ={};
 
   /* Configuration values */
   public static int GLOBAL_FLUID_COW_SPAWN_RATE_VALUE;
@@ -58,6 +63,12 @@ public class ConfigurationData {
   /* Configuration comments */
   public static final String CATEGORY_GLOBAL_COMMENT = "Global settings.";
   public static final String CATEGORY_FLUIDS_COMMENT = "Settings for each type of Fluid Cow.";
+  public static final String FILTER_TYPE_COMMENT =
+          "If true, cows that match this list won't spawn." + System.lineSeparator() +
+          "If false, ONLY cows that match this list will spawn." + System.lineSeparator() +
+          "This overrides the " + ENTITY_IS_SPAWNABLE_KEY + "setting on the individual cows below.";
+  public static final String FILTER_LIST_COMMENT =
+          "Fluids that should be filtered. You can use the internal name, unlocalized name, or localized name.";
 
   public static final String
       GLOBAL_FLUID_COW_SPAWN_RATE_COMMENT =
