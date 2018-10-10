@@ -27,6 +27,7 @@ import com.robrit.moofluids.common.util.damage.BurnDamageSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +39,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -52,6 +54,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import io.netty.buffer.ByteBuf;
 
+import javax.annotation.Nullable;
+
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData, INamedEntity {
 
   private static final DataParameter<Integer> DATA_WATCHER_CURRENT_USE_COOLDOWN =
@@ -65,12 +69,12 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   public EntityFluidCow(final World world) {
     super(world);
-    setEntityTypeData(EntityHelper.getEntityData(getEntityFluid().getName()));
-    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
+  }
 
-    if (getEntityFluid().getTemperature() >= FluidRegistry.LAVA.getTemperature()) {
-      isImmuneToFire = true;
-    }
+  public EntityFluidCow(final World world, Fluid entityFluid) {
+    super(world);
+    setEntityFluid(entityFluid);
+    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
   }
 
   @Override
@@ -176,10 +180,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   @Override
   public EntityFluidCow createChild(final EntityAgeable entityAgeable) {
-    final EntityFluidCow childEntity = new EntityFluidCow(world);
-    childEntity.setEntityFluid(entityFluid);
-
-    return childEntity;
+    return new EntityFluidCow(world, entityFluid);
   }
 
   private void applyDamagesToEntity(final Entity entity) {
@@ -297,6 +298,9 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   public void setEntityFluid(final Fluid entityFluid) {
     this.entityFluid = entityFluid;
+    setEntityTypeData(EntityHelper.getEntityData(entityFluid.getName()));
+    isImmuneToFire = entityFluid.getTemperature() >= FluidRegistry.LAVA.getTemperature();
+    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
   }
 
   public int getNextUseCooldown() {
@@ -324,7 +328,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   @Override
   public void writeEntityToNBT(final NBTTagCompound nbtTagCompound) {
     super.writeEntityToNBT(nbtTagCompound);
-    nbtTagCompound.setString(NBT_TAG_FLUID_NAME, getEntityFluid().getName());
+    nbtTagCompound.setString(NBT_TAG_FLUID_NAME, entityFluid.getName());
     nbtTagCompound.setInteger(NBT_TAG_NEXT_USE_COOLDOWN, getNextUseCooldown());
   }
 
@@ -345,6 +349,33 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   public void readSpawnData(final ByteBuf additionalData) {
     setEntityFluid(EntityHelper.getContainableFluid(ByteBufUtils.readUTF8String(additionalData)));
     setNextUseCooldown(ByteBufUtils.readVarInt(additionalData, 4));
-    entityTypeData = EntityHelper.getEntityData(getEntityFluid().getName());
   }
+
+  @Nullable
+  public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+    livingdata = super.onInitialSpawn(difficulty, livingdata);
+    Fluid entityFluid;
+
+    if (livingdata instanceof EntityFluidCow.GroupData) {
+      entityFluid = ((GroupData)livingdata).entityFluid;
+    } else {
+      entityFluid = EntityHelper.getRandomSpawnableFluid();
+      livingdata = new EntityFluidCow.GroupData(entityFluid);
+    }
+
+    setEntityFluid(entityFluid);
+
+    return livingdata;
+  }
+
+  static class GroupData implements IEntityLivingData
+  {
+    public Fluid entityFluid;
+
+    private GroupData(Fluid entityFluid)
+    {
+      this.entityFluid = entityFluid;
+    }
+  }
+
 }

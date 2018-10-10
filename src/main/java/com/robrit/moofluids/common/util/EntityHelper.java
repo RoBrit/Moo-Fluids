@@ -43,24 +43,17 @@ import java.util.TreeMap;
 public class EntityHelper {
 
   private static TreeMap<String, Fluid> containableFluids = new TreeMap<String, Fluid>();
-  private static TreeMap<String, EntityTypeData> entityDataMap =
-      new TreeMap<String, EntityTypeData>();
+  private static TreeMap<String, EntityTypeData> entityDataMap = new TreeMap<String, EntityTypeData>();
   private static int registeredEntityId = 0;
+  private static Fluid[] SPAWNABLE_FLUIDS;
+  private static double CUMULATIVE_SPAWN_WEIGHT;
 
   public static TreeMap<String, Fluid> getContainableFluids() {
     return containableFluids;
   }
 
-  public static Fluid[] getContainableFluidsArray() {
-    return containableFluids.values().toArray(new Fluid[containableFluids.values().size()]);
-  }
-
   public static Fluid getContainableFluid(final String fluidName) {
-    if (containableFluids.containsKey(fluidName)) {
-      return containableFluids.get(fluidName);
-    }
-
-    return null;
+    return containableFluids.get(fluidName);
   }
 
   public static void setContainableFluid(final String fluidName, final Fluid fluid) {
@@ -84,11 +77,67 @@ public class EntityHelper {
   }
 
   public static EntityTypeData getEntityData(final String fluidName) {
-    if (entityDataMap.containsKey(fluidName)) {
-      return entityDataMap.get(fluidName);
+    return entityDataMap.get(fluidName);
+  }
+
+  public static Fluid getRandomSpawnableFluid() {
+    if (SPAWNABLE_FLUIDS.length > 0) {
+      // Weighted random chance for activation
+      double activationWeight = Math.random() * CUMULATIVE_SPAWN_WEIGHT;
+      // Accumulated chance from iteration
+      double accumulatedWeight = 0.0;
+
+      for (final Fluid potentialEntityFluid : SPAWNABLE_FLUIDS) {
+        final EntityTypeData entityData =
+                EntityHelper.getEntityData(potentialEntityFluid.getName());
+
+        if (entityData == null) {
+          continue;
+        }
+
+        accumulatedWeight += entityData.getSpawnRate();
+        if (accumulatedWeight >= activationWeight) {
+          return potentialEntityFluid;
+        }
+      }
     }
 
     return null;
+  }
+
+  public static void initSpawnableFluids() {
+    final ArrayList<Fluid> spawnableFluids = new ArrayList<Fluid>();
+
+    for (final Fluid containableFluid : containableFluids.values()) {
+      final EntityTypeData entityData = EntityHelper.getEntityData(containableFluid.getName());
+
+      final boolean isSpawnable = entityData.isSpawnable();
+      final int spawnRate = entityData.getSpawnRate();
+
+      if (!isSpawnable || spawnRate <= 0) {
+        continue;
+      }
+
+      spawnableFluids.add(containableFluid);
+    }
+
+    SPAWNABLE_FLUIDS = spawnableFluids.toArray(new Fluid[spawnableFluids.size()]);
+  }
+
+  public static void initCumulativeSpawnWeight() {
+    double cumulativeSpawnWeight = 0.0;
+
+    for (final Fluid spawnableFluid : SPAWNABLE_FLUIDS) {
+      final EntityTypeData entityData = EntityHelper.getEntityData(spawnableFluid.getName());
+
+      if (entityData == null) {
+        continue;
+      }
+
+      cumulativeSpawnWeight += entityData.getSpawnRate();
+    }
+
+    CUMULATIVE_SPAWN_WEIGHT = cumulativeSpawnWeight;
   }
 
   public static void registerEntity(final Class<? extends Entity> entityClass,
