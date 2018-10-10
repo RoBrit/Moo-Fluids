@@ -26,7 +26,6 @@ import com.robrit.moofluids.common.entity.holiday.EntityHalloweenCow;
 import com.robrit.moofluids.common.entity.holiday.EntityNewYearsCow;
 import com.robrit.moofluids.common.entity.holiday.EntityValentinesCow;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
-import com.robrit.moofluids.common.event.EntitySpawnHandler;
 import com.robrit.moofluids.common.plugins.theoneprobe.TheOneProbePlugin;
 import com.robrit.moofluids.common.plugins.waila.WailaPlugin;
 import com.robrit.moofluids.common.ref.ConfigurationData;
@@ -72,12 +71,11 @@ public abstract class CommonProxy implements IProxy {
   @Override
   public void registerEventHandlers() {
     MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
-    MinecraftForge.EVENT_BUS.register(new EntitySpawnHandler());
   }
 
   @Override
   public void registerEntities() {
-    if (EntityHelper.getContainableFluidsArray().length > 0) {
+    if (EntityHelper.getContainableFluids().size() > 0) {
       EntityHelper.registerEntity(EntityFluidCow.class, EntityFluidCow.ENTITY_NAME,
                                   64, 1, true, 0xFFFFFF, 0xFFFFFF);
     }

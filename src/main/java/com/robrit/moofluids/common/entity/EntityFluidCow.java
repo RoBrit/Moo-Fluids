@@ -27,6 +27,7 @@ import com.robrit.moofluids.common.util.damage.BurnDamageSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +39,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -52,6 +54,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import io.netty.buffer.ByteBuf;
 
+import javax.annotation.Nullable;
+
 public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnData, INamedEntity {
 
   private static final DataParameter<Integer> DATA_WATCHER_CURRENT_USE_COOLDOWN =
@@ -65,7 +69,6 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   public EntityFluidCow(final World world) {
     super(world);
-    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
   }
 
   public EntityFluidCow(final World world, Fluid entityFluid) {
@@ -297,6 +300,7 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     this.entityFluid = entityFluid;
     setEntityTypeData(EntityHelper.getEntityData(entityFluid.getName()));
     isImmuneToFire = entityFluid.getTemperature() >= FluidRegistry.LAVA.getTemperature();
+    setNextUseCooldown(entityTypeData.getMaxUseCooldown());
   }
 
   public int getNextUseCooldown() {
@@ -346,4 +350,32 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
     setEntityFluid(EntityHelper.getContainableFluid(ByteBufUtils.readUTF8String(additionalData)));
     setNextUseCooldown(ByteBufUtils.readVarInt(additionalData, 4));
   }
+
+  @Nullable
+  public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+    livingdata = super.onInitialSpawn(difficulty, livingdata);
+    Fluid entityFluid;
+
+    if (livingdata instanceof EntityFluidCow.GroupData) {
+      entityFluid = ((GroupData)livingdata).entityFluid;
+    } else {
+      entityFluid = EntityHelper.getRandomSpawnableFluid();
+      livingdata = new EntityFluidCow.GroupData(entityFluid);
+    }
+
+    setEntityFluid(entityFluid);
+
+    return livingdata;
+  }
+
+  static class GroupData implements IEntityLivingData
+  {
+    public Fluid entityFluid;
+
+    private GroupData(Fluid entityFluid)
+    {
+      this.entityFluid = entityFluid;
+    }
+  }
+
 }

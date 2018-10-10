@@ -22,6 +22,7 @@ package com.robrit.moofluids.common;
 import com.robrit.moofluids.common.event.ConfigurationHandler;
 import com.robrit.moofluids.common.proxy.IProxy;
 import com.robrit.moofluids.common.ref.ModInformation;
+import com.robrit.moofluids.common.util.EntityHelper;
 import com.robrit.moofluids.common.util.LogHelper;
 
 import net.minecraftforge.fluids.FluidRegistry;
@@ -61,11 +62,12 @@ public class MooFluids {
 
   @Mod.EventHandler
   public static void preInit(FMLPreInitializationEvent event) {
+    proxy.initContainableFluids();
     ConfigurationHandler.setConfigFile(event.getSuggestedConfigurationFile());
     ConfigurationHandler.init();
-    ConfigurationHandler.updateGlobalConfiguration();
-    proxy.initContainableFluids();
-    ConfigurationHandler.updateFluidConfiguration();
+    ConfigurationHandler.updateConfiguration();
+    EntityHelper.initSpawnableFluids();
+    EntityHelper.initCumulativeSpawnWeight();
     proxy.registerEntities();
     proxy.registerEntitySpawns();
     proxy.registerEventHandlers();
