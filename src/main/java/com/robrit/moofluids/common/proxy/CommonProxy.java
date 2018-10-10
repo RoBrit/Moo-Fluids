@@ -56,8 +56,7 @@ public abstract class CommonProxy implements IProxy {
             EntityHelper.setContainableFluid(fluidName, fluid);
 
             if (ModInformation.DEBUG_MODE) {
-              LogHelper.info(String.format(fluidName,
-                                           "%s has been added as an containable (i.e. bucketable) fluid"));
+              LogHelper.info(String.format("%s has been added as an containable (i.e. bucketable) fluid", fluidName));
             }
           }
         }
@@ -107,7 +106,8 @@ public abstract class CommonProxy implements IProxy {
 
   @Override
   public void registerEntitySpawns() {
-    EntityHelper.addSpawnAllBiomes(EntityFluidCow.class, 8, 4, 4, EnumCreatureType.CREATURE);
+    EntityHelper.addSpawnAllBiomes(EntityFluidCow.class, ConfigurationData.GLOBAL_FLUID_COW_SPAWN_RATE_VALUE,
+                              4, 4, EnumCreatureType.CREATURE);
 
     if (ConfigurationData.EVENT_ENTITIES_ENABLED_VALUE) {
       /* Checks if the current date is between the dates (16/12) and (28/12) every year */
