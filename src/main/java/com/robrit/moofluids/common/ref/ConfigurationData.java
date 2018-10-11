@@ -66,7 +66,7 @@ public class ConfigurationData {
   public static final String FILTER_TYPE_COMMENT =
           "If true, cows that match this list won't spawn." + System.lineSeparator() +
           "If false, ONLY cows that match this list will spawn." + System.lineSeparator() +
-          "This overrides the " + ENTITY_IS_SPAWNABLE_KEY + "setting on the individual cows below.";
+          "This overrides the \"" + ENTITY_IS_SPAWNABLE_KEY + "\" setting on the individual cows below.";
   public static final String FILTER_LIST_COMMENT =
           "This will compare against the internal name, unlocalized name, and localized name of a fluid." +
            System.lineSeparator() + "If any of those contain an entry on this list, it will be filtered.";
