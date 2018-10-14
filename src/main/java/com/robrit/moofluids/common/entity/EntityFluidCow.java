@@ -49,6 +49,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import io.netty.buffer.ByteBuf;
 
@@ -102,16 +103,21 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
         setNextUseCooldown(0);
       }
 
-      if (getNextUseCooldown() == 0) {
+      if (getNextUseCooldown() == 0 || entityPlayer.capabilities.isCreativeMode) {
+        boolean success = false;
         ItemStack currentItemStack = entityPlayer.getHeldItem(hand);
-        if (!entityPlayer.capabilities.isCreativeMode) {
-          setNextUseCooldown(entityTypeData.getMaxUseCooldown());
-        }
-        if (attemptToGetFluidFromCow(currentItemStack, entityPlayer)) {
-          return true;
-        } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer)) {
-          return true;
+        if (attemptToGetFluidFromCow(currentItemStack, entityPlayer, hand)) {
+          success = true;
+        } else if (attemptToHealCowWithFluidContainer(currentItemStack, entityPlayer, hand)) {
+          success = true;
         } else if (attemptToBreedCow(currentItemStack, entityPlayer)) {
+          success = true;
+        }
+
+        if (success) {
+          if (!entityPlayer.capabilities.isCreativeMode) {
+            setNextUseCooldown(entityTypeData.getMaxUseCooldown());
+          }
           return true;
         }
       }
@@ -141,9 +147,9 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
 
   @Override
   public boolean attackEntityFrom(final DamageSource damageSource, final float damageAmount) {
+    if (damageSource.damageType.equals(entityFluid.getName())) return false;
     if (damageSource instanceof EntityDamageSource) {
-      EntityDamageSource entityDamageSource = (EntityDamageSource)damageSource;
-      if (entityDamageSource.getTrueSource() instanceof EntityPlayer) {
+      if (((EntityDamageSource)damageSource).getTrueSource() instanceof EntityPlayer) {
         final EntityPlayer entityPlayer = (EntityPlayer) damageSource.getTrueSource();
         if (entityPlayer.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
           applyDamagesToEntity(entityPlayer);
@@ -210,82 +216,67 @@ public class EntityFluidCow extends EntityCow implements IEntityAdditionalSpawnD
   }
 
   private boolean attemptToGetFluidFromCow(final ItemStack currentItemStack,
-                                           final EntityPlayer entityPlayer) {
-    boolean canGetFluid = false;
-
+                                           final EntityPlayer entityPlayer,
+                                           final EnumHand hand) {
     if (!currentItemStack.isEmpty() && entityFluid != null) {
-      ItemStack filledItemStack = ItemHandlerHelper.copyStackWithSize(currentItemStack, 1);
-      IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(filledItemStack);
-      if (fluidHandlerItem != null) {
-        if (fluidHandlerItem.fill(
+        IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(
+                ItemHandlerHelper.copyStackWithSize(currentItemStack, 1));
+        if (fluidHandlerItem != null && fluidHandlerItem.fill(
                 new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), true) == Fluid.BUCKET_VOLUME) {
-
-          filledItemStack = fluidHandlerItem.getContainer();
-
-          currentItemStack.shrink(1);
-          if (currentItemStack.isEmpty()) {
-            entityPlayer.inventory.setInventorySlotContents(
-                entityPlayer.inventory.currentItem,
-                filledItemStack.copy());
+          if (currentItemStack.getCount() == 1) {
+            entityPlayer.setHeldItem(hand, fluidHandlerItem.getContainer());
           } else {
-            ItemHandlerHelper.giveItemToPlayer(entityPlayer, filledItemStack.copy());
+            if (!entityPlayer.capabilities.isCreativeMode) { currentItemStack.shrink(1); }
+            entityPlayer.setHeldItem(hand, currentItemStack);
+            ItemStack remainder = ItemHandlerHelper.insertItemStacked(new PlayerMainInvWrapper(entityPlayer.inventory),
+                    fluidHandlerItem.getContainer(), false);
+            if(!remainder.isEmpty()) entityPlayer.dropItem(remainder, false);
           }
-
-          canGetFluid = true;
+          return true;
         }
-      }
     }
-
-    return canGetFluid;
+    return false;
   }
 
   private boolean attemptToHealCowWithFluidContainer(final ItemStack currentItemStack,
-                                                     final EntityPlayer entityPlayer) {
-    boolean cowHealed = false;
-    if (!currentItemStack.isEmpty() && entityFluid != null) {
-      IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(currentItemStack);
-      if (fluidHandlerItem != null) {
-        FluidStack containedFluid = fluidHandlerItem
-                .drain(new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), false);
-        ItemStack emptyItemStack;
-        if (containedFluid != null &&
-                containedFluid.getFluid().getName().equalsIgnoreCase(entityFluid.getName())) {
-          fluidHandlerItem.drain(new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), false);
-          emptyItemStack = fluidHandlerItem.getContainer();
-          currentItemStack.shrink(1);
-          if (currentItemStack.isEmpty()) {
-            entityPlayer.inventory.setInventorySlotContents(
-                    entityPlayer.inventory.currentItem,
-                    emptyItemStack.copy());
-          } else {
-            ItemHandlerHelper.giveItemToPlayer(entityPlayer, emptyItemStack.copy());
+                                                     final EntityPlayer entityPlayer,
+                                                     final EnumHand hand) {
+    if (getHealth() < getMaxHealth()) {
+      if (!currentItemStack.isEmpty() && entityFluid != null) {
+        IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(
+                ItemHandlerHelper.copyStackWithSize(currentItemStack, 1));
+
+        if (fluidHandlerItem != null) {
+          FluidStack containedFluid = fluidHandlerItem
+                  .drain(new FluidStack(entityFluid, Fluid.BUCKET_VOLUME), true);
+          if (containedFluid != null && containedFluid.amount == Fluid.BUCKET_VOLUME) {
+            if (entityPlayer.capabilities.isCreativeMode) {
+              entityPlayer.setHeldItem(hand, currentItemStack);
+            } else if (currentItemStack.getCount() == 1) {
+              entityPlayer.setHeldItem(hand, fluidHandlerItem.getContainer());
+            } else {
+              currentItemStack.shrink(1);
+              entityPlayer.setHeldItem(hand, currentItemStack);
+              ItemStack remainder = ItemHandlerHelper.insertItemStacked(new PlayerMainInvWrapper(entityPlayer.inventory),
+                      fluidHandlerItem.getContainer(), false);
+              if (!remainder.isEmpty()) entityPlayer.dropItem(remainder, false);
+            }
+            heal(4F);
+            return true;
           }
-          heal(4F);
-          cowHealed = true;
         }
       }
     }
-    return cowHealed;
+    return false;
   }
 
   private boolean attemptToBreedCow(final ItemStack currentItemStack,
                                     final EntityPlayer entityPlayer) {
-    if (isBreedingItem(currentItemStack) &&
-        getGrowingAge() == 0) {
-      if (!entityPlayer.capabilities.isCreativeMode) {
-        currentItemStack.shrink(1);
-
-        if (currentItemStack.isEmpty()) {
-          entityPlayer.inventory.setInventorySlotContents(
-                  entityPlayer.inventory.currentItem, ItemStack.EMPTY);
-        }
-      }
-
+    if (isBreedingItem(currentItemStack) && getGrowingAge() == 0 && !isInLove()) {
+      consumeItemFromStack(entityPlayer, currentItemStack);
       setInLove(entityPlayer);
-
       return true;
     }
-
     return false;
   }
 
