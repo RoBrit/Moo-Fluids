@@ -38,7 +38,7 @@ public class RenderFluidCow extends RenderCow {
   }
 
   @Override
-  protected int getColorMultiplier(EntityCow entityLivingBase, float par2, float par3) {
+  protected int getColorMultiplier(EntityCow entityLivingBase, float lightBrightness, float partialTickTime) {
     return ((EntityFluidCow) entityLivingBase).getOverlay();
   }
 
